@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const string = process.env.URI_STRING || "mongodb+srv://";
-mongoose.connect(string);
+import mongoose from "mongoose";
+import {
+  hasOneSpaceBetweenNames, isValidEmail, isValidIndianMobileNumber} from "../helpter/utils";
 
 /* schema start here*/
 
@@ -55,31 +55,67 @@ const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    mobileNo: { type: String, required: true },
     password: { type: String, required: true },
-    role: { type: Number, default: 0 }, // 1 means super admin, 2 means user with edit access, 0 means normal user
-    created_date: {
-      name: { type: String, default: "." },
-      date: { type: Date, default: Date.now },
-    },
+    isEmailVerfied: { type: Boolean, default: false },
+    emailVerifyToken: { type: String, default: "" },
+    resetToken: { type: String, default: "" },
+    role: { type: Number, default: 0 }, // 0 means normal user, 1 means admin, 2 means seller
   },
   {
-    query: {
-      all() {
-        return this.where({});
-      },
-      byRole(role) {
-        return this.where({ role });
-      },
-      byEmail(email) {
-        return this.where({ email });
-      },
-      byIdEmail(_id, email) {
-        return this.where({ _id, email });
-      },
-      byEmailPassword(email, password) {
-        return this.where({ email, password });
-      },
-    },
+    timestamps: true,
+  }
+);
+
+const addressSchema = new mongoose.Schema(
+  {
+    userId: { type: String, required: true },
+    address_1: { type: String, required: true },
+    address_2: { type: String, default: "" },
+    pincode: { type: Number, required: true },
+    state: { type: Boolean, default: false },
+    city: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const otpSchema = new mongoose.Schema(
+  {
+    mobileNo: { type: String, required: true },
+    otp: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// relation things of mongodb needs to be studied for cart and wishlist
+const cartSchema = new mongoose.Schema(
+  {
+    userId: { type: String, required: true },
+    productId: { type: String, required: true },
+    // productName: { type: String, required: true, unique: true },
+    // mobileno: { type: String, required: true, unique: true },
+    // password: { type: String, required: true },
+    // isEmailVerfied: { type: Boolean, default: false },
+    // emailVerifyToken: { type: String, default: "" },
+    // resetToken: { type: String, default: "" },
+    // role: { type: Number, default: 0 }, // 0 means normal user, 1 means admin, 2 means seller
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const wishlistSchema = new mongoose.Schema(
+  {
+    userId: { type: String, required: true },
+    productId: { type: String, required: true },
+  },
+  {
+    timestamps: true,
   }
 );
 
@@ -101,32 +137,30 @@ const messageSchema = new mongoose.Schema(
   }
 );
 
-// create and export the model
-const Project = mongoose.model("projects", servicesSchema);
-const Service = mongoose.model("services", servicesSchema);
-const Client = mongoose.model("clients", clientSchema);
-const User = mongoose.model("users", userSchema);
-const Message = mongoose.model("messages", messageSchema);
+// models --------------------------------------->
+// ---------------------------------------------->
 
-// validations for the models
+const User = mongoose.models.users || mongoose.model("users", userSchema);
+const Otp =
+  mongoose.models.registration_otp ||
+  mongoose.model("registration_otp", otpSchema);
+const Message =
+  mongoose.models.messages || mongoose.model("messages", messageSchema);
+
+// ---------------------------------------------->
+// models --------------------------------------->
+
+// User Validator Functions ---------------->
+// ----------------------------------------->
 
 User.schema.path("name").validate({
-  validator: function (value) {
-    if (value && value.length > 0) {
-      return true;
-    }
-    return false;
-  },
-  message: "Name required",
+  validator: (value) => value && hasOneSpaceBetweenNames(value),
+  message: "Full name required with space in between first and lastname",
 });
 
 User.schema.path("email").validate({
-  validator: function (value) {
-    var tester =
-      /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-    return value && tester.test(value);
-  },
-  message: "Enter a valid email!",
+  validator: (value) => value && isValidEmail(value),
+  message: "Email Invalid",
 });
 
 User.schema.path("email").validate({
@@ -137,12 +171,13 @@ User.schema.path("email").validate({
   message: "Email already exist",
 });
 
-Project.schema.path("title").validate({
-  validator: function (value) {
-    return value.length > 0;
-  },
-  message: "title required",
+User.schema.path("mobileNo").validate({
+  validator: (value) => value && isValidIndianMobileNumber(value),
+  message: "MobileNo Invalid",
 });
+
+// ----------------------------------------->
+// User Validator Functions ---------------->
 
 Message.schema.path("name").validate({
   validator: function (value) {
@@ -174,4 +209,4 @@ Message.schema.path("phone").validate({
   message: "phone number must be of 10 digit",
 });
 
-module.exports = { Project, Service, Client, User, Message };
+module.exports = { User, Message, Otp };
