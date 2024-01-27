@@ -1,0 +1,14 @@
+{
+  "name": "@store/redux",
+  "main": "store.js",
+  "module": "./dist/index.mjs",
+  "types": "store.js",
+  "scripts": {
+    "build": "tsup store.js --format esm --dts",
+    "dev": "npm run build -- --watch"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.0.1",
+    "tsup": "^8.0.1"
+  }
+}
