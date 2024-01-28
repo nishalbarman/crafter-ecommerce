@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import {
-  hasOneSpaceBetweenNames, isValidEmail, isValidIndianMobileNumber} from "../helpter/utils";
+  hasOneSpaceBetweenNames,
+  isValidEmail,
+  isValidIndianMobileNumber,
+} from "../helpter/utils";
 
 /* schema start here*/
 
@@ -83,7 +86,8 @@ const addressSchema = new mongoose.Schema(
 
 const otpSchema = new mongoose.Schema(
   {
-    mobileNo: { type: String, required: true },
+    email: { type: String },
+    mobileNo: { type: String },
     otp: { type: String, required: true },
   },
   {
@@ -141,11 +145,8 @@ const messageSchema = new mongoose.Schema(
 // ---------------------------------------------->
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);
-const Otp =
-  mongoose.models.registration_otp ||
-  mongoose.model("registration_otp", otpSchema);
-const Message =
-  mongoose.models.messages || mongoose.model("messages", messageSchema);
+const Otp = mongoose.models.registration_otp || mongoose.model("registration_otp", otpSchema);
+const Message =  mongoose.models.messages || mongoose.model("messages", messageSchema);
 
 // ---------------------------------------------->
 // models --------------------------------------->

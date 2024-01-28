@@ -36,7 +36,7 @@ function Navbar({ title }) {
           {title}
         </span>
       </div>
-      <div className="hidden lg:flex flex-center gap-5 items-center">
+      <div className="hidden min-[1168px]:flex flex-center gap-5 items-center">
         {links.map((item, index) => {
           return (
             <Link key={index} className="text-xl font-marker" href={item.path}>
@@ -66,7 +66,7 @@ function Navbar({ title }) {
 
         <div className="h-fit w-fit relative cursor-pointer">
           <div
-            className={`flex items-center justify-center w-${cartTotal * 2} h-${cartTotal * 2} aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444]`}>
+            className={`box-content absolute z-10 flex items-center justify-center aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444]`}>
             <span className="text-[10px] text-white font-semibold">
               {cartTotal}
             </span>
@@ -81,7 +81,7 @@ function Navbar({ title }) {
 
         <div className="h-fit w-fit relative cursor-pointer">
           <div
-            className={`flex items-center justify-center w-${cartTotal * 2} h-${cartTotal * 2} aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444]`}>
+            className={`box-content absolute z-10 flex items-center justify-center  aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444]`}>
             <span className="text-[10px] text-white font-semibold">
               {cartTotal}
             </span>
@@ -97,11 +97,11 @@ function Navbar({ title }) {
 
         <div className="h-fit w-fit relative group mb-[8px]">
           <Image
-            className="cursor-pointer transform translate-y-[0.8px]"
+            className="cursor-pointer transform translate-y-[0.4px]"
             src="/assets/user.svg"
             alt="user logo"
-            width={29}
-            height={29}
+            width={35}
+            height={35}
           />
           <div className="absolute top-6 pt-2 right-[-15px] z-[999] ease-linear duration-300 group-hover:flex hidden">
             <div className="bg-black opacity-[0.8] rounded-[5px]">

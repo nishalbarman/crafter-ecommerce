@@ -13,7 +13,7 @@ function BannerTop() {
     bannerItems
   );
   return (
-    <div className="flex justify-between ml-[1%] mr-[1%] gap-[6%] lg:ml-[10%] lg:mr-[10%] mt-[4px] lg:mt-10">
+    <div className="flex justify-between gap-[6%] mt-[4px] lg:mt-10">
       <div className="hidden flex-col items-center justify-center xl:flex gap-[30px] justify-start items-center w-[400px]">
         <div className="cursor-pointer hover:scale-[1.02] group/link flex justify-between items-center h-[20px] w-[100%]">
           <Link className="text-lg font-andika text-nowrap w-full" href={"/"}>
