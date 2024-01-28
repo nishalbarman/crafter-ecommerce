@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 
 import ProductItem from "../ProductItem/ProductItem";
+import Image from "next/image";
 
 // const CustomPrevArrow = ({ className, style, onClick }) => {
 //   return (
@@ -32,8 +33,8 @@ const CustomPrevArrow = ({ className, style, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute flex items-center justify-center text-white rounded-sm p-3 h-[5px] w-[5px] bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center left-0 scale-[2] top-[50%] transform translate-y-[-50%] cursor-pointer z-10">
-      {"<"}
+      className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center left-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10">
+      <Image src={"/assets/leftarrow.svg"} width={10} height={10} />
     </div>
   );
 };
@@ -42,8 +43,8 @@ const CustomNextArrow = ({ className, style, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute flex items-center justify-center text-white rounded-sm p-3 h-[5px] w-[5px] bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center right-0 scale-[2] top-[50%] transform translate-y-[-50%] cursor-pointer z-10">
-      {">"}
+      className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center right-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10">
+      <Image src={"/assets/rightarrow.svg"} width={10} height={10} />
     </div>
   );
 };
