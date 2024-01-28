@@ -2,157 +2,96 @@ import { NextResponse } from "next/server";
 
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import passValidator from "password-validator";
 import bcrypt from "bcryptjs";
+import { Otp, User } from "../../../../models/models";
+import { connect } from "../../../../dbConfig/dbConfig";
 
-const validatePass = new passValidator();
-validatePass.is().min(8).has().uppercase().has().lowercase();
+const secret = process.env.SECRET;
 
-const secret = process.env.SECRET || "";
+connect();
 
-export function POST(request) {
-  try {
-    const { email, name, mobileNo, otp, password, confirmPassword } = request.json(); // get all the form details for registration a new user
-  } catch (error) {}
+export async function GET(request) {
+  return NextResponse.json({ status: true, message: "It's Working!" });
 }
 
-router.post("/login", async (req, res) => {
+export async function POST(request) {
   try {
-    if (!req.body.email || !req.body.password) {
-      res.send({
-        status: false,
-        message: "required fields are missing",
-      });
-      return;
-    }
+    const error = [];
+    const { email, mobileNo, otp, password } = await request.json(); // get all the form details for registration a new user
 
-    const user = await User.findOne().byEmail(req.body.email);
-    console.log("login user data => ", user);
-
-    if (!user) {
-      res.send({
-        status: false,
-        message: "Login failed",
-      });
-      return;
-    }
-
-    if (user.email && user._id && user.name && user.password) {
-      const result = bcrypt.compareSync(req.body.password, user.password);
-      console.log("Hash compare result => ", result);
-      if (result) {
-        const token = jwt.sign({ email: user.email, _id: user._id }, secret);
-        res.send({
-          status: true,
-          message: "Login successful",
-          data: { name: user.name, token: token },
-        });
-        return;
-      }
-    }
-
-    res.send({ status: false, message: "Login failed!" });
-  } catch (err) {
-    res.status(400).send({ message: "required fields are missing" });
-    console.log("Get login eror => ", err);
-  }
-});
-
-router.get("/", tokenParse, check_role, async (req, res) => {
-  try {
-    const service = await User.find().all();
-    res.send({
-      users: service,
+    /* Verify the OTP if it is valid or invalid */
+    const otpFromDatabase = await Otp.findOne({ mobileNo }).sort({
+      createdAt: "desc",
     });
-  } catch (err) {
-    res.sendStatus(500);
-    console.log("Get user eror => ", err);
-  }
-});
 
-router.get("/:role", tokenParse, check_role, async (req, res) => {
-  try {
-    const service = await User.find().byRole(role);
-    res.send({
-      services: service,
-    });
-  } catch (err) {
-    res.sendStatus(500);
-    console.log("Get service eror => ", err);
-  }
-});
+    if (otpFromDatabase != otp) {
+      /* Verify the OTP */
+      error.push("OTP is invalid");
+    }
 
-router.post("/create", tokenParse, check_role, async (req, res) => {
-  try {
-    if (validatePass.validate(req.body.password || "") === false) {
-      res.status(400).send({ status: false, message: "Enter valid password!" });
-      return;
+    if (error.length > 0) {
+      return NextResponse.json(
+        { status: false, message: error.join(", ") },
+        { status: 200 }
+      );
     }
 
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
-    req.body.password = hash;
+    const hashedPass = bcrypt.hashSync(password, salt); // generate hashed pass
 
-    const user = new User(req.body);
-    console.log(user);
-    await user.save();
-    res.send({ status: true, message: "User created!" });
-  } catch (err) {
-    if (err instanceof mongoose.Error) {
-      const errors = [];
-      for (key in err.errors) {
-        errors.push(err.errors[key].properties.message);
-      }
-      res.status(400).send({ status: false, message: errors.join(", ") });
-    } else {
-      res.sendStatus(500);
-    }
-  }
-});
+    // create new user if everything is ok, and then save it on db
+    const userObject = new User({
+      email,
+      name,
+      mobileNo,
+      password: hashedPass,
+    });
+    await userObject.save();
 
-router.patch("/update/:id", tokenParse, check_role, async (req, res) => {
-  try {
-    if (req.body._id) {
-      delete req.body._id;
-    }
-
-    if (req.body.password) {
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(req.body.password, salt);
-      req.body.password = hash;
-    }
-
-    console.log(req.body);
-    await User.updateOne(
-      { _id: req.params.id },
-      {
-        $set: req.body,
-      },
-      { runValidators: true }
+    return NextResponse.json(
+      { status: true, message: "Registration successful" },
+      { status: 200 }
     );
-    res.send({ status: true, message: "User updated!" });
-  } catch (err) {
-    if (err instanceof mongoose.Error) {
-      const errors = [];
-      for (key in err.errors) {
-        errors.push(err.errors[key].properties.message);
+    // create jwt token for the user object
+    // const jwtToken = jwt.sign(
+    //   {
+    //     _id: userObject._id,
+    //     role: userObject.role,
+    //     mobileNo: userObject.mobileNo,
+    //   },
+    //   secret,
+    //   { expiresIn: 24 * 10 + "h" }
+    // );
+
+    // const response = NextResponse.json(
+    //   { status: true, message: "Registration successful", jwt: jwtToken },
+    //   { status: 201 }
+    // );
+    // response.cookies.set("token", jwtToken);
+
+    // return response;
+  } catch (error) {
+    console.log(error);
+    if (error instanceof mongoose.Error) {
+      console.log("I am here ------------------------>");
+      /* I added custom validator functions in mongoose models, so the code is to chcek whether the errors are from mongoose or not */
+      const errArray = [];
+      for (let key in error.errors) {
+        errArray.push(error.errors[key].properties.message);
       }
-      res.status(400).send({ status: false, message: errors.join(", ") });
-    } else {
-      res.sendStatus(500);
+
+      return NextResponse.json(
+        { status: false, message: errArray.join(", ").replaceAll(" Path", "") },
+        { status: 200 }
+      );
     }
-    console.log("Get service eror => ", err);
+    return NextResponse.json(
+      { status: false, message: "Internal server error" },
+      { status: 500 }
+    );
+    // return NextResponse.json(
+    //   { status: false, message: error.message },
+    //   { status: 500 }
+    // );
   }
-});
-
-router.delete("/delete/:id", tokenParse, check_role, async (req, res) => {
-  try {
-    await User.deleteOne({ _id: req.params.id });
-    res.send({ status: true, message: "User deleted!" });
-  } catch (err) {
-    res.sendStatus(500);
-    console.log("Get service eror => ", err);
-  }
-});
-
-module.exports = router;
+}

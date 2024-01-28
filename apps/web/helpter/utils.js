@@ -12,6 +12,14 @@ export function hasOneSpaceBetweenNames(name) {
 
 // verify if given PHONENUMBER is valid or not
 export function isValidIndianMobileNumber(mobileNumber) {
-  const indianMobileNumberRegex = /^(\+91-|\+91|0)?[6-9]\d{9}$/;
+  const indianMobileNumberRegex = /^(\+91-|\+91|0|91)?[6-9]\d{9}$/;
   return indianMobileNumberRegex.test(mobileNumber);
+}
+
+export function generateRandomCode() {
+  const min = 100000; // Minimum 6-digit number
+  const max = 999999; // Maximum 6-digit number
+
+  const randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
+  return randomCode.toString();
 }
