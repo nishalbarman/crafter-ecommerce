@@ -9,6 +9,7 @@ import { store } from "@store/redux";
 
 import FlashSale from "../components/FlashSale/FlashSale";
 import BestSelling from "../components/BestSelling/BestSelling";
+import Categories from "../components/CategorySlider/CategorySlider";
 
 export default function Page() {
   return (
@@ -17,6 +18,9 @@ export default function Page() {
       <main className="min-h-[100vh] ml-[3%] mr-[3%] lg:ml-[10%] lg:mr-[10%]">
         <BannerTop />
         <FlashSale />
+        <div className="w-full h-[1px] bg-black opacity-[0.1] mt-[3.6rem]"></div>
+        <Categories />
+        <div className="w-full h-[1px] bg-black opacity-[0.1] mt-[3.6rem]"></div>
         <BestSelling />
       </main>
     </Provider>

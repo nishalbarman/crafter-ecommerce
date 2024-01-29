@@ -32,7 +32,7 @@ const Carousel = ({ items }) => {
   const sliderRef = useRef();
   const settings = {
     dots: true,
-    fade: true,
+    // fade: true,
     draggable: false, // Disable dragging
     swipeToSlide: true,
     infinite: true,

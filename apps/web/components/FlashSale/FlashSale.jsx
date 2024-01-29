@@ -172,16 +172,18 @@ function FlashSale() {
   const navigator = useRouter();
 
   return (
-    <div className="w-full h-fit mt-10 lg:mt-[7rem]">
+    <div className="w-full h-fit mt-10 lg:mt-[5rem]">
       <TitleWithBar title={"Today's"} />
       <div className="relative">
         <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-10">
-          <span className="text-3xl md:text-4xl font-andika font-bold">
+          {/* <span className="w-full text-left">-</span> */}
+          <span className="text-2xl md:text-3xl font-andika font-bold">
             Flash Sales
           </span>
+          {/* <span className="w-full text-right">-</span> */}
         </div>
         <ProductSlider items={flashSaleProducts} />
-        <div className="flex items-center justify-center pt-10 pb-10">
+        <div className="flex items-center justify-center pt-10">
           <button
             className="pt-3 pb-3 pl-8 pr-8 text-sm md:pt-4 md:pb-4 md:pl-8 md:pr-8 rounded-lg bg-[#DB4444] text-white font-semibold font-andika cursor-poiner hover:scale-[1.05]"
             onClick={() => {
