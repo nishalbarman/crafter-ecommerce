@@ -14,7 +14,7 @@ const CustomPrevArrow = ({ className, style, onClick }) => {
     <div
       onClick={onClick}
       className="absolute top-[-65px] md:top-[-75px] right-[102px] flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center scale-[1.8] md:scale-[2] cursor-pointer z-10">
-     <Image src={"/assets/leftarrow.svg"} width={10} height={10} />
+      <Image src={"/assets/leftarrow.svg"} width={10} height={10} />
     </div>
   );
 };
@@ -139,11 +139,11 @@ function CategoryRow() {
       <TitleWithBar title={"Categories"} />
       <div className="relative">
         <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-[4rem]">
-        <span className="w-full text-left hidden xl:inline">-</span>
+          <span className="w-full text-left hidden xl:inline">-</span>
           <span className="text-2xl xl:text-3xl xl:text-center xl:w-full font-andika font-bold">
             Browse By Category
           </span>
-        <span className="w-full text-right hidden xl:inline">-</span>
+          <span className="w-full text-right hidden xl:inline">-</span>
         </div>
         <CategorySlider items={categories} />
       </div>
