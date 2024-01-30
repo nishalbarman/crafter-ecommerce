@@ -139,11 +139,11 @@ function CategoryRow() {
       <TitleWithBar title={"Categories"} />
       <div className="relative">
         <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-[4rem]">
-        <span className="w-full text-left hidden md:inline">-</span>
-          <span className="text-2xl md:text-3xl md:text-center md:w-full font-andika font-bold">
+        <span className="w-full text-left hidden xl:inline">-</span>
+          <span className="text-2xl xl:text-3xl xl:text-center xl:w-full font-andika font-bold">
             Browse By Category
           </span>
-        <span className="w-full text-right hidden md:inline">-</span>
+        <span className="w-full text-right hidden xl:inline">-</span>
         </div>
         <CategorySlider items={categories} />
       </div>
