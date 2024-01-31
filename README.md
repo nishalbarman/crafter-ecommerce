@@ -1,4 +1,6 @@
-# Turborepo starter
+# CRAFTER ECOMMERCE
+
+- NOTICE :- You are not allowed to use the code for any pursonal or proffesional use/work.
 
 This is an official repo of CRAFTER ecommerce website. This repository is managed with turbo repo.
 Crafter is an ecommerce website where users can buy products.
@@ -11,8 +13,6 @@ Run the following command:
 npm install ## install the dependencies first
 npm run dev ## run the development server
 ```
-
-- NOTICE :- You are not allowed to use the code for any pursonal or proffesional use/work.
 
 This Turborepo includes the following packages/apps:
 
