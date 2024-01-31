@@ -1,33 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Slider from "react-slick";
 import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 
 import ProductItem from "../ProductItem/ProductItem";
 import Image from "next/image";
-
-// const CustomPrevArrow = ({ className, style, onClick }) => {
-//   return (
-//     <div
-//       onClick={onClick}
-//       className="absolute top-[-75px] right-[102px] flex items-center justify-center text-white rounded-sm p-3 h-[5px] w-[5px] bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center scale-[1.8] md:scale-[2] cursor-pointer z-10">
-//       {"<"}
-//     </div>
-//   );
-// };
-
-// const CustomNextArrow = ({ className, style, onClick }) => {
-//   return (
-//     <div
-//       onClick={onClick}
-//       className="absolute top-[-75px] right-10 flex items-center justify-center text-white rounded-sm p-3 h-[5px] w-[5px] bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center scale-[1.8] md:scale-[2] cursor-pointer z-10">
-//       {">"}
-//     </div>
-//   );
-// };
 
 const CustomPrevArrow = ({ className, style, onClick }) => {
   return (

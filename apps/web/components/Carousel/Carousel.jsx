@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { updateBanner } from "@store/redux";
 import axios from "axios";
 
-const CustomPrevArrow = ({ className, style, onClick }) => {
+const CustomPrevArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
@@ -66,9 +66,9 @@ const Carousel = ({ items }) => {
     ) {
       const calculateAverageColor = async () => {
         const itemsWithBGColorPromises = items.map(async (item) => {
-          const response = await axios.get(
-            `/api/get-image-color?imageUrl=${encodeURIComponent(item.imageUrl)}`
-          );
+          const response = await axios.post(`/api/get-image-color`, {
+            imageUrl: `${item.imageUrl}`,
+          });
           const { averageColor } = await response.data;
           console.log("rgba(" + averageColor + ")");
           return { ...item, bgColor: `rgba(${averageColor}, 0.8)` };
