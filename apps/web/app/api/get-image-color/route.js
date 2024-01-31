@@ -1,11 +1,15 @@
+export const dynamic = "force-dynamic"; // defaults to auto
+
 // pages/api/getImageColors.js
 import getImageColors from "get-image-colors";
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
+export async function POST(request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const imageUrl = searchParams.get("imageUrl");
+    // const { searchParams } = new URL(request.url);
+    // const imageUrl = searchParams.get("imageUrl");
+
+    const { imageUrl } = await request.json();
 
     console.log("All queries that we recieve --->", imageUrl);
     const imageColors = await getImageColors(imageUrl, { count: 5 });

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { Otp } from "../../../../models/models";
 import { generateRandomCode, isValidEmail } from "../../../../helpter/utils";

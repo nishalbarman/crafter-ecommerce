@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { Otp } from "../../../../models/models";
 import { sendSMS } from "../../../../helpter/sendSMS";
@@ -8,7 +10,7 @@ import {
 
 export async function GET(request) {
   try {
-    const searchParams = request.nextUrl.searchParams;
+    const { searchParams } = request.nextUrl;
     const from = "Crafter";
     const to = searchParams.get("phone");
 
