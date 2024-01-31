@@ -5,7 +5,8 @@ import BannerTop from "../components/BannerTop/BannerTop";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Provider } from "react-redux";
-import { store } from "@store/redux";
+// import { store } from "@store/redux";
+import { store } from "../redux/store";
 
 import FlashSale from "../components/FlashSale/FlashSale";
 import BestSelling from "../components/BestSelling/BestSelling";
