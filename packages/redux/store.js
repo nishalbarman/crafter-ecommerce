@@ -16,12 +16,12 @@ const store = configureStore({
   },
 });
 
-// export {
-//   bannerReducer,
-//   cartReducer,
-//   categoryReducer,
-//   keywordReducer,
-//   wishlistReducer,
-//   updateBanner,
-//   store,
-// };
+export {
+  bannerReducer,
+  cartReducer,
+  categoryReducer,
+  keywordReducer,
+  wishlistReducer,
+  updateBanner,
+  store,
+};
