@@ -2,11 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import { cartReducer } from "./slices/cartSlice";
 import { wishlistReducer } from "./slices/wishlistSlice";
 import { bannerReducer } from "./slices/bannerSlice";
-import { updateBanner } from "./slices/bannerSlice";
 import { keywordReducer } from "./slices/keywordsSlice";
 import { categoryReducer } from "./slices/categorySlice";
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     cart: cartReducer,
     wishlist: wishlistReducer,

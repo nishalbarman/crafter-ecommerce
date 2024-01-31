@@ -5,7 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Carousel.module.css";
 import { useDispatch } from "react-redux";
-import { updateBanner } from "@store/redux";
+// import { updateBanner } from "@store/redux";
+import { updateBanner } from "../../redux/slices/bannerSlice";
 import axios from "axios";
 
 const CustomPrevArrow = ({ onClick }) => {
