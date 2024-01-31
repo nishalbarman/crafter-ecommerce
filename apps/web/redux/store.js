@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { cartReducer } from "./slices/cartSlice";
 import { wishlistReducer } from "./slices/wishlistSlice";
-import { bannerReducer, updateBanner } from "./slices/bannerSlice";
+import { bannerReducer } from "./slices/bannerSlice";
 import { keywordReducer } from "./slices/keywordsSlice";
 import { categoryReducer } from "./slices/categorySlice";
 
@@ -14,13 +14,3 @@ export const store = configureStore({
     category: categoryReducer,
   },
 });
-
-export {
-  bannerReducer,
-  cartReducer,
-  categoryReducer,
-  keywordReducer,
-  wishlistReducer,
-  updateBanner,
-  store,
-};
