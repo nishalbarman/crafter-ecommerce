@@ -1,0 +1,84 @@
+import React from "react";
+import Image from "next/image";
+
+function Footer() {
+  return (
+    <div className="bg-black pl-[3%] pr-[3%] lg:pl-[10%] lg:pr-[10%]">
+      <div className="flex flex-wrap items-center justify-between gap-5 w-[100%] bg-black p-10">
+        <div>
+          <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
+            Exclusive
+          </p>
+          <div className="flex flex-col gap-4">
+            <p className=" font-andika text-white font-semibold mb-[10px]">
+              Subscribe
+            </p>
+            <p className=" font-andika text-white text-sm">
+              Get 10% of your first order
+            </p>
+            <div className="flex items-center pr-[15px] justify-between gap-1 w-full h-[45px] border-white border rounded-lg">
+              <input
+                placeholder="Enter your email"
+                className="outline-none border-none pl-[15px] rounded-lg bg-[black] h-full w-fill placeholder:text-[#D9D9D9] text-white"
+              />
+              <Image src="/assets/right-triangle.svg" width={20} height={20} />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
+            Support
+          </p>
+          <div className="font-andika flex flex-col gap-[16px]">
+            <p className=" font-andika font-andika text-white">
+              111 Bijoy sarani, Dhaka, DH 1515, Bangladesh.
+            </p>
+            <p className=" font-andika font-andika text-white">
+              exclusive@gmail.com
+            </p>
+            <p className=" font-andika font-andika text-white">
+              +88015-88888-9999
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
+            Account
+          </p>
+          <div className="font-andika flex flex-col gap-[16px]">
+            <p className=" font-andika font-andika text-white">My Account</p>
+            <p className=" font-andika font-andika text-white">
+              Login / Register
+            </p>
+            <p className=" font-andika font-andika text-white">Cart</p>
+            <p className=" font-andika font-andika text-white">Wishlist</p>
+          </div>
+        </div>
+
+        <div>
+          <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
+            Quick Link
+          </p>
+          <div className="font-andika flex flex-col gap-[16px]">
+            <p className=" font-andika font-andika text-white">
+              Privacy Policy
+            </p>
+            <p className=" font-andika font-andika text-white">Terms Of Use</p>
+            <p className=" font-andika font-andika text-white">Faq</p>
+            <p className=" font-andika font-andika text-white">Contact</p>
+          </div>
+        </div>
+      </div>
+      <div className="bg-[#D9D9D9] mt-[3.5rem]  h-[1px] w-fill"></div>
+      <div className="bg-black p-[1.5rem] flex justify-center items-center">
+        <span className="text-[#D9D9D9] font-andika">
+          © Copyright Crafter.In 2024. All right reserved
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default Footer;
