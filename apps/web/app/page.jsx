@@ -12,6 +12,9 @@ import FlashSale from "../components/FlashSale/FlashSale";
 import BestSelling from "../components/BestSelling/BestSelling";
 import Categories from "../components/CategorySlider/CategorySlider";
 import ExploreProducts from "../components/ExploreProducts/ExploreProducts";
+import NewArrivalSection from "../components/NewArrivalSection/NewArrivalSection";
+import Features from "../components/Features/Features";
+import Footer from "../components/Footer/Footer";
 
 export default function Page() {
   return (
@@ -44,7 +47,10 @@ export default function Page() {
           </div>
         </div>
         <ExploreProducts />
+        <NewArrivalSection />
+        <Features />
       </main>
+      <Footer />
     </Provider>
   );
 }
