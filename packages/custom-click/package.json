@@ -1,11 +1,7 @@
 {
   "name": "@custom-hooks/custom-clicks",
-  "main": "index.js",
-  "module": "./dist/index.mjs",
-  "types": "index.js",
-  "scripts": {
-    "build": "tsup index.js --format esm --dts",
-    "dev": "npm run build -- --watch"
+  "exports": {
+    ".": "./index,js"
   },
   "dependencies": {
     "tsup": "^8.0.1"
