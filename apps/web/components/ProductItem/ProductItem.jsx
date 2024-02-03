@@ -32,9 +32,8 @@ function ProductItem(item) {
         <div className="h-8 absolute top-3 left-3 w-[80px] p-3 rounded bg-[#DB4444] flex items-center justify-center">
           <span className="text-white text-[15px]">-15%</span>
         </div>
-        {/* <div className="w-full cursor-pointer h-[45px] rounded absolute opacity-[0.7] bottom-0 bg-black"> */}
         <button
-          className="overflow-hidden bottom-0 transition duration-[150] ease-in-out group-hover/product_item:block group-hover/product_item:scale-[1] w-full scale-[0] cursor-pointer absolute z-[999] h-[45px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
+          className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
           onClick={handleAddToCart}>
           Add To Cart
         </button>
@@ -59,7 +58,7 @@ function ProductItem(item) {
         </div>
       </div>
       {/* body section */}
-      <div className="w-full flex flex-col min-[0px]:items-center gap-1 pt-[16px] pb-[16px]">
+      <div className="relative w-full flex flex-col min-[0px]:items-center gap-1 pt-[16px] pb-[16px] bg-white z-[999]">
         <span className="text-lg md:text-[19px] font-semibold font-andika">
           {title}
         </span>
