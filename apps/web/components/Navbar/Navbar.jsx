@@ -3,7 +3,6 @@ import Link from "next/link";
 import React from "react";
 import MyAccount from "./MyAccount";
 import { useSelector } from "react-redux";
-import { cookies } from "next/headers";
 
 function Navbar({ title }) {
   const links = [
