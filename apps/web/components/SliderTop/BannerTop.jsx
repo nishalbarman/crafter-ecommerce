@@ -101,11 +101,13 @@ function BannerTop() {
       </div> */}
 
       <div
-        className={`pl-[2%] pr-[2%] lg:p-0 h-fit rounded-md border-0 outline-0 border-none outline-none focus:border-none focus:outline-none peer-focus-visible:border-none peer-focus-visible:outline-none mt-[3%] lg:mt-0 w-[100%] xl:w-[80%] xl:w-[100%]`}>
+        className={`pl-[2%] pr-[2%] lg:p-0 h-fit rounded-md border-0 outline-0 border-none outline-none focus:border-none focus:outline-none peer-focus-visible:border-none peer-focus-visible:outline-none mt-[3%] lg:mt-0 w-[100%] xl:w-[100%]`}>
         <Carousel items={bannerItems} />
       </div>
     </div>
   );
 }
+
+// xl:w-[80%]
 
 export default BannerTop;
