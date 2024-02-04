@@ -3,27 +3,27 @@ import { createSlice } from "@reduxjs/toolkit";
 // default state for the wishlist item
 const initialState = {
   totalItems: 0,
-  wishlistItems: [],
+  wishlistItems: {},
 };
 
 export const wishlistSlice = createSlice({
   name: "wishlist",
   initialState: initialState,
   reducers: {
-    // add product -> action creator
     addWishlistProduct: (state, { payload: product }) => {
-      return { product, ...state };
+      state.wishlistItems[product._id] = product;
+      state.totalItems++;
     },
-    // remove product -> action creator
-    removeWishlistProduct: (state, { paylod: index }) => {
-      state.splice(index, 1);
+    removeWishlistProduct: (state, { payload: id }) => {
+      delete state.wishlistItems[id];
+      state.totalItems--;
     },
-    // update wishlist -> action creator
-    updateWishlist: (state, { payload: items }) => {
-      state = items;
+    updateWishlist: (state, { payload: wishlists }) => {
+      state = wishlists;
     },
   },
 });
 
-export const { addWishlistProduct, removeWishlistProduct, updateWishlist } = wishlistSlice.actions;
+export const { addWishlistProduct, removeWishlistProduct, updateWishlist } =
+  wishlistSlice.actions;
 export const wishlistReducer = wishlistSlice.reducer;

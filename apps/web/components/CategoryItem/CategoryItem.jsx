@@ -12,7 +12,7 @@ function CategoryItem({ imageUrl, title, path }) {
           Visit
         </Link>
       </div>
-      <Image src={imageUrl} className="select-none" width={50} height={50} />
+      <Image src={imageUrl} className="select-none" width={50} height={50} alt={title} />
       <span className="block font-andika text">{title}</span>
     </div>
   );

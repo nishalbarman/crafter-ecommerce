@@ -1,7 +1,12 @@
 {
   "name": "@store/redux",
   "exports": {
-    ".": "./store.js"
+    ".": "./store.js",
+    "./wishlist": "./slices/wishlistSlice.js",
+    "./cart": "./slices/cartSlice.js",
+    "./banner": "./slices/bannerSlice.js",
+    "./category": "./slices/categorySlice.js",
+    "./keywords": "./slices/keywordsSlice.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",

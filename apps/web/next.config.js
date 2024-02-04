@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  transpilePackages: ["@repo/ui", "@store/redux", "@custom-hooks/custom-clicks"],
+  transpilePackages: [
+    "@repo/ui",
+    "@store/redux",
+    "@custom-hooks/custom-clicks",
+  ],
   images: {
     remotePatterns: [
       {
@@ -8,4 +12,5 @@ module.exports = {
       },
     ],
   },
+  productionBrowserSourceMaps: false,
 };
