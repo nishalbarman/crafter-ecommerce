@@ -22,8 +22,8 @@ function Features() {
 
   return (
     <div className="flex gap-5 w-fill justify-evenly mt-[10rem] mb-[10rem] flex-wrap">
-      {features.map((item) => (
-        <FeatureItem {...item} />
+      {features.map((item, index) => (
+        <FeatureItem key={index} {...item} />
       ))}
     </div>
   );

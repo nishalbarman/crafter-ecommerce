@@ -3,27 +3,37 @@ import Slider from "react-slick";
 import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import ProductItem from "../ProductItem/ProductItem";
 import Image from "next/image";
 
-const CustomPrevArrow = ({ className, style, onClick }) => {
+const CustomPrevArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
       className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center left-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10">
-      <Image src={"/assets/leftarrow.svg"} width={10} height={10} />
+      <Image
+        src={"/assets/leftarrow.svg"}
+        width={10}
+        height={10}
+        alt="left arrow"
+      />
     </div>
   );
 };
 
-const CustomNextArrow = ({ className, style, onClick }) => {
+const CustomNextArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
       className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center right-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10">
-      <Image src={"/assets/rightarrow.svg"} width={10} height={10} />
+      <Image
+        src={"/assets/rightarrow.svg"}
+        width={10}
+        height={10}
+        alt="right arrow"
+      />
     </div>
   );
 };
@@ -77,7 +87,9 @@ const ProductSlider = ({ items }) => {
   };
 
   const navigator = useRouter();
-  const dispatch = useDispatch();
+
+  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   return (
     <Slider {...settings}>
@@ -88,7 +100,11 @@ const ProductSlider = ({ items }) => {
             navigator.push(item.path);
           }}
           key={index}>
-          <ProductItem {...item} />
+          <ProductItem
+            {...item}
+            wishlistItems={wishlistItems}
+            cartItems={cartItems}
+          />
         </div>
       ))}
     </Slider>

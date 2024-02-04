@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import MyAccount from "./MyAccount";
+import { useSelector } from "react-redux";
+import { cookies } from "next/headers";
 
 function Navbar({ title }) {
   const links = [
@@ -27,7 +29,10 @@ function Navbar({ title }) {
     },
   ];
 
-  const cartTotal = 10;
+  // const token = cookies.getAll("token");
+
+  const wishlistTotal = useSelector((state) => state.wishlist.totalItems);
+  const cartTotal = useSelector((state) => state.cart.totalItems);
 
   return (
     <div className="flex w-full border-[rgb(0,0,0,0.1)] border-b-[1px] justify-between h-[80px] bg-white lg:pl-[10%] lg:pr-[10%] pl-[3%] pr-[3%]">
@@ -65,12 +70,14 @@ function Navbar({ title }) {
         </div>
 
         <div className="h-fit w-fit relative cursor-pointer">
-          <div
-            className={`box-content absolute z-10 flex items-center justify-center aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444]`}>
-            <span className="text-[10px] text-white font-semibold">
-              {cartTotal}
-            </span>
-          </div>
+          {wishlistTotal != 0 && (
+            <div
+              className={`box-content absolute z-10 flex items-center justify-center aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>
+              <span className="text-[10px] text-white font-semibold">
+                {wishlistTotal}
+              </span>
+            </div>
+          )}
           <Image
             src="/assets/love.svg"
             alt="love logo"
@@ -80,12 +87,14 @@ function Navbar({ title }) {
         </div>
 
         <div className="h-fit w-fit relative cursor-pointer">
-          <div
-            className={`box-content absolute z-10 flex items-center justify-center  aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444]`}>
-            <span className="text-[10px] text-white font-semibold">
-              {cartTotal}
-            </span>
-          </div>
+          {cartTotal != 0 && (
+            <div
+              className={`box-content absolute z-10 flex items-center justify-center  aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>
+              <span className="text-[10px] text-white font-semibold">
+                {cartTotal}
+              </span>
+            </div>
+          )}
           <Image
             className="transform translate-y-[1px] cursor-pointer"
             src="/assets/cart.svg"

@@ -17,7 +17,7 @@ function MiddleBanner() {
       <div className="flex items-center justify-center w-[100%] h-full">
         <img
           className="w-full h-full object-contain"
-          src="https://s3-alpha-sig.figma.com/img/3cc9/43ca/7e210f637fc0504b7d93cd207df744c2?Expires=1707696000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=kg3LsEhpMU~bOkeux378uaOnUMbfcW~urJWena3967ZvcIQjLl1BIb58riokShWyGHxhEJAR4G8yqb4Mlwxgm3nJctphOHNFYezj05wo1w3xF~AMdDLzKuBhBZNFxYLBd44d2vy~g-x2VYLanN-CAhegiwOsWN~CvcRP-UErS1alcCaJNO02zPCWgklOUCLqroqjTP2ETmPdJAdjaPoTokcquPoIO8e7rtkqhrq6l4jEKw4fmMAJSyjjZFLQGTe6ltLVNPkdnsTjZpLWi~Rp3nvS8FBkylZA8FfmQZFXiuvtRVUUgA5GHfjKV1RQwmIkNiOCNsH2YISU7bcShmAEFw__"
+          src="https://www.boat-lifestyle.com/cdn/shop/products/main2_1_3b4cc1b8-e1ed-4809-9ded-38355df461a1.png?v=1651596525"
         />
       </div>
     </div>

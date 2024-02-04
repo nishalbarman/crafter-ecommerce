@@ -3,8 +3,9 @@ import Image from "next/image";
 
 function Footer() {
   return (
-    <div className="bg-black pl-[3%] pr-[3%] lg:pl-[10%] lg:pr-[10%]">
-      <div className="flex flex-wrap items-center justify-between gap-5 w-[100%] bg-black p-10">
+    <div className="bg-black ">
+      <div className="flex flex-wrap items-center justify-between gap-5 w-[100%] bg-black p-10 pl-[5%] pr-[5%] lg:pl-[10%] lg:pr-[10%]">
+        {/* Exclusive */}
         <div>
           <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
             Exclusive
@@ -21,11 +22,12 @@ function Footer() {
                 placeholder="Enter your email"
                 className="outline-none border-none pl-[15px] rounded-lg bg-[black] h-full w-fill placeholder:text-[#D9D9D9] text-white"
               />
-              <Image src="/assets/right-triangle.svg" width={20} height={20} />
+              <Image src="/assets/right-triangle.svg" width={20} height={20} alt="right arrow"/>
             </div>
           </div>
         </div>
 
+        {/* Supports */}
         <div>
           <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
             Support
@@ -43,6 +45,7 @@ function Footer() {
           </div>
         </div>
 
+        {/* My accounts */}
         <div>
           <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
             Account
@@ -57,6 +60,7 @@ function Footer() {
           </div>
         </div>
 
+        {/* quick links */}
         <div>
           <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
             Quick Link
@@ -71,9 +75,11 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="bg-[#D9D9D9] mt-[3.5rem]  h-[1px] w-fill"></div>
-      <div className="bg-black p-[1.5rem] flex justify-center items-center">
-        <span className="text-[#D9D9D9] font-andika">
+
+      <div className="bg-[rgba(223,223,223,0.1)] mt-[3.5rem]  h-[1px] w-fill"></div>
+
+      <div className="bg-black p-[1.5rem_0px] flex justify-center items-center pl-[3%] pr-[3%] lg:pl-[10%] lg:pr-[10%]">
+        <span className="text-[#D9D9D9] text-center font-andika">
           © Copyright Crafter.In 2024. All right reserved
         </span>
       </div>

@@ -5,8 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Carousel.module.css";
 import { useDispatch } from "react-redux";
-import { updateBanner } from "@store/redux";
-// import { updateBanner } from "../../redux/slices/bannerSlice";
+import { updateBanner } from "@store/redux/banner";
 import axios from "axios";
 
 const CustomPrevArrow = ({ onClick }) => {
@@ -71,12 +70,12 @@ const Carousel = ({ items }) => {
             imageUrl: `${item.imageUrl}`,
           });
           const { averageColor } = await response.data;
-          console.log("rgba(" + averageColor + ")");
+
           return { ...item, bgColor: `rgba(${averageColor}, 0.8)` };
         });
 
         const itemsWithColors = await Promise.all(itemsWithBGColorPromises);
-        console.log(updateBanner(itemsWithColors));
+
         dispatch(updateBanner(itemsWithColors));
       };
 
