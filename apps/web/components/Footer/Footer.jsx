@@ -4,7 +4,7 @@ import Image from "next/image";
 function Footer() {
   return (
     <div className="bg-black ">
-      <div className="flex flex-wrap items-center justify-between gap-5 w-[100%] bg-black p-10 pl-[5%] pr-[5%] lg:pl-[10%] lg:pr-[10%]">
+      <div className="flex flex-wrap justify-between gap-5 w-[100%] bg-black p-10 pl-[5%] pr-[5%] lg:pl-[10%] lg:pr-[10%]">
         {/* Exclusive */}
         <div>
           <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
@@ -22,7 +22,12 @@ function Footer() {
                 placeholder="Enter your email"
                 className="outline-none border-none pl-[15px] rounded-lg bg-[black] h-full w-fill placeholder:text-[#D9D9D9] text-white"
               />
-              <Image src="/assets/right-triangle.svg" width={20} height={20} alt="right arrow"/>
+              <Image
+                src="/assets/right-triangle.svg"
+                width={20}
+                height={20}
+                alt="right arrow"
+              />
             </div>
           </div>
         </div>
