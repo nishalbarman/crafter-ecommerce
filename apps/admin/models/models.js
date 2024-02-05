@@ -3,7 +3,6 @@ import {
   hasOneSpaceBetweenNames,
   isValidEmail,
   isValidIndianMobileNumber,
-  isValidUrl,
 } from "../helpter/utils";
 
 /* schema start here*/
@@ -142,35 +141,12 @@ const messageSchema = new mongoose.Schema(
   }
 );
 
-const bannerSchema = new mongoose.Schema(
-  {
-    imageUrl: { type: String, required: true },
-    title: { type: String, required: true },
-    altText: { type: String, required: true },
-    description: { type: String, required: true },
-    link: { type: String, required: true },
-  },
-  {
-    timestamps: true,
-    query: {
-      all() {
-        return this.where({});
-      },
-    },
-  }
-);
-
 // models --------------------------------------->
 // ---------------------------------------------->
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);
-const Otp =
-  mongoose.models.registration_otp ||
-  mongoose.model("registration_otp", otpSchema);
-const Message =
-  mongoose.models.messages || mongoose.model("messages", messageSchema);
-const BannerDBModel =
-  mongoose.models.banners || mongoose.model("banners", bannerSchema);
+const Otp = mongoose.models.registration_otp || mongoose.model("registration_otp", otpSchema);
+const Message =  mongoose.models.messages || mongoose.model("messages", messageSchema);
 
 // ---------------------------------------------->
 // models --------------------------------------->
@@ -234,18 +210,4 @@ Message.schema.path("phone").validate({
   message: "phone number must be of 10 digit",
 });
 
-BannerDBModel.schema.path("imageUrl").validate({
-  validator: function (value) {
-    return value && isValidUrl(value);
-  },
-  message: "Invalid Url",
-});
-
-BannerDBModel.schema.path("link").validate({
-  validator: function (value) {
-    return value && value.includes("/");
-  },
-  message: "Invalid Link",
-});
-
-module.exports = { User, Message, Otp, BannerDBModel };
+module.exports = { User, Message, Otp };
