@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import MyAccount from "./MyAccount";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 function Navbar({ title }) {
   const links = [
@@ -28,7 +29,7 @@ function Navbar({ title }) {
     },
   ];
 
-  // const token = cookies.getAll("token");
+  const navigator = useRouter();
 
   const wishlistTotal = useSelector((state) => state.wishlist.totalItems);
   const cartTotal = useSelector((state) => state.cart.totalItems);
@@ -53,7 +54,7 @@ function Navbar({ title }) {
         {/* search bar with icon */}
         <div className="hidden lg:flex items-center justify-center h-[42px] w-fit bg-[#F5F4F4] rounded-[4px]">
           <input
-            className="flex items-center placeholder:text-sm h-full w-full border-none outline-none rounded-[4px] bg-[#F5F4F4] p-4"
+            className="font-andika tracking-[1px] flex items-center placeholder:text-sm h-full w-full border-none outline-none rounded-[4px] bg-[#F5F4F4] p-4"
             type="text"
             name="search-text"
             placeholder="What are you looking for?"
@@ -68,7 +69,11 @@ function Navbar({ title }) {
           </div>
         </div>
 
-        <div className="h-fit w-fit relative cursor-pointer">
+        <div
+          onClick={() => {
+            navigator.push("/wishlist");
+          }}
+          className="h-fit w-fit relative cursor-pointer">
           {wishlistTotal != 0 && (
             <div
               className={`box-content absolute z-10 flex items-center justify-center aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>
@@ -85,7 +90,11 @@ function Navbar({ title }) {
           />
         </div>
 
-        <div className="h-fit w-fit relative cursor-pointer">
+        <div
+          onClick={() => {
+            navigator.push("/cart");
+          }}
+          className="h-fit w-fit relative cursor-pointer">
           {cartTotal != 0 && (
             <div
               className={`box-content absolute z-10 flex items-center justify-center  aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>

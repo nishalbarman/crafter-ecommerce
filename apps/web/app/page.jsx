@@ -1,12 +1,11 @@
 "use client";
 
-import Navbar from "../components/Navbar/Navbar";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Provider } from "react-redux";
-import { store } from "@store/redux";
-// import { store } from "../redux/store";
+// import { Provider } from "react-redux";
+// import { store } from "@store/redux";
 
+import Navbar from "../components/Navbar/Navbar";
 import BannerTop from "../components/SliderTop/BannerTop";
 import FlashSale from "../components/FlashSale/FlashSale";
 import BestSelling from "../components/BestSelling/BestSelling";
@@ -19,7 +18,8 @@ import Footer from "../components/Footer/Footer";
 
 export default function Page() {
   return (
-    <Provider store={store}>
+    // <Provider store={store}>
+    <>
       <Navbar title={"Crafter"} logo={""} />
       <main className="min-h-[100vh] ml-[3%] mr-[3%] lg:ml-[10%] lg:mr-[10%]">
         <BannerTop />
@@ -34,6 +34,7 @@ export default function Page() {
         <Features />
       </main>
       <Footer />
-    </Provider>
+    </>
+    // </Provider>
   );
 }

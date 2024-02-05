@@ -17,6 +17,11 @@ function ProductItem(item) {
     totalNumberOfRatings,
     wishlistItems,
     cartItems,
+
+    isEyeVisible = true,
+    isWishlistIconVisible = true,
+    deleteCartIconVisible = false,
+    deleteWishlistIconVisible = false,
   } = item;
 
   const dispatch = useDispatch();
@@ -32,7 +37,7 @@ function ProductItem(item) {
   const handleAddToWishlist = () => {
     console.log(wishlistItems?.hasOwnProperty(item._id));
     if (wishlistItems?.hasOwnProperty(item._id)) {
-      console.log(item._id)
+      console.log(item._id);
       dispatch(removeWishlistProduct(item._id));
     } else {
       dispatch(addWishlistProduct(item));
@@ -45,6 +50,14 @@ function ProductItem(item) {
     } else {
       dispatch(addCartProduct(item));
     }
+  };
+
+  const handleCartProductRemove = () => {
+    dispatch(removeCartProduct(item._id));
+  };
+
+  const handleWishlistProductRemove = () => {
+    dispatch(removeWishlistProduct(item._id));
   };
 
   return (
@@ -68,31 +81,63 @@ function ProductItem(item) {
 
         <div className="cursor-pointer absolute top-3 right-3 z-[999] flex flex-col gap-2 items-center w-fit">
           {/* ADD TO WISHLIST */}
-          <div
-            className="flex items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
-            onClick={handleAddToWishlist}>
-            <Image
-              src={
-                wishlistItems?.hasOwnProperty(item._id)
-                  ? "/assets/love-filled.svg"
-                  : "/assets/love.svg"
-              }
-              width={29}
-              height={29}
-              alt={"wishlist icon"}
-            />
-          </div>
+          {isWishlistIconVisible && (
+            <div
+              className="flex items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              onClick={handleAddToWishlist}>
+              <Image
+                src={
+                  wishlistItems?.hasOwnProperty(item._id)
+                    ? "/assets/love-filled.svg"
+                    : "/assets/love.svg"
+                }
+                width={29}
+                height={29}
+                alt={"wishlist icon"}
+              />
+            </div>
+          )}
+
           {/* VIEW PRODUCT INFORMATION */}
-          <div
-            className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
-            onClick={handleVisitProduct}>
-            <Image
-              src="/assets/eye.svg"
-              width={23}
-              height={23}
-              alt="eye icon"
-            />
-          </div>
+          {isEyeVisible && (
+            <div
+              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              onClick={handleVisitProduct}>
+              <Image
+                src="/assets/eye.svg"
+                width={23}
+                height={23}
+                alt="eye icon"
+              />
+            </div>
+          )}
+
+          {/* DELETE ICON CART */}
+          {deleteCartIconVisible && (
+            <div
+              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              onClick={handleCartProductRemove}>
+              <Image
+                src="/assets/delete.svg"
+                width={17}
+                height={17}
+                alt="delete cart icon"
+              />
+            </div>
+          )}
+          {/* DELETE ICON WISHLIST */}
+          {deleteWishlistIconVisible && (
+            <div
+              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              onClick={handleWishlistProductRemove}>
+              <Image
+                src="/assets/delete.svg"
+                width={17}
+                height={17}
+                alt="delete wishlist icon"
+              />
+            </div>
+          )}
         </div>
         {/* PRODUCT IMAGE */}
         <div className="box-border p-5">
