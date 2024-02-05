@@ -13,6 +13,16 @@ const initialState = {
         "Description of a banner that is currently not doing anything",
       link: "/home",
     },
+    {
+      _id: "65c0974db7c738bbc89a5031",
+      imageUrl:
+        "https://imgs.search.brave.com/6mgkC9IaOSq5lrzyk11WYgz91nOMcrzri79lIsLSTNU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9saDMu/Z29vZ2xldXNlcmNv/bnRlbnQuY29tL0VV/czRxTjNUcWNYOTU3/eWFwM0hEaTNrVGls/dm1ibGkwbFF1aTFr/bWpub1dmc19CV2pL/amVVSE1weWlXZjNz/OVAwTUZPT1k2a1pz/V3hqM3AxQ2doeXVx/d0xLc2pXSmN2Y2Fx/NWhTeE9iZUVqVHI5/WXZzZl9PNDFGX1Fo/VGlPbGVkNDBVUFhw/aEFEaG03S0JGRnN3/QmpwNGc",
+      title: "Normal picture of a banner",
+      altText: "Normal Picture",
+      description:
+        "Description of a banner that is currently not doing anything",
+      link: "/home",
+    },
   ],
 };
 
