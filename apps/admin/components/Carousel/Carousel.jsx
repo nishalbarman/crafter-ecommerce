@@ -88,7 +88,7 @@ const Carousel = ({ items }) => {
       {items.map((item, index) => (
         <div
           onClick={() => {
-            navigator.push(item.link);
+            navigator.push(item.path);
           }}
           style={{
             backgroundColor: item.bgColor,

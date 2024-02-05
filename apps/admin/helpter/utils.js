@@ -23,11 +23,3 @@ export function generateRandomCode() {
   const randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
   return randomCode.toString();
 }
-
-export function isValidUrl(url) {
-  // Basic regex pattern (can be customized based on your requirements)
-  const urlRegex =
-    /^((http|https|ftp):\/\/)?[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,6}$/;
-
-  return urlRegex.test(url);
-}
