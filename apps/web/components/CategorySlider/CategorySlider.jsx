@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import TitleWithBar from "../TitleWithBar/TitleWithBar";
 import { useRouter } from "next/navigation";
@@ -9,12 +11,17 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CategoryItem from "../CategoryItem/CategoryItem";
 
-const CustomPrevArrow = ({onClick }) => {
+const CustomPrevArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
       className="absolute top-[-65px] md:top-[-75px] right-[102px] flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center scale-[1.8] md:scale-[2] cursor-pointer z-10">
-      <Image src={"/assets/leftarrow.svg"} width={10} height={10} alt="left arrow"/>
+      <Image
+        src={"/assets/leftarrow.svg"}
+        width={10}
+        height={10}
+        alt="left arrow"
+      />
     </div>
   );
 };
@@ -24,7 +31,12 @@ const CustomNextArrow = ({ onClick }) => {
     <div
       onClick={onClick}
       className="absolute top-[-65px] md:top-[-75px] right-10 flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center scale-[1.8] md:scale-[2] cursor-pointer z-10">
-      <Image src={"/assets/rightarrow.svg"} width={10} height={10} alt="right arrow"/>
+      <Image
+        src={"/assets/rightarrow.svg"}
+        width={10}
+        height={10}
+        alt="right arrow"
+      />
     </div>
   );
 };
