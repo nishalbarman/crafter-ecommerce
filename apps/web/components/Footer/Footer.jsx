@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 
 function Footer() {
+  console.log("Is it a server component or client component!");
+
   return (
     <div className="bg-black ">
       <div className="flex flex-wrap justify-between gap-5 w-[100%] bg-black p-10 pl-[5%] pr-[5%] lg:pl-[10%] lg:pr-[10%]">

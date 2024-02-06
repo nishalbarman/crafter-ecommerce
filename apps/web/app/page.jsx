@@ -1,9 +1,5 @@
-"use client";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import { Provider } from "react-redux";
-// import { store } from "@store/redux";
 
 import Navbar from "../components/Navbar/Navbar";
 import BannerTop from "../components/SliderTop/BannerTop";
@@ -16,14 +12,20 @@ import NewArrivalSection from "../components/NewArrivalSection/NewArrivalSection
 import Features from "../components/Features/Features";
 import Footer from "../components/Footer/Footer";
 
-export default function Page() {
+// remote config
+import { remoteConfig } from "../services/firebase";
+import { getValue } from "firebase/remote-config";
+
+export default async function Page() {
+  const isFlashSaleEnabled = getValue(remoteConfig, "isFlashSaleEnable");
+  const saleEndTime = getValue(remoteConfig, "saleEndTime");
+
   return (
-    // <Provider store={store}>
     <>
       <Navbar title={"Crafter"} logo={""} />
       <main className="min-h-[100vh] ml-[3%] mr-[3%] lg:ml-[10%] lg:mr-[10%]">
         <BannerTop />
-        <FlashSale />
+        {isFlashSaleEnabled && <FlashSale saleEndTime={saleEndTime} />}
         <div className="w-full h-[1px] bg-black opacity-[0.1] mt-[3.6rem]"></div>
         <Categories />
         <div className="w-full h-[1px] bg-black opacity-[0.1] mt-[3.6rem]"></div>
@@ -35,6 +37,5 @@ export default function Page() {
       </main>
       <Footer />
     </>
-    // </Provider>
   );
 }

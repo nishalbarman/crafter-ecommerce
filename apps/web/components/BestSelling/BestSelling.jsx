@@ -1,7 +1,6 @@
 import React from "react";
 import TitleWithBar from "../TitleWithBar/TitleWithBar";
 import ProductSlider from "../ProductSlider/ProductSlider";
-import { useRouter } from "next/navigation";
 
 function BestSelling() {
   const flashSaleProducts = [
@@ -169,8 +168,6 @@ function BestSelling() {
     },
   ];
 
-  const navigator = useRouter();
-
   return (
     <div className="w-full h-fit mt-10 lg:mt-[3rem]">
       <TitleWithBar title={"This Month"} />
@@ -180,11 +177,7 @@ function BestSelling() {
             Best Selling Products
           </span>
           <div className="flex items-center justify-center">
-            <button
-              className="pt-3 pb-3 pl-8 pr-8 text-sm md:pt-3 md:pb-3 md:pl-8 md:pr-8 rounded-lg bg-[#DB4444] text-white font-semibold font-andika cursor-poiner hover:scale-[1.05]"
-              onClick={() => {
-                navigator.push("/best-selling");
-              }}>
+            <button className="pt-3 pb-3 pl-8 pr-8 text-sm md:pt-3 md:pb-3 md:pl-8 md:pr-8 rounded-lg bg-[#DB4444] text-white font-semibold font-andika cursor-poiner hover:scale-[1.05]">
               View All
             </button>
           </div>

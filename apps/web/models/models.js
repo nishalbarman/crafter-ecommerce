@@ -6,53 +6,25 @@ import {
   isValidUrl,
 } from "../helpter/utils";
 
-/* schema start here*/
+/****************************************** */
+/**              Schema Starts             **/
+/****************************************** */
 
 const clientSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    image: {
-      mimetype: String,
-      data: Buffer,
-    },
-    created_date: {
-      name: { type: String, default: "." },
-      date: { type: Date, default: Date.now },
-    },
-    updated_date: { type: Array, default: [] },
+    imageUrl: { type: String, required: true },
   },
-  {
-    query: {
-      all() {
-        return this.where({});
-      },
-    },
-  }
+  { timestamps: true }
 );
-
-// service schema and projects schema is same
 
 const servicesSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    image: {
-      mimetype: String,
-      data: Buffer,
-    },
-    created_date: {
-      name: { type: String, default: "." },
-      date: { type: Date, default: Date.now },
-    },
-    updated_date: { type: Array, default: [] },
+    imageUrl: { type: String, required: true },
   },
-  {
-    query: {
-      all() {
-        return this.where({});
-      },
-    },
-  }
+  { timestamps: true }
 );
 
 const userSchema = new mongoose.Schema(
@@ -73,7 +45,7 @@ const userSchema = new mongoose.Schema(
 
 const addressSchema = new mongoose.Schema(
   {
-    userId: { type: String, required: true },
+    user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
     address_1: { type: String, required: true },
     address_2: { type: String, default: "" },
     pincode: { type: Number, required: true },
@@ -96,34 +68,6 @@ const otpSchema = new mongoose.Schema(
   }
 );
 
-// relation things of mongodb needs to be studied for cart and wishlist
-const cartSchema = new mongoose.Schema(
-  {
-    userId: { type: String, required: true },
-    productId: { type: String, required: true },
-    // productName: { type: String, required: true, unique: true },
-    // mobileno: { type: String, required: true, unique: true },
-    // password: { type: String, required: true },
-    // isEmailVerfied: { type: Boolean, default: false },
-    // emailVerifyToken: { type: String, default: "" },
-    // resetToken: { type: String, default: "" },
-    // role: { type: Number, default: 0 }, // 0 means normal user, 1 means admin, 2 means seller
-  },
-  {
-    timestamps: true,
-  }
-);
-
-const wishlistSchema = new mongoose.Schema(
-  {
-    userId: { type: String, required: true },
-    productId: { type: String, required: true },
-  },
-  {
-    timestamps: true,
-  }
-);
-
 const messageSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -134,11 +78,6 @@ const messageSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    query: {
-      all() {
-        return this.where({});
-      },
-    },
   }
 );
 
@@ -148,7 +87,7 @@ const bannerSchema = new mongoose.Schema(
     title: { type: String, required: true },
     altText: { type: String, required: true },
     description: { type: String, required: true },
-    link: { type: String, required: true },
+    redirect: { type: String, required: true },
   },
   {
     timestamps: true,
@@ -160,22 +99,109 @@ const bannerSchema = new mongoose.Schema(
   }
 );
 
-// models --------------------------------------->
-// ---------------------------------------------->
+const feedbackSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    stars: { type: Number, default: 0 },
+    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
+  },
+  {
+    timestamps: true,
+    query: {
+      all() {
+        return this.where({});
+      },
+    },
+  }
+);
+
+const productSchema = new mongoose.Schema(
+  {
+    previewUrl: { type: String, required: true },
+    name: { type: String, required: true },
+    category: { type: mongoose.Types.ObjectId, ref: "Category" },
+    discounted_price: { type: Number, required: true },
+    original_price: { type: Number },
+    showPictures: { type: Array, required: true },
+    description: { type: String, required: true },
+    stars: { type: Number, default: 0 },
+    totalFeedbacks: { type: Number, default: 0 },
+  },
+  {
+    timestamps: true,
+    query: {
+      withQuery(query) {
+        return this.where(query);
+      },
+      withPagination(query = {}, limit = 20, skip) {
+        return this.where(query)
+          .sort({ createdAt: "desc" })
+          .skip(skip)
+          .limit(limit);
+      },
+    },
+  }
+);
+
+const cartSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
+    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    quantity: { type: Number, default: 1 },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const wishlistSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
+    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// ----------------------------------------->
+/****************************************** */
+/**            Mongoose Models             **/
+/****************************************** */
+// ----------------------------------------->
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);
+
 const Otp =
   mongoose.models.registration_otp ||
   mongoose.model("registration_otp", otpSchema);
+
 const Message =
   mongoose.models.messages || mongoose.model("messages", messageSchema);
+
 const BannerDBModel =
   mongoose.models.banners || mongoose.model("banners", bannerSchema);
 
-// ---------------------------------------------->
-// models --------------------------------------->
+const Product =
+  mongoose.models.products || mongoose.model("products", productSchema);
 
-// User Validator Functions ---------------->
+const Feedback =
+  mongoose.models.feedbacks || mongoose.model("feedbacks", feedbackSchema);
+
+const Cart = mongoose.models.cart || mongoose.model("cart", cartSchema);
+
+const Wishlist =
+  mongoose.models.wishlist || mongoose.model("wishlist", wishlistSchema);
+
+const Address =
+  mongoose.models.address || mongoose.model("address", addressSchema);
+
+// ----------------------------------------->
+/****************************************** */
+/**          User Schema Validator         **/
+/****************************************** */
 // ----------------------------------------->
 
 User.schema.path("name").validate({
@@ -202,7 +228,10 @@ User.schema.path("mobileNo").validate({
 });
 
 // ----------------------------------------->
-// User Validator Functions ---------------->
+/****************************************** */
+/**        Messages Schema Validator       **/
+/****************************************** */
+// ----------------------------------------->
 
 Message.schema.path("name").validate({
   validator: function (value) {
@@ -234,6 +263,12 @@ Message.schema.path("phone").validate({
   message: "phone number must be of 10 digit",
 });
 
+// ----------------------------------------->
+/****************************************** */
+/**        Banner Schema Validator         **/
+/****************************************** */
+// ----------------------------------------->
+
 BannerDBModel.schema.path("imageUrl").validate({
   validator: function (value) {
     return value && isValidUrl(value);
@@ -241,11 +276,44 @@ BannerDBModel.schema.path("imageUrl").validate({
   message: "Invalid Url",
 });
 
-BannerDBModel.schema.path("link").validate({
+BannerDBModel.schema.path("redirect").validate({
   validator: function (value) {
     return value && value.includes("/");
   },
   message: "Invalid Link",
 });
 
-module.exports = { User, Message, Otp, BannerDBModel };
+// ----------------------------------------->
+/****************************************** */
+/**        Product Schema Validator        **/
+/****************************************** */
+// ----------------------------------------->
+
+Product.schema.path("previewUrl").validate({
+  validator: (value) => value && isValidUrl(value),
+  message: "Invalid Preview URL",
+});
+
+Product.schema.path("discounted_price").validate({
+  validator: (value) => value && !isNaN(parseFloat(value)),
+  message: "Discounted Price must be number",
+});
+
+Product.schema.path("showPictures").validate({
+  validator: (value) => value && value.length == 4,
+  message: "Show pictures must contain atleast 4 images",
+});
+
+/***************************************** */
+
+module.exports = {
+  User,
+  Message,
+  Otp,
+  BannerDBModel,
+  Product,
+  Feedback,
+  Cart,
+  Wishlist,
+  Address,
+};
