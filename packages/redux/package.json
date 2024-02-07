@@ -5,7 +5,7 @@
     "./wishlist": "./RTK_Query/wishlistRTK.js",
     "./cart": "./RTK_Query/cartRTK.js",
     "./banner": "./RTK_Query/bannerRTK.js",
-    "./category": "./slices/categorySlice.js",
+    "./category": "./RTK_Query/categoryRTK.js",
     "./keywords": "./slices/keywordsSlice.js"
   },
   "dependencies": {

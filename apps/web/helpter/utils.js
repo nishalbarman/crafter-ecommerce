@@ -4,6 +4,11 @@ export function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
+export function isValidPassword(password) {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  return passwordRegex.test(password);
+}
+
 // verify if given NAME has one space between the firstname and lastname
 export function hasOneSpaceBetweenNames(name) {
   const nameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;

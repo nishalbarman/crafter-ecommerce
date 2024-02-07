@@ -39,6 +39,7 @@ function ProductItem(item) {
 
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
+    console.log(wishlistItems?.hasOwnProperty(_id));
     if (wishlistItems?.hasOwnProperty(_id)) {
       dispatch(removeWishlistProduct(_id));
     } else {
