@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 import { Otp, User } from "../../../../models/models";
 import { connect } from "../../../../dbConfig/dbConfig";
 
+import { isValidEmail } from "../../../../../helpter/utils";
+
 const secret = process.env.SECRET;
 
 connect();
@@ -17,16 +19,20 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const error = [];
-    const { email, mobileNo, otp, password } = await request.json(); // get all the form details for registration a new user
+    const { email, password } = await request.json(); // get all the form details for registration a new user
 
-    /* Verify the OTP if it is valid or invalid */
-    const otpFromDatabase = await Otp.findOne({ mobileNo }).sort({
-      createdAt: "desc",
-    });
+    // /* Verify the OTP if it is valid or invalid */
+    // const otpFromDatabase = await Otp.findOne({ mobileNo }).sort({
+    //   createdAt: "desc",
+    // });
 
-    if (otpFromDatabase != otp) {
-      /* Verify the OTP */
-      error.push("OTP is invalid");
+    // if (otpFromDatabase != otp) {
+    //   /* Verify the OTP */
+    //   error.push("OTP is invalid");
+    // }
+
+    if (!isValidEmail(email)) {
+      error.push("Invalid email address");
     }
 
     if (error.length > 0) {
@@ -36,40 +42,41 @@ export async function POST(request) {
       );
     }
 
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPass = bcrypt.hashSync(password, salt); // generate hashed pass
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return NextResponse.json(
+        { status: true, message: "Invalid credentials" },
+        { status: 200 }
+      );
+    }
 
-    // create new user if everything is ok, and then save it on db
-    const userObject = new User({
-      email,
-      name,
-      mobileNo,
-      password: hashedPass,
-    });
-    await userObject.save();
+    const isPassValid = bcrypt.compareSync(password, user.hashedPass); // generate hashed pass
+    if (!isPassValid) {
+      return NextResponse.json(
+        { status: true, message: "Invalid credentials" },
+        { status: 200 }
+      );
+    }
 
-    return NextResponse.json(
-      { status: true, message: "Registration successful" },
+    // create jwt token for the user object
+    const jwtToken = jwt.sign(
+      {
+        _id: user._id,
+        role: user.role,
+        email: user.email,
+        mobileNo: user.mobileNo,
+      },
+      secret,
+      { expiresIn: 24 * 1 + "h" }
+    );
+
+    const response = NextResponse.json(
+      { status: true, message: "Login successful", jwt: jwtToken },
       { status: 200 }
     );
-    // create jwt token for the user object
-    // const jwtToken = jwt.sign(
-    //   {
-    //     _id: userObject._id,
-    //     role: userObject.role,
-    //     mobileNo: userObject.mobileNo,
-    //   },
-    //   secret,
-    //   { expiresIn: 24 * 10 + "h" }
-    // );
+    response.cookies.set("token", jwtToken);
 
-    // const response = NextResponse.json(
-    //   { status: true, message: "Registration successful", jwt: jwtToken },
-    //   { status: 201 }
-    // );
-    // response.cookies.set("token", jwtToken);
-
-    // return response;
+    return response;
   } catch (error) {
     console.log(error);
     if (error instanceof mongoose.Error) {
