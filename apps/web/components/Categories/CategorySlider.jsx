@@ -1,15 +1,14 @@
 "use client";
 
-import React from "react";
-import TitleWithBar from "../TitleWithBar/TitleWithBar";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 import Slider from "react-slick";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CategoryItem from "../CategoryItem/CategoryItem";
+import CategoryItem from "./CategoryItem";
 
 const CustomPrevArrow = ({ onClick }) => {
   return (
@@ -41,7 +40,7 @@ const CustomNextArrow = ({ onClick }) => {
   );
 };
 
-const CategorySlider = ({ items }) => {
+export default function CategorySlider({ items }) {
   const settings = {
     dots: false,
     infinite: false,
@@ -94,73 +93,16 @@ const CategorySlider = ({ items }) => {
 
   return (
     <Slider {...settings}>
-      {items.map((item, index) => (
+      {items?.map((item, index) => (
         <div
           className="w-full h-fit flex flex-row justify-center p-1"
-          // onClick={() => {
-          //   navigator.push(item.path);
-          // }}
+          //   onClick={() => {
+          //     navigator.push(item.path);
+          //   }}
           key={index}>
           <CategoryItem {...item} />
         </div>
       ))}
     </Slider>
   );
-};
-
-function CategoryRow() {
-  const categories = [
-    {
-      title: "Phones",
-      imageUrl: "/assets/category/phones.svg",
-      path: "/products?category=phones",
-    },
-    {
-      title: "Computers",
-      imageUrl: "/assets/category/computers.svg",
-      path: "/products?category=computers",
-    },
-    {
-      title: "SmartWatch",
-      imageUrl: "/assets/category/smart-watch.svg",
-      path: "/products?category=smartwatch",
-      atings: 100,
-      rating: 5,
-    },
-    {
-      title: "Camera",
-      imageUrl: "/assets/category/camera.svg",
-      path: "/products?category=camera",
-    },
-    {
-      title: "HeadPhones",
-      imageUrl: "/assets/category/headphone.svg",
-      path: "/products?category=headphones",
-    },
-    {
-      title: "Gaming",
-      imageUrl: "/assets/category/gaming.svg",
-      path: "/products?category=gaming",
-    },
-  ];
-
-  const navigator = useRouter();
-
-  return (
-    <div className="w-full h-fit mt-10 lg:mt-[3rem]">
-      <TitleWithBar title={"Categories"} />
-      <div className="relative">
-        <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-[4rem]">
-          <span className="w-full text-left hidden xl:inline">-</span>
-          <span className="text-2xl xl:text-3xl xl:text-center xl:w-full font-andika font-bold">
-            Browse By Category
-          </span>
-          <span className="w-full text-right hidden xl:inline">-</span>
-        </div>
-        <CategorySlider items={categories} />
-      </div>
-    </div>
-  );
 }
-
-export default CategoryRow;
