@@ -23,8 +23,6 @@ export async function GET(req) {
       .skip(SKIP)
       .limit(LIMIT);
 
-    console.log(products);
-
     return NextResponse.json({ data: products, status: true }, { status: 200 });
   } catch (error) {
     console.error(TAG, error);

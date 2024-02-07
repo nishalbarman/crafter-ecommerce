@@ -2,9 +2,9 @@
   "name": "@store/redux",
   "exports": {
     ".": "./store.js",
-    "./wishlist": "./slices/wishlistSlice.js",
-    "./cart": "./slices/cartSlice.js",
-    "./banner": "./slices/bannerSlice.js",
+    "./wishlist": "./RTK_Query/wishlistRTK.js",
+    "./cart": "./RTK_Query/cartRTK.js",
+    "./banner": "./RTK_Query/bannerRTK.js",
     "./category": "./slices/categorySlice.js",
     "./keywords": "./slices/keywordsSlice.js"
   },

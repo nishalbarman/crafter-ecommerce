@@ -3,10 +3,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // Define a service using a base URL and expected endpoints
 export const bannerApi = createApi({
   reducerPath: "banner",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/banner/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3000/api/v1/",
+  }),
   endpoints: (builder) => ({
     getBannerWithLimit: builder.query({
-      query: (limit=5) => `banner?limit=${limit}`,
+      query: (limit = 5) => `banner?limit=${limit}`,
     }),
     getUpdateBannerWithId: builder.mutation({
       // note: an optional `queryFn` may be used in place of `query`

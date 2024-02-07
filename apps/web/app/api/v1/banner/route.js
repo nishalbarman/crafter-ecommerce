@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { connect } from "../../../dbConfig/dbConfig";
-import { BannerDBModel } from "../../../models/models";
+import { connect } from "../../../../dbConfig/dbConfig";
+import { Banner as BannerDBModel } from "../../../../models/models";
 import { NextResponse } from "next/server";
 
 connect();
@@ -30,7 +30,7 @@ export async function GET(req) {
 
       return NextResponse.json(
         { status: false, message: errArray.join(", ").replaceAll(" Path", "") },
-        { status: 200 }
+        { status: 404 }
       );
     }
     return NextResponse.json(
