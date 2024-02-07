@@ -6,6 +6,7 @@ import {
   addWishlistProduct,
   removeWishlistProduct,
 } from "@store/redux/wishlist";
+import { useRouter } from "next/navigation";
 
 function ProductItem(item) {
   const {
@@ -25,39 +26,43 @@ function ProductItem(item) {
   } = item;
 
   const dispatch = useDispatch();
+  const navigator = useRouter();
 
   const discount = Math.floor(
     ((originalPrice - discountedPrice) / originalPrice) * 100
   );
 
-  const handleVisitProduct = () => {
+  const handleVisitProduct = (e) => {
+    e.stopPropagation();
     navigator.push(`/product/${_id}`);
   };
 
-  const handleAddToWishlist = () => {
-    console.log(wishlistItems?.hasOwnProperty(item._id));
-    if (wishlistItems?.hasOwnProperty(item._id)) {
-      console.log(item._id);
-      dispatch(removeWishlistProduct(item._id));
+  const handleAddToWishlist = (e) => {
+    e.stopPropagation();
+    if (wishlistItems?.hasOwnProperty(_id)) {
+      dispatch(removeWishlistProduct(_id));
     } else {
       dispatch(addWishlistProduct(item));
     }
   };
 
-  const handleAddToCart = () => {
-    if (cartItems?.hasOwnProperty(item._id)) {
-      dispatch(removeCartProduct(item._id));
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    if (cartItems?.hasOwnProperty(_id)) {
+      dispatch(removeCartProduct(_id));
     } else {
       dispatch(addCartProduct(item));
     }
   };
 
-  const handleCartProductRemove = () => {
-    dispatch(removeCartProduct(item._id));
+  const handleCartProductRemove = (e) => {
+    e.stopPropagation();
+    dispatch(removeCartProduct(_id));
   };
 
-  const handleWishlistProductRemove = () => {
-    dispatch(removeWishlistProduct(item._id));
+  const handleWishlistProductRemove = (e) => {
+    e.stopPropagation();
+    dispatch(removeWishlistProduct(_id));
   };
 
   return (
@@ -71,10 +76,10 @@ function ProductItem(item) {
 
         {/* ADD TO CART BUTTON */}
         <button
-          disabled={cartItems?.hasOwnProperty(item._id)}
+          disabled={cartItems?.hasOwnProperty(_id)}
           className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
           onClick={handleAddToCart}>
-          {cartItems?.hasOwnProperty(item._id)
+          {cartItems?.hasOwnProperty(_id)
             ? "Item added to Cart"
             : "Add To Cart"}
         </button>
@@ -87,7 +92,7 @@ function ProductItem(item) {
               onClick={handleAddToWishlist}>
               <Image
                 src={
-                  wishlistItems?.hasOwnProperty(item._id)
+                  wishlistItems?.hasOwnProperty(_id)
                     ? "/assets/love-filled.svg"
                     : "/assets/love.svg"
                 }

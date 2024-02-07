@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from "react";
+"use client";
+
+import React, { useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Carousel.module.css";
 import { useDispatch } from "react-redux";
-import { updateBanner } from "@store/redux/banner";
+// import { updateBanner } from "@store/redux/banner";
 import axios from "axios";
 
 const CustomPrevArrow = ({ onClick }) => {
@@ -28,7 +30,7 @@ const CustomNextArrow = ({ className, style, onClick }) => {
   );
 };
 
-const Carousel = ({ items }) => {
+const Carousel = ({ items = [] }) => {
   const sliderRef = useRef();
   const settings = {
     dots: true,
@@ -56,8 +58,10 @@ const Carousel = ({ items }) => {
     nextArrow: <CustomNextArrow />,
   };
 
+  const [bannerItems, setBannerItems] = useState(items);
+
   const navigator = useRouter();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     if (
@@ -66,7 +70,7 @@ const Carousel = ({ items }) => {
     ) {
       const calculateAverageColor = async () => {
         const itemsWithBGColorPromises = items.map(async (item) => {
-          const response = await axios.post(`/api/get-image-color`, {
+          const response = await axios.post(`/api/v1/get-image-color`, {
             imageUrl: `${item.imageUrl}`,
           });
           const { averageColor } = await response.data;
@@ -76,7 +80,8 @@ const Carousel = ({ items }) => {
 
         const itemsWithColors = await Promise.all(itemsWithBGColorPromises);
 
-        dispatch(updateBanner(itemsWithColors));
+        setBannerItems(itemsWithColors);
+        // dispatch(updateBanner(itemsWithColors));
       };
 
       calculateAverageColor();
@@ -85,7 +90,7 @@ const Carousel = ({ items }) => {
 
   return (
     <Slider {...settings} ref={sliderRef}>
-      {items.map((item, index) => (
+      {bannerItems?.map((item, index) => (
         <div
           onClick={() => {
             navigator.push(item.link);

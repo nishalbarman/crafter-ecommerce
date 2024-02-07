@@ -3,9 +3,13 @@
 import React from "react";
 import ProductItem from "../ProductItem/ProductItem";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 function AllProducts({ exploreProductData }) {
   const navigator = useRouter();
+
+  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center gap-4 items-stretch">
@@ -16,7 +20,11 @@ function AllProducts({ exploreProductData }) {
             navigator.push("/products/" + item._id);
           }}
           key={index}>
-          <ProductItem {...item} />
+          <ProductItem
+            {...item}
+            wishlistItems={wishlistItems}
+            cartItems={cartItems}
+          />
         </div>
       ))}
     </div>

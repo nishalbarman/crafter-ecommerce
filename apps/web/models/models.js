@@ -166,6 +166,29 @@ const wishlistSchema = new mongoose.Schema(
   }
 );
 
+const orderSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Types.ObjectId, ref: "User" },
+    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const flashSaleSchema = new mongoose.Schema(
+  {
+    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    salePrice: { type: Number, required: true },
+  },
+  { timestamps: true }
+);
+
+const saleDetailsSchema = new mongoose.Schema({
+  isSaleLive: { type: Boolean, default: false },
+  saleEndTime: { type: Number, default: -1 },
+});
+
 // ----------------------------------------->
 /****************************************** */
 /**            Mongoose Models             **/
@@ -181,7 +204,7 @@ const Otp =
 const Message =
   mongoose.models.messages || mongoose.model("messages", messageSchema);
 
-const BannerDBModel =
+const Banner =
   mongoose.models.banners || mongoose.model("banners", bannerSchema);
 
 const Product =
@@ -196,6 +219,9 @@ const Wishlist =
   mongoose.models.wishlist || mongoose.model("wishlist", wishlistSchema);
 
 const Address =
+  mongoose.models.address || mongoose.model("address", addressSchema);
+
+const Order =
   mongoose.models.address || mongoose.model("address", addressSchema);
 
 // ----------------------------------------->
@@ -269,14 +295,14 @@ Message.schema.path("phone").validate({
 /****************************************** */
 // ----------------------------------------->
 
-BannerDBModel.schema.path("imageUrl").validate({
+Banner.schema.path("imageUrl").validate({
   validator: function (value) {
     return value && isValidUrl(value);
   },
   message: "Invalid Url",
 });
 
-BannerDBModel.schema.path("redirect").validate({
+Banner.schema.path("redirect").validate({
   validator: function (value) {
     return value && value.includes("/");
   },
@@ -310,7 +336,7 @@ module.exports = {
   User,
   Message,
   Otp,
-  BannerDBModel,
+  Banner,
   Product,
   Feedback,
   Cart,
