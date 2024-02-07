@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import passValidator from "password-validator";
 import bcrypt from "bcryptjs";
+import passValidator from "password-validator";
 import { Otp, User } from "../../../../models/models";
 import { connect } from "../../../../dbConfig/dbConfig";
+
+import { isValidEmail } from "../../../../../helpter/utils";
 
 const validatePass = new passValidator();
 validatePass.is().min(8).has().uppercase().has().lowercase();
@@ -22,7 +24,12 @@ export async function POST(request) {
   try {
     const error = [];
     const { email, name, mobileNo, otp, password, confirmPassword } =
-      await request.json(); // get all the form details for registration a new user
+      await request.json(); // get all the form details for registration of a new user
+
+    if (!isValidEmail(email)) {
+      /* validate password */
+      error.push("Invalid email");
+    }
 
     if (!validatePass.validate(password)) {
       /* validate password */
@@ -63,6 +70,7 @@ export async function POST(request) {
       mobileNo,
       password: hashedPass,
     });
+
     await userObject.save();
 
     return NextResponse.json(
