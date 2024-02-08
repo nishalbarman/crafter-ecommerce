@@ -6,15 +6,13 @@ const vonage = new Vonage({
 });
 
 export async function sendSMS(messageObject) {
-  await vonage.sms
-    .send(messageObject)
-    .then((resp) => {
-      console.log("Message sent successfully");
-      console.log(resp);
-      return resp;
-    })
-    // .catch((err) => {
-    //   console.log("There was an error sending the messages.");
-    //   console.error(err);
-    // });
+  // messageObject = {
+  //   from: '',
+  //   to: '',
+  //   text: ''
+  // };
+  const response = await vonage.sms.send(messageObject);
+  console.log("Message sent successfully");
+  console.log(response);
+  return response;
 }

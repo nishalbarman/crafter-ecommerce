@@ -35,6 +35,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     isEmailVerfied: { type: Boolean, default: false },
     emailVerifyToken: { type: String, default: "" },
+    isMobileNoVerified: { type: Boolean, default: false },
+    mobileNoVerifyToken: { type: String, default: "" },
     resetToken: { type: String, default: "" },
     role: { type: Number, default: 0 }, // 0 means normal user, 1 means admin, 2 means seller
   },

@@ -1,11 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { addCartProduct, removeCartProduct } from "@store/redux/cart";
-import {
-  addWishlistProduct,
-  removeWishlistProduct,
-} from "@store/redux/wishlist";
+// import { addCartProduct, removeCartProduct } from "@store/redux/cart";
+// import {
+//   addWishlistProduct,
+//   removeWishlistProduct,
+// } from "@store/redux/wishlist";
 
 function ProductItem(item) {
   const {
@@ -38,17 +38,17 @@ function ProductItem(item) {
     console.log(wishlistItems?.hasOwnProperty(item._id));
     if (wishlistItems?.hasOwnProperty(item._id)) {
       console.log(item._id);
-      dispatch(removeWishlistProduct(item._id));
+      // dispatch(removeWishlistProduct(item._id));
     } else {
-      dispatch(addWishlistProduct(item));
+      // dispatch(addWishlistProduct(item));
     }
   };
 
   const handleAddToCart = () => {
     if (cartItems?.hasOwnProperty(item._id)) {
-      dispatch(removeCartProduct(item._id));
+      // dispatch(removeCartProduct(item._id));
     } else {
-      dispatch(addCartProduct(item));
+      // dispatch(addCartProduct(item));
     }
   };
 

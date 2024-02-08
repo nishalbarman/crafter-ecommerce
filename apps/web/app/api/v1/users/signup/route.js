@@ -1,30 +1,34 @@
 import { NextResponse } from "next/server";
 
-import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import passValidator from "password-validator";
-import { Otp, User } from "../../../../models/models";
-import { connect } from "../../../../dbConfig/dbConfig";
+import base64 from "base-64";
+import utf8 from "utf8";
 
+import { Otp, User } from "../../../../../models/models";
+import { connect } from "../../../../../dbConfig/dbConfig";
 import { isValidEmail } from "../../../../../helpter/utils";
+import { sendSMS } from "../../../../../helpter/sendSMS";
 
 const validatePass = new passValidator();
 validatePass.is().min(8).has().uppercase().has().lowercase();
 
-const secret = process.env.SECRET;
-
 connect();
 
-export async function GET(request) {
+export async function GET() {
   return NextResponse.json({ status: true, message: "It's Working!" });
 }
 
 export async function POST(request) {
   try {
     const error = [];
-    const { email, name, mobileNo, otp, password, confirmPassword } =
+    // const { email, name, mobileNo, otp, password, confirmPassword } =
+    //   await request.json(); // get all the form details for registration of a new user
+    const { email, name, mobileNo, password, confirmpassword } =
       await request.json(); // get all the form details for registration of a new user
+
+    console.log("Signup Route ------->", email);
 
     if (!isValidEmail(email)) {
       /* validate password */
@@ -38,20 +42,20 @@ export async function POST(request) {
       );
     }
 
-    if (password === confirmPassword) {
+    if (password !== confirmpassword) {
       /* verify if password and c-password is same or not */
       error.push("Password and Confirm password doesnot match!");
     }
 
-    /* Verify the OTP if it is valid or invalid */
-    const otpFromDatabase = await Otp.findOne({ mobileNo }).sort({
-      createdAt: "desc",
-    });
+    // /* Verify the OTP if it is valid or invalid */
+    // const otpFromDatabase = await Otp.findOne({ mobileNo }).sort({
+    //   createdAt: "desc",
+    // });
 
-    if (otpFromDatabase != otp) {
-      /* Verify the OTP */
-      error.push("OTP is invalid");
-    }
+    // if (otpFromDatabase != otp) {
+    //   /* Verify the OTP */
+    //   error.push("OTP is invalid");
+    // }
 
     if (error.length > 0) {
       return NextResponse.json(
@@ -62,6 +66,12 @@ export async function POST(request) {
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPass = bcrypt.hashSync(password, salt); // generate hashed pass
+    const mobileNoVerifyToken = bcrypt.hashSync(email, 8);
+
+    const bytes = utf8.encode(mobileNoVerifyToken);
+    const encoded = base64.encode(bytes);
+
+    console.log("Encoded text:-->", encoded);
 
     // create new user if everything is ok, and then save it on db
     const userObject = new User({
@@ -69,6 +79,13 @@ export async function POST(request) {
       name,
       mobileNo,
       password: hashedPass,
+      mobileNoVerifyToken: encoded,
+    });
+
+    sendSMS({
+      to: +91 + "" + mobileNo,
+      from: 54345,
+      text: `Verify your Crafter Ecommerce account: Verification link: https://localhost:3000/auth/verify/${encoded}. Don't share this link with anyone; our employees will never ask for the any kind of credentials.`,
     });
 
     await userObject.save();
@@ -77,24 +94,6 @@ export async function POST(request) {
       { status: true, message: "Registration successful" },
       { status: 200 }
     );
-    // create jwt token for the user object
-    // const jwtToken = jwt.sign(
-    //   {
-    //     _id: userObject._id,
-    //     role: userObject.role,
-    //     mobileNo: userObject.mobileNo,
-    //   },
-    //   secret,
-    //   { expiresIn: 24 * 10 + "h" }
-    // );
-
-    // const response = NextResponse.json(
-    //   { status: true, message: "Registration successful", jwt: jwtToken },
-    //   { status: 201 }
-    // );
-    // response.cookies.set("token", jwtToken);
-
-    // return response;
   } catch (error) {
     console.log(error);
     if (error instanceof mongoose.Error) {
@@ -107,7 +106,7 @@ export async function POST(request) {
 
       return NextResponse.json(
         { status: false, message: errArray.join(", ").replaceAll(" Path", "") },
-        { status: 200 }
+        { status: 400 }
       );
     }
     return NextResponse.json(

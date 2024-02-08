@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import ReduxStore from "../components/ReduxStore/ReduxStore";
 
 import "./globals.css";
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster />
         <ReduxStore>{children}</ReduxStore>
       </body>
     </html>
