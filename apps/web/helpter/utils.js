@@ -17,7 +17,8 @@ export function hasOneSpaceBetweenNames(name) {
 
 // verify if given PHONENUMBER is valid or not
 export function isValidIndianMobileNumber(mobileNumber) {
-  const indianMobileNumberRegex = /^(\+91-|\+91|0|91)?[6-9]\d{9}$/;
+  // const indianMobileNumberRegex = /^(\+91-|\+91|0|91)?[6-9]\d{9}$/;
+  const indianMobileNumberRegex = /^[6-9]\d{9}$/;
   return indianMobileNumberRegex.test(mobileNumber);
 }
 
