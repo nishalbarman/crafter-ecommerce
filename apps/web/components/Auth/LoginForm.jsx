@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { isValidEmail, isValidPassword } from "../../helpter/utils";
+import toast from "react-hot-toast";
 
 const validateInputs = (name, value) => {
   switch (name) {
@@ -41,11 +42,22 @@ function LoginForm() {
     }));
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    const formData = new FormData(e.target);
-    console.log(formData.entries());
+    // setIsLoading(true);
+    const loadingToast = toast.loading("Logging in...");
+    try {
+      const response = await axios.post(`/api/v1/users/signup`, {
+        email: formData.email.value,
+        password: formData.password.value,
+      });
+      toast.dismiss(loadingToast);
+      toast.success(response?.data?.message || "Unknown error occured");
+    } catch (error) {
+      console.log(error);
+      toast.dismiss(loadingToast);
+      toast.error(error?.response?.data?.message);
+    }
   };
 
   return (
@@ -55,11 +67,13 @@ function LoginForm() {
         id="email"
         className="h-[32px] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
         type="email"
-        placeholder="Email or Phone Number"
+        placeholder="Email"
         name="email"
       />
       {formData.email.isError && (
-        <span className="mt-[-25px] text-[red] text-sm">Invalid email</span>
+        <span className="mt-[-25px] text-[red] text-sm">
+          Enter a valid email
+        </span>
       )}
       <input
         onKeyUp={handleOnChange}
@@ -91,7 +105,19 @@ function LoginForm() {
                 <Image src="/assets/google.svg" width={20} height={20} />
                 Sign in with Google
               </button> */}
+
       <div className="mt-[8px] flex justify-center gap-3">
+        <span className="text-lg">
+          New here, create an account?{" "}
+          <Link
+            className="text-md font-andika font-semibold underline"
+            href={"/auth/signup"}>
+            Create an account?
+          </Link>
+        </span>
+      </div>
+
+      <div className="mt-[-15px] flex justify-center gap-3">
         <span className="text-lg">
           Forgot password?{" "}
           <Link
