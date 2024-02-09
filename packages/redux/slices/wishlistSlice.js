@@ -18,8 +18,9 @@ export const wishlistSlice = createSlice({
       delete state.wishlistItems[id];
       state.totalItems--;
     },
-    updateWishlist: (state, { payload: wishlists }) => {
-      state = wishlists;
+    updateWishlist: (state, { payload: { totalCount, wishlists } }) => {
+      state.totalItems = totalCount;
+      state.wishlistItems = wishlists;
     },
   },
 });

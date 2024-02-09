@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import ProductItem from "../ProductItem/ProductItem";
 import Image from "next/image";
 
+import { useAddWishlistMutation, useDeleteWishlistMutation } from "@store/redux/wishlist";
+
 const CustomPrevArrow = ({ onClick }) => {
   return (
     <div
@@ -90,8 +92,15 @@ const ProductSlider = ({ items }) => {
 
   const navigator = useRouter();
 
-  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const wishlistItems = useSelector(
+    (state) => state.wishlistLocal.wishlistItems
+  );
+  const cartItems = useSelector((state) => state.cartLocal.cartItems);
+
+  console.log(wishlistItems);
+
+  const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
+  const [removeOneWishlist, { isLoading:isLoadingRmWishlist, isError:isErrorRmWishlist }] = useDeleteWishlistMutation();
 
   return (
     <Slider {...settings}>
@@ -99,13 +108,15 @@ const ProductSlider = ({ items }) => {
         <div
           className="w-full h-fit flex flex-row justify-center p-1"
           onClick={() => {
-            navigator.push(item.path);
+            navigator.push(`/product/${item._id}`);
           }}
           key={index}>
           <ProductItem
             {...item}
             wishlistItems={wishlistItems}
             cartItems={cartItems}
+            addNewWishlist={addNewWishlist}
+            removeOneWishlist={removeOneWishlist}
           />
         </div>
       ))}

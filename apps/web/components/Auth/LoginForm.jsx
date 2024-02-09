@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { isValidEmail, isValidPassword } from "../../helpter/utils";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const validateInputs = (name, value) => {
   switch (name) {
@@ -20,16 +22,14 @@ function LoginForm() {
     password: { value: "", isTouched: false, isError: null },
   });
 
-  console.log(formData);
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigator = useRouter();
 
   const handleOnChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     const validation = validateInputs(name, value);
-
-    console.log(validation);
 
     setFormData((prev) => ({
       ...prev,
@@ -44,15 +44,16 @@ function LoginForm() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // setIsLoading(true);
+    setIsLoading(true);
     const loadingToast = toast.loading("Logging in...");
     try {
-      const response = await axios.post(`/api/v1/users/signup`, {
+      const response = await axios.post(`/api/v1/users/login`, {
         email: formData.email.value,
         password: formData.password.value,
       });
       toast.dismiss(loadingToast);
       toast.success(response?.data?.message || "Unknown error occured");
+      navigator.push("/");
     } catch (error) {
       console.log(error);
       toast.dismiss(loadingToast);

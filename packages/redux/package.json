@@ -2,6 +2,8 @@
   "name": "@store/redux",
   "exports": {
     ".": "./store.js",
+    "./wishlistLocal": "./slices/wishlistSlice.js",
+    "./cartLocal": "./slices/cartSlice.js",
     "./wishlist": "./RTK_Query/wishlistRTK.js",
     "./cart": "./RTK_Query/cartRTK.js",
     "./banner": "./RTK_Query/bannerRTK.js",
