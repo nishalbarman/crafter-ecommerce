@@ -53,11 +53,18 @@ function LoginForm() {
       });
       toast.dismiss(loadingToast);
       toast.success(response?.data?.message || "Unknown error occured");
-      navigator.push("/");
+      if (response?.data?.status) navigator.push("/");
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
       toast.dismiss(loadingToast);
-      toast.error(error?.response?.data?.message);
+      if (error?.response?.status === 403) {
+        toast(error?.response?.data?.message, {
+          icon: "😒",
+        });
+      } else {
+        toast.error(error?.response?.data?.message);
+      }
     }
   };
 

@@ -17,11 +17,13 @@ export const cartSlice = createSlice({
       delete state.cartItems[id];
       state.totalItems--;
     },
-    updateCart: (state, { payload: carts }) => {
-      state = carts;
+    updateCart: (state, { payload: { totalCount, cartItems } }) => {
+      state.totalItems = totalCount;
+      state.cartItems = cartItems;
     },
   },
 });
 
-export const { addCartProduct, removeCartProduct, updateCart } = cartSlice.actions;
+export const { addCartProduct, removeCartProduct, updateCart } =
+  cartSlice.actions;
 export const cartReducer = cartSlice.reducer;

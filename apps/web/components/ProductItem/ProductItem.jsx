@@ -21,6 +21,8 @@ function ProductItem(item) {
     cartItems,
     addNewWishlist,
     removeOneWishlist,
+    addOneToCart,
+    removeOneFromCart,
 
     isEyeVisible = true,
     isWishlistIconVisible = true,
@@ -45,11 +47,9 @@ function ProductItem(item) {
     console.log(wishlistItems?.hasOwnProperty(_id));
     if (wishlistItems?.hasOwnProperty(_id)) {
       removeOneWishlist(_id);
-      console.log(removeWishlistProduct(_id));
       dispatch(removeWishlistProduct(_id));
     } else {
       addNewWishlist(_id);
-      console.log(addWishlistProduct(item));
       dispatch(addWishlistProduct(item));
     }
   };
@@ -57,8 +57,10 @@ function ProductItem(item) {
   const handleAddToCart = (e) => {
     e.stopPropagation();
     if (cartItems?.hasOwnProperty(_id)) {
+      removeOneFromCart(_id);
       dispatch(removeCartProduct(_id));
     } else {
+      addOneToCart(_id);
       dispatch(addCartProduct(item));
     }
   };
