@@ -10,7 +10,15 @@ import { useSelector } from "react-redux";
 import ProductItem from "../ProductItem/ProductItem";
 import Image from "next/image";
 
-import { useAddWishlistMutation, useDeleteWishlistMutation } from "@store/redux/wishlist";
+import {
+  useAddWishlistMutation,
+  useDeleteWishlistMutation,
+} from "@store/redux/wishlist";
+
+import {
+  useAddOneToCartMutation,
+  useDeleteCartMutation,
+} from "@store/redux/cart";
 
 const CustomPrevArrow = ({ onClick }) => {
   return (
@@ -100,7 +108,17 @@ const ProductSlider = ({ items }) => {
   console.log(wishlistItems);
 
   const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
-  const [removeOneWishlist, { isLoading:isLoadingRmWishlist, isError:isErrorRmWishlist }] = useDeleteWishlistMutation();
+  const [
+    removeOneWishlist,
+    { isLoading: isLoadingRmWishlist, isError: isErrorRmWishlist },
+  ] = useDeleteWishlistMutation();
+
+  const [addOneToCart, { isLoading: isCartLoading, isError: isCartError }] =
+    useAddOneToCartMutation();
+  const [
+    removeOneFromCart,
+    { isLoading: isCartRemoveLoading, isError: isCartRemoveError },
+  ] = useDeleteCartMutation();
 
   return (
     <Slider {...settings}>
@@ -117,6 +135,8 @@ const ProductSlider = ({ items }) => {
             cartItems={cartItems}
             addNewWishlist={addNewWishlist}
             removeOneWishlist={removeOneWishlist}
+            addOneToCart={addOneToCart}
+            removeOneFromCart={removeOneFromCart}
           />
         </div>
       ))}

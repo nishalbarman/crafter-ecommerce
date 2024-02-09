@@ -60,7 +60,7 @@ function SignupForm() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // setIsLoading(true);
+    setIsLoading(true);
     const loadingToast = toast.loading("Signing up...");
     try {
       const response = await axios.post(`/api/v1/users/signup`, {
@@ -81,6 +81,7 @@ function SignupForm() {
       setIsVerifyScreenVisible(true);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
       toast.dismiss(loadingToast);
       toast.error(error?.response?.data?.message);
     }

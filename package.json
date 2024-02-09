@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "base-64": "^1.0.0",
+    "cookie-cutter": "^0.2.0",
     "react-hot-toast": "^2.4.1",
     "react-multi-carousel": "^2.8.4",
     "react-slick": "^0.30.1",

@@ -29,9 +29,6 @@ function Navbar({ title }) {
     },
   ];
 
-  const nextCookies = cookies();
-  const token = nextCookies.get("token")?.value || null;
-
   return (
     <div className="flex w-full border-[rgb(0,0,0,0.1)] border-b-[1px] justify-between h-[80px] bg-white lg:pl-[10%] lg:pr-[10%] pl-[3%] pr-[3%]">
       <div className="flex flex-center items-center w-fit">
@@ -48,7 +45,7 @@ function Navbar({ title }) {
           );
         })}
       </div>
-      <SearchCartWishlist token={token} />
+      <SearchCartWishlist />
     </div>
   );
 }
