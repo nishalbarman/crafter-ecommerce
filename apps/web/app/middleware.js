@@ -7,8 +7,6 @@ export async function middleware(request) {
   const nextCookies = cookies();
   const reqUrl = new URL(request.url);
 
-  return NextResponse.redirect(new URL("/auth/login", request.url));
-
   console.log("Request URL ===>>>", reqUrl);
   const token = nextCookies.get("token")?.value || null;
 

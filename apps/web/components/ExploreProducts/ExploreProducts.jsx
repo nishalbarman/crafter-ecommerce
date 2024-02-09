@@ -2,12 +2,12 @@ import React from "react";
 import TitleWithBar from "../TitleWithBar/TitleWithBar";
 import AllExploreProducts from "../ExploreProducts/AllProducts";
 import ViewAllProducts from "../ExploreProducts/ViewAllProducts";
+import { getBackendUrl } from "../../helpter/utils";
 
 // benifit of using server component
 const getProducts = async () => {
-  const response = await fetch(
-    `http://localhost:3000/api/v1/products?&page=1&limit=25`
-  );
+  const backendUrl = getBackendUrl();
+  const response = await fetch(`${backendUrl}api/v1/products?&page=1&limit=25`);
   const data = await response.json();
   return data.data;
 };

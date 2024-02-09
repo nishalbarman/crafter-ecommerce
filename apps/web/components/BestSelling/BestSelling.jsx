@@ -1,10 +1,12 @@
 import React from "react";
 import TitleWithBar from "../TitleWithBar/TitleWithBar";
 import ProductSlider from "../ProductSlider/ProductSlider";
+import { getBackendUrl } from "../../helpter/utils";
 
 const getProducts = async () => {
+  const backendUrl = getBackendUrl();
   const response = await fetch(
-    `http://localhost:3000/api/v1/products?&page=1&limit=25`
+    `${backendUrl}api/v1/products?&page=1&limit=25`
   );
   const data = await response.json();
   return data.data;
