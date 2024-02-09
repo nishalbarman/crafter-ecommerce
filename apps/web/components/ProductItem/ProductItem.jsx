@@ -1,11 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { addCartProduct, removeCartProduct } from "@store/redux/cart";
+import { addCartProduct, removeCartProduct } from "@store/redux/cartLocal";
 import {
   addWishlistProduct,
   removeWishlistProduct,
-} from "@store/redux/wishlist";
+} from "@store/redux/wishlistLocal";
 import { useRouter } from "next/navigation";
 
 function ProductItem(item) {
@@ -16,8 +16,11 @@ function ProductItem(item) {
     originalPrice,
     discountedPrice,
     totalNumberOfRatings,
+
     wishlistItems,
     cartItems,
+    addNewWishlist,
+    removeOneWishlist,
 
     isEyeVisible = true,
     isWishlistIconVisible = true,
@@ -41,8 +44,12 @@ function ProductItem(item) {
     e.stopPropagation();
     console.log(wishlistItems?.hasOwnProperty(_id));
     if (wishlistItems?.hasOwnProperty(_id)) {
+      removeOneWishlist(_id);
+      console.log(removeWishlistProduct(_id));
       dispatch(removeWishlistProduct(_id));
     } else {
+      addNewWishlist(_id);
+      console.log(addWishlistProduct(item));
       dispatch(addWishlistProduct(item));
     }
   };
@@ -63,6 +70,7 @@ function ProductItem(item) {
 
   const handleWishlistProductRemove = (e) => {
     e.stopPropagation();
+    removeOneWishlist(_id);
     dispatch(removeWishlistProduct(_id));
   };
 

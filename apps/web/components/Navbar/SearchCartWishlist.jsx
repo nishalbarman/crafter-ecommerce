@@ -1,16 +1,77 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import MyAccount from "./MyAccount";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
-export default function SearchCartWishlist() {
+import { useGetWishlistQuery } from "@store/redux/wishlist";
+import { updateWishlist } from "@store/redux/wishlistLocal";
+import Link from "next/link";
+
+export default function SearchCartWishlist({ token }) {
   const navigator = useRouter();
 
-  const wishlistTotal = useSelector((state) => state.wishlist.totalItems);
-  const cartTotal = useSelector((state) => state.cart.totalItems);
+  if (!token) {
+    return (
+      <>
+        <div className="flex items-center justify-center gap-5 h-[100%]">
+          {/* search bar with icon */}
+          <div className="hidden lg:flex items-center justify-center h-[42px] w-fit bg-[#F5F4F4] rounded-[4px]">
+            <input
+              className="font-andika tracking-[1px] flex items-center placeholder:text-sm h-full w-full border-none outline-none rounded-[4px] bg-[#F5F4F4] p-4"
+              type="text"
+              name="search-text"
+              placeholder="What are you looking for?"
+            />
+            <div className="h-[25px] w-[25px] mr-3 flex items-center">
+              <Image
+                src="/assets/search.svg"
+                alt="search logo"
+                width={27}
+                height={27}
+              />
+            </div>
+          </div>
+
+          <div className="h-fill w-fit relative group mb-[8px] flex items-center">
+            <button
+              onClick={() => {
+                navigator.push("/auth/login");
+              }}
+              className="p-[8px_40px] bg-[rgb(219,68,68)] rounded-md text-white font-semibold">
+              Login
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  const { data, isError, isLoading } = useGetWishlistQuery();
+
+  const dispatch = useDispatch();
+
+  const wishlistTotal = useSelector((state) => state.wishlistLocal.totalItems);
+  const cartTotal = useSelector((state) => state.cartLocal.totalItems);
+
+  // console.log(wishlistTotal, cartTotal);
+
+  useEffect(() => {
+    if (!isError && data?.length > 0) {
+      const wishlistData = {};
+      data?.forEach((item) => {
+        wishlistData[item.product._id] = item.product;
+      });
+      dispatch(
+        updateWishlist({
+          totalCount: data.length || 0,
+          wishlists: wishlistData,
+        })
+      );
+    }
+  }, [data]);
 
   return (
     <div className="flex items-center justify-center gap-5 h-[100%]">

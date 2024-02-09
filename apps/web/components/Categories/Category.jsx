@@ -14,10 +14,7 @@ const getCategories = async () => {
 };
 
 export default async function Category() {
-  console.log("Category is a server component");
-
   const categories = await getCategories();
-  console.log(categories);
 
   return (
     <div className="w-full h-fit mt-10 lg:mt-[3rem]">

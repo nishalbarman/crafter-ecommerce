@@ -149,8 +149,8 @@ const productSchema = new mongoose.Schema(
 
 const cartSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Types.ObjectId, ref: "User" },
-    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    user: { type: mongoose.Types.ObjectId, ref: "users" },
+    product: { type: mongoose.Types.ObjectId, ref: "products" },
     quantity: { type: Number, default: 1 },
   },
   {
@@ -160,8 +160,8 @@ const cartSchema = new mongoose.Schema(
 
 const wishlistSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Types.ObjectId, ref: "User" },
-    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    user: { type: mongoose.Types.ObjectId, ref: "users" },
+    product: { type: mongoose.Types.ObjectId, ref: "products" },
   },
   {
     timestamps: true,
@@ -170,8 +170,8 @@ const wishlistSchema = new mongoose.Schema(
 
 const orderSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Types.ObjectId, ref: "User" },
-    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    user: { type: mongoose.Types.ObjectId, ref: "users" },
+    product: { type: mongoose.Types.ObjectId, ref: "products" },
   },
   {
     timestamps: true,
@@ -180,7 +180,7 @@ const orderSchema = new mongoose.Schema(
 
 const flashSaleSchema = new mongoose.Schema(
   {
-    product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    product: { type: mongoose.Types.ObjectId, ref: "products" },
     salePrice: { type: Number, required: true },
   },
   { timestamps: true }

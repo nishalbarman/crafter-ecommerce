@@ -1,12 +1,11 @@
 import jwt from "jsonwebtoken";
 
-export default function (token) {
+export default function getTokenDetails(token) {
   try {
+    console.log("Token details from cookies-->", token);
     const secret = process.env.SECRET || "YOUR SECRET CODE FOR JWT";
-    jwt.verify(token, secret, function (error, decoded) {
-      if (error) return null;
-      return decoded;
-    });
+    const decoded = jwt.verify(token, secret);
+    return decoded;
   } catch (err) {
     return null;
   }

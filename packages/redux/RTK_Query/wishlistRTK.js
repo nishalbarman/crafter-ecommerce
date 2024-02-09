@@ -14,11 +14,13 @@ export const wishlistApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.message,
     }),
 
-    updateWishlist: builder.mutation({
-      query: (id, item) => ({
-        url: `wishlist/${id}`,
-        method: "PATCH",
-        body: item,
+    addWishlist: builder.mutation({
+      query: (id) => ({
+        url: `wishlist`,
+        method: "POST",
+        body: {
+          productId: id,
+        },
       }),
       invalidatesTags: ["Wishlist"],
       transformErrorResponse: (response, meta, arg) => response.message,
@@ -32,11 +34,22 @@ export const wishlistApi = createApi({
       invalidatesTags: ["Wishlist"],
       transformErrorResponse: (response, meta, arg) => response.message,
     }),
+
+    updateWishlist: builder.mutation({
+      query: (id, item) => ({
+        url: `wishlist/${id}`,
+        method: "PATCH",
+        body: item,
+      }),
+      invalidatesTags: ["Wishlist"],
+      transformErrorResponse: (response, meta, arg) => response.message,
+    }),
   }),
 });
 
 export const {
   useGetWishlistQuery,
+  useAddWishlistMutation,
   useUpdateWishlistMutation,
   useDeleteWishlistMutation,
 } = wishlistApi;
