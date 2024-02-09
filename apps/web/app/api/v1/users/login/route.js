@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { Otp, User } from "../../../../models/models";
-import { connect } from "../../../../dbConfig/dbConfig";
+import { Otp, User } from "../../../../../models/models";
+import { connect } from "../../../../../dbConfig/dbConfig";
 
 import { isValidEmail } from "../../../../../helpter/utils";
 
@@ -50,7 +50,7 @@ export async function POST(request) {
       );
     }
 
-    const isPassValid = bcrypt.compareSync(password, user.hashedPass); // generate hashed pass
+    const isPassValid = bcrypt.compareSync(password, user.password); // generate hashed pass
     if (!isPassValid) {
       return NextResponse.json(
         { status: true, message: "Invalid credentials" },
@@ -75,6 +75,8 @@ export async function POST(request) {
       { status: 200 }
     );
     response.cookies.set("token", jwtToken);
+    response.cookies.set("name", user.name);
+    response.cookies.set("email", user.email);
 
     return response;
   } catch (error) {

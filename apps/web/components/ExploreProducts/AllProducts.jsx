@@ -5,11 +5,24 @@ import ProductItem from "../ProductItem/ProductItem";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
+import {
+  useAddWishlistMutation,
+  useDeleteWishlistMutation,
+} from "@store/redux/wishlist";
+
 function AllProducts({ exploreProductData }) {
   const navigator = useRouter();
 
-  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const wishlistItems = useSelector(
+    (state) => state.wishlistLocal.wishlistItems
+  );
+  const cartItems = useSelector((state) => state.cartLocal.cartItems);
+
+  const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
+  const [
+    removeOneWishlist,
+    { isLoading: isLoadingRmWishlist, isError: isErrorRmWishlist },
+  ] = useDeleteWishlistMutation();
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center gap-4 items-stretch">
@@ -24,6 +37,8 @@ function AllProducts({ exploreProductData }) {
             {...item}
             wishlistItems={wishlistItems}
             cartItems={cartItems}
+            addNewWishlist={addNewWishlist}
+            removeOneWishlist={removeOneWishlist}
           />
         </div>
       ))}
