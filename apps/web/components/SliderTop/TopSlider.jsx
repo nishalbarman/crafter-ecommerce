@@ -1,12 +1,14 @@
 import React from "react";
 import Carousel from "../Carousel/Carousel";
 import axios from "axios";
+import { getBackendUrl } from "../../helpter/utils";
 
 // import CategoryLink from "../CategoryLink/CategoryLink";
 
 const getBanners = async () => {
   try {
-    const response = await axios.get(`http://localhost:3000/api/v1/banner`);
+    const backendUrl = getBackendUrl();
+    const response = await axios.get(`${backendUrl}api/v1/banner`);
     return response.data.data;
   } catch (error) {
     return [];

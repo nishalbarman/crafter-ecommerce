@@ -37,3 +37,9 @@ export function isValidUrl(url) {
 
   return urlRegex.test(url);
 }
+
+export function getBackendUrl() {
+  return process.env.NODE_ENV === "production"
+    ? process.env.BACKEND_SERVER_PROD
+    : process.env.BACKEND_SERVER_DEV;
+}

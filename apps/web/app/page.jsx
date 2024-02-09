@@ -11,10 +11,12 @@ import ExploreProducts from "../components/ExploreProducts/ExploreProducts";
 import NewArrivalSection from "../components/NewArrivalSection/NewArrivalSection";
 import Features from "../components/Features/Features";
 import Footer from "../components/Footer/Footer";
+import { getBackendUrl } from "../helpter/utils";
 
 const getSaleDetails = async () => {
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/sale-details`);
+    const backendUrl = getBackendUrl();
+    const response = await fetch(`${backendUrl}api/v1/sale-details`);
     const data = await response.json();
     return data;
   } catch (error) {

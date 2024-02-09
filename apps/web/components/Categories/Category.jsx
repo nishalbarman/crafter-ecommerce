@@ -2,10 +2,12 @@ import React from "react";
 import axios from "axios";
 import TitleWithBar from "../TitleWithBar/TitleWithBar";
 import CategorySlider from "../Categories/CategorySlider";
+import { getBackendUrl } from "../../helpter/utils";
 
 const getCategories = async () => {
   try {
-    const response = await axios.get(`http://localhost:3000/api/v1/categories`);
+    const backendUrl = getBackendUrl();
+    const response = await axios.get(`${backendUrl}api/v1/categories`);
     return response.data.data;
   } catch (error) {
     console.log(error);

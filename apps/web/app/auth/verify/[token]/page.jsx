@@ -3,13 +3,16 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import axios from "axios";
+import { getBackendUrl } from "../../../../helpter/utils";
 
 const TAG = "/auth/verify/page.js:-";
 
 const verifyWithToken = async (token) => {
   try {
+    const backendUrl = getBackendUrl();
+
     const reponse = await axios.post(
-      `http://localhost:3000/api/v1/users/verify`,
+      `${backendUrl}api/v1/users/verify`,
       { token: token }
     );
     const { data } = reponse;
