@@ -23,6 +23,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(bannerApi.middleware)
       .concat(wishlistApi.middleware)
+      .concat(cartApi.middleware)
       .concat(bannerApi.middleware)
       .concat(categoryApi.middleware),
 });

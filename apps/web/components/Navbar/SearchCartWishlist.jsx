@@ -5,13 +5,20 @@ import Image from "next/image";
 import MyAccount from "./MyAccount";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import cookieCutter from "cookie-cutter";
+import Link from "next/link";
 
 import { useGetWishlistQuery } from "@store/redux/wishlist";
 import { updateWishlist } from "@store/redux/wishlistLocal";
-import Link from "next/link";
 
-export default function SearchCartWishlist({ token }) {
+import { useGetCartQuery } from "@store/redux/cart";
+import { updateCart } from "@store/redux/cartLocal";
+
+export default function SearchCartWishlist() {
   const navigator = useRouter();
+
+  const token = cookieCutter.get("token");
+  console.log("Client side token---->", token);
 
   if (!token) {
     return (
@@ -35,12 +42,12 @@ export default function SearchCartWishlist({ token }) {
             </div>
           </div>
 
-          <div className="h-fill w-fit relative group mb-[8px] flex items-center">
+          <div className="h-[100%] w-fit relative group flex items-center">
             <button
               onClick={() => {
                 navigator.push("/auth/login");
               }}
-              className="p-[8px_40px] bg-[rgb(219,68,68)] rounded-md text-white font-semibold">
+              className="focus:bg-[gray] p-[8px_40px] bg-[rgb(219,68,68)] rounded-md text-white font-semibold">
               Login
             </button>
           </div>
@@ -50,6 +57,11 @@ export default function SearchCartWishlist({ token }) {
   }
 
   const { data, isError, isLoading } = useGetWishlistQuery();
+  const {
+    data: cartData,
+    isError: isCartError,
+    isLoading: isCartLoading,
+  } = useGetCartQuery();
 
   const dispatch = useDispatch();
 
@@ -72,6 +84,22 @@ export default function SearchCartWishlist({ token }) {
       );
     }
   }, [data]);
+
+  useEffect(() => {
+    if (!isCartError && cartData?.length > 0) {
+      const cartDataForStore = {};
+      cartData?.forEach((item) => {
+        cartDataForStore[item.product._id] = item.product;
+      });
+      console.log(cartData);
+      dispatch(
+        updateCart({
+          totalCount: cartData.length || 0,
+          cartItems: cartDataForStore,
+        })
+      );
+    }
+  }, [cartData]);
 
   return (
     <div className="flex items-center justify-center gap-5 h-[100%]">
@@ -133,7 +161,7 @@ export default function SearchCartWishlist({ token }) {
 
       <div className="h-fit w-fit relative group mb-[8px]">
         <Image
-          className="cursor-pointer transform translate-y-[0.4px]"
+          className="cursor-pointer transform translate-y-[0.14rem]"
           src="/assets/user.svg"
           alt="user logo"
           width={35}

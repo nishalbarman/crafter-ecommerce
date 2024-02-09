@@ -46,7 +46,7 @@ export async function POST(request) {
     if (!user) {
       return NextResponse.json(
         { status: true, message: "Invalid credentials" },
-        { status: 200 }
+        { status: 400 }
       );
     }
 
@@ -54,7 +54,14 @@ export async function POST(request) {
     if (!isPassValid) {
       return NextResponse.json(
         { status: true, message: "Invalid credentials" },
-        { status: 200 }
+        { status: 400 }
+      );
+    }
+
+    if (!user?.isMobileNoVerified) {
+      return NextResponse.json(
+        { status: true, message: "Account not verified yet!" },
+        { status: 403 }
       );
     }
 
@@ -74,9 +81,12 @@ export async function POST(request) {
       { status: true, message: "Login successful", jwt: jwtToken },
       { status: 200 }
     );
-    response.cookies.set("token", jwtToken);
-    response.cookies.set("name", user.name);
-    response.cookies.set("email", user.email);
+
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    response.cookies.set("token", jwtToken, { expires: Date.now() + oneDay });
+    response.cookies.set("name", user.name, { expires: Date.now() + oneDay });
+    response.cookies.set("email", user.email, { expires: Date.now() + oneDay });
 
     return response;
   } catch (error) {
