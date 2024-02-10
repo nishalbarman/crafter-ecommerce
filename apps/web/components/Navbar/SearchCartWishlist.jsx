@@ -5,8 +5,7 @@ import Image from "next/image";
 import MyAccount from "./MyAccount";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import cookieCutter from "cookie-cutter";
-import Link from "next/link";
+import { useCookies } from "next-client-cookies";
 
 import { useGetWishlistQuery } from "@store/redux/wishlist";
 import { updateWishlist } from "@store/redux/wishlistLocal";
@@ -17,7 +16,9 @@ import { updateCart } from "@store/redux/cartLocal";
 export default function SearchCartWishlist() {
   const navigator = useRouter();
 
-  const token = cookieCutter.get("token");
+  const cookieStore = useCookies();
+
+  const token = cookieStore?.get("token") || null;
   console.log("Client side token---->", token);
 
   if (!token) {
