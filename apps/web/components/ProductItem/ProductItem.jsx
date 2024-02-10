@@ -92,7 +92,8 @@ function ProductItem(item) {
   };
 
   return (
-    <div className="w-fill sm:w-[270px] group/product_item">
+    <div className="w-fill  group/product_item">
+      {/* sm:w-[270px] */}
       {/* IMAGE SECTION */}
       <div className="relative rounded flex items-center justify-center w-full h-[200px] md:h-[250px] bg-[rgb(244,244,245)]">
         {/* DISCOUNT */}
