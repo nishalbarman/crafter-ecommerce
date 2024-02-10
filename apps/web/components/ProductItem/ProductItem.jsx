@@ -172,7 +172,7 @@ function ProductItem(item) {
         <span className="text-lg md:text-[19px] font-semibold font-andika">
           {title}
         </span>
-        <div className="flex gap-[16px]">
+        <div className="flex gap-[16px] justify-left md:justify-center w-[100%]">
           <span className="text-[#DB4444] text-[16px] md:text-[18px]">
             &#8377;{discountedPrice} INR
           </span>
@@ -180,7 +180,7 @@ function ProductItem(item) {
             &#8377;{originalPrice} INR
           </span>
         </div>
-        <div className="flex items-center  gap-4">
+        <div className="flex items-center justify-center gap-4 w-[100%]">
           <div className="flex items-center gap-1 mt-[5px] h-full">
             <Image
               src={"/assets/star-filled.svg"}
@@ -225,7 +225,7 @@ function ProductItem(item) {
               alt="star icon"
             />
           </div>
-          <div className="flex items-center h-full">
+          <div className="flex items-center h-full max-sm:hidden">
             <span className="text-[#000] text-[18px] font-semibold opacity-[0.5]">
               ({totalNumberOfRatings})
             </span>

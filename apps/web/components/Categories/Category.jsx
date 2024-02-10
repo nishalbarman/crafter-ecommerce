@@ -21,7 +21,7 @@ export default async function Category() {
   return (
     <div className="w-full h-fit mt-10 lg:mt-[3rem]">
       <TitleWithBar title={"Categories"} />
-      <div className="relative">
+      <div className="relative ">
         <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-[4rem]">
           <span className="w-full text-left hidden xl:inline">-</span>
           <span className="text-2xl xl:text-3xl xl:text-center xl:w-full font-andika font-bold">
