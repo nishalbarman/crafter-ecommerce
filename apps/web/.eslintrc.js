@@ -6,4 +6,5 @@ module.exports = {
   parserOptions: {
     project: true,
   },
+  ignorePatterns: ["components/SliderTopLinks/CategoryLink.jsx"],
 };

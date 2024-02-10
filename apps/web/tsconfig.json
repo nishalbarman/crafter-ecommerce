@@ -3,16 +3,20 @@
   "compilerOptions": {
     "plugins": [
       {
-        "name": "next"
-      }
-    ]
+        "name": "next",
+      },
+    ],
   },
   "include": [
     "next-env.d.ts",
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "app/layout.jsx", "app/page.jsx"  ],
-  "exclude": ["node_modules"]
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts",
+    "app/layout.jsx",
+    "app/page.jsx",
+  ],
+  "exclude": ["node_modules"],
 }
