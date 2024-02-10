@@ -119,7 +119,7 @@ function SignupForm() {
             <input
               onKeyUp={handleOnChange}
               id="name"
-              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
+              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] rounded-none border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
               type="text"
               placeholder="Name"
               name="name"
@@ -132,7 +132,7 @@ function SignupForm() {
             <input
               onKeyUp={handleOnChange}
               id="email"
-              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
+              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] rounded-none border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
               type="email"
               placeholder="Email"
               name="email"
@@ -145,7 +145,7 @@ function SignupForm() {
             <input
               onKeyUp={handleOnChange}
               id="mobileNo"
-              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
+              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] rounded-none border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
               type="number"
               placeholder="Phone Number"
               name="mobileNo"
@@ -184,7 +184,7 @@ function SignupForm() {
             <input
               onKeyUp={handleOnChange}
               id="confirmpassword"
-              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
+              className="h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] rounded-none border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
               type={isPasswordVisible ? "text" : "password"}
               placeholder="Confirm Password"
               name="confirmpassword"
