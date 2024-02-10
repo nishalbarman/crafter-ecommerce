@@ -101,6 +101,16 @@ function SignupForm() {
                 We sent a verficiation link to your mobile no, please verify by
                 clicking on the link.
               </p>
+              <div className="mt-[8px] flex justify-center gap-3">
+                <span className="text-lg">
+                  You can continue to login{" "}
+                  <Link
+                    className="text-md font-andika font-semibold underline"
+                    href={"/auth/login"}>
+                    Login
+                  </Link>
+                </span>
+              </div>
             </div>
           </div>
         </>
@@ -165,6 +175,7 @@ function SignupForm() {
                 name="password"
               />
               <Image
+                className="cursor-pointer"
                 onClick={() => {
                   setIsPasswordVisible((prev) => !prev);
                 }}

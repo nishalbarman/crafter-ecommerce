@@ -11,10 +11,9 @@ const verifyWithToken = async (token) => {
   try {
     const backendUrl = getBackendUrl();
 
-    const reponse = await axios.post(
-      `${backendUrl}api/v1/users/verify`,
-      { token: token }
-    );
+    const reponse = await axios.post(`${backendUrl}api/v1/users/verify`, {
+      token: token,
+    });
     const { data } = reponse;
     if (data.status == true) return { success: true, message: data.message };
   } catch (error) {
@@ -42,6 +41,7 @@ async function page({ params }) {
                 src={"/assets/tickmark-animation.gif"}
                 width={130}
                 height={130}
+                alt="Verfied Tickmark"
               />
               <h3 className="text-3xl font-semibold font-andika text-center">
                 Account verified
@@ -61,6 +61,7 @@ async function page({ params }) {
                 src={"/assets/cross-failed-animation.gif"}
                 width={150}
                 height={150}
+                alt="Cross"
               />
               <h3 className="text-3xl font-semibold font-andika  text-center">
                 Account verification failed
