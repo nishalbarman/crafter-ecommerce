@@ -2,7 +2,7 @@ import React from "react";
 
 function MiddleBanner() {
   return (
-    <div className="rounded-md flex-col-reverse min-[500px]:flex-row flex max-w-full max-[390px]:aspect-[3/2.2] max-[400px]:pb-5 max-[390px]:h-fit max-[390px]:p-[5%] aspect-video lg:aspect-[3/1] xl:aspect-[3/1.6] 2xl:aspect-[3/1] bg-black mt-[4rem] mb-[6rem]">
+    <div className="rounded-md flex-col-reverse aspect-none h-fit min-[500px]:flex-row flex max-w-full max-[390px]:aspect-[3/2.2] max-[400px]:pb-5 max-[390px]:h-fit max-[390px]:p-[5%] aspect-video lg:aspect-[3/1] xl:aspect-[3/1.6] 2xl:aspect-[3/1] bg-black mt-[4rem] mb-[6rem]">
       <div className="flex flex-col gap-[6%] items-center min-[500px]:items-start justify-center w-full sm:w-[80%] h-full min-[500px]:pl-[6%]">
         <p className="font-semibold xl:text-lg text-[#0F6] font-andika">
           Categories
