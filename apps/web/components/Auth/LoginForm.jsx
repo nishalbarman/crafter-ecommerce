@@ -6,6 +6,7 @@ import { isValidEmail, isValidPassword } from "../../helpter/utils";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const validateInputs = (name, value) => {
   switch (name) {
@@ -23,6 +24,7 @@ function LoginForm() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const navigator = useRouter();
 
@@ -83,18 +85,31 @@ function LoginForm() {
           Enter a valid email
         </span>
       )}
-      <input
-        onKeyUp={handleOnChange}
-        id="password"
-        className="h-[32px] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
-        type="password"
-        placeholder="Password"
-        name="password"
-      />
+
+      <div className="flex items-center justify-between h-[32px] w-[100%] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0 focus-within:border-[black]">
+        <input
+          onKeyUp={handleOnChange}
+          id="password"
+          className="h-[32px] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
+          type={isPasswordVisible ? "text" : "password"}
+          placeholder="Password"
+          name="password"
+        />
+        <Image
+          onClick={() => {
+            setIsPasswordVisible((prev) => !prev);
+          }}
+          src={"/assets/eye.svg"}
+          width={25}
+          height={25}
+        />
+      </div>
+
       {formData.password.isError && (
         <span className="mt-[-25px] text-[red] text-sm">
-          Password should have a minimum of 8 characters, at least one uppercase
-          letter, and at least one lowercase letter:
+          Enter a valid password. Password should have a minimum of 8
+          characters, at least one uppercase letter, and at least one lowercase
+          letter:
         </span>
       )}
       <button
@@ -115,7 +130,7 @@ function LoginForm() {
               </button> */}
 
       <div className="mt-[8px] flex justify-center gap-3">
-        <span className="text-lg">
+        <span className="text-lg text-center">
           New here, create an account?{" "}
           <Link
             className="text-md font-andika font-semibold underline"

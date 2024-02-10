@@ -105,11 +105,14 @@ function SignupForm() {
           </div>
         </>
       ) : (
-        <div className="flex flex-col col-start-1  md:col-start-2 gap-[20px] w-[100%]">
+        <div className="flex rounded-md flex-col max-md:shadow-lg p-5 pt-8 pb-8 min-md:p-8 col-start-1 md:col-start-2 gap-[20px]">
+          {/* max-sm:mt-[10%] */}
           <h3 className="text-3xl font-semibold font-andika">
             Create an account
           </h3>
-          <p className="text-xl font-andika">Enter your details below</p>
+          <p className="text-xl font-andika max-sm:mt-[-6px]">
+            Enter your details below
+          </p>
           <form
             onSubmit={handleLogin}
             className="flex flex-col gap-[40px] mt-[20px] w-[100%]">
