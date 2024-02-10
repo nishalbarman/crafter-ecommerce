@@ -1,13 +1,9 @@
-import Image from "next/image";
-
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
 
 import LoginForm from "../../../components/Auth/LoginForm";
 
 export default function Page() {
-  const isLoading = true;
-
   return (
     <>
       <Navbar title={"Crafter"} logo={""} />

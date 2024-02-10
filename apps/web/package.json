@@ -18,6 +18,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
     "next": "^14.0.4",
+    "next-client-cookies": "^1.1.0",
     "nodemailer": "^6.9.8",
     "password-validator": "^5.3.0",
     "react": "^18.2.0",
