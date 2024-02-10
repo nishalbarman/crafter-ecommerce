@@ -61,7 +61,6 @@ const Carousel = ({ items = [] }) => {
   const [bannerItems, setBannerItems] = useState(items);
 
   const navigator = useRouter();
-  // const dispatch = useDispatch();
 
   useEffect(() => {
     if (

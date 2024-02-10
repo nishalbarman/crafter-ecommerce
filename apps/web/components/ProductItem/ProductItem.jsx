@@ -103,7 +103,7 @@ function ProductItem(item) {
         {/* ADD TO CART BUTTON */}
         <button
           disabled={cartItems?.hasOwnProperty(_id)}
-          className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
+          className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
           onClick={handleAddToCart}>
           {cartItems?.hasOwnProperty(_id) ? "In Cart" : "Add To Cart"}
         </button>
@@ -193,7 +193,7 @@ function ProductItem(item) {
             &#8377;{originalPrice} INR
           </span>
         </div>
-        <div className="flex items-center justify-center gap-4 w-[100%]">
+        <div className="flex items-center max-sm:justify-left justify-center gap-4 w-[100%]">
           <div className="flex items-center gap-1 mt-[5px] h-full">
             <Image
               src={"/assets/star-filled.svg"}
