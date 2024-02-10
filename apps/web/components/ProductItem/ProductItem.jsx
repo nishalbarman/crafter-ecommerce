@@ -7,6 +7,8 @@ import {
   removeWishlistProduct,
 } from "@store/redux/wishlistLocal";
 import { useRouter } from "next/navigation";
+import { useCookies } from "next-client-cookies";
+import toast from "react-hot-toast";
 
 function ProductItem(item) {
   const {
@@ -32,6 +34,8 @@ function ProductItem(item) {
 
   const dispatch = useDispatch();
   const navigator = useRouter();
+  const cookiesStore = useCookies();
+  const token = cookiesStore?.get("token") || null;
 
   const discount = Math.floor(
     ((originalPrice - discountedPrice) / originalPrice) * 100
@@ -44,7 +48,9 @@ function ProductItem(item) {
 
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
-    console.log(wishlistItems?.hasOwnProperty(_id));
+    if (!token) {
+      return toast.success("You need to be logged in first.");
+    }
     if (wishlistItems?.hasOwnProperty(_id)) {
       removeOneWishlist(_id);
       dispatch(removeWishlistProduct(_id));
@@ -56,6 +62,9 @@ function ProductItem(item) {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
+    if (!token) {
+      return toast.success("You need to be logged in first.");
+    }
     if (cartItems?.hasOwnProperty(_id)) {
       removeOneFromCart(_id);
       dispatch(removeCartProduct(_id));
@@ -67,11 +76,17 @@ function ProductItem(item) {
 
   const handleCartProductRemove = (e) => {
     e.stopPropagation();
+    if (!token) {
+      return toast.success("You need to be logged in first.");
+    }
     dispatch(removeCartProduct(_id));
   };
 
   const handleWishlistProductRemove = (e) => {
     e.stopPropagation();
+    if (!token) {
+      return toast.success("You need to be logged in first.");
+    }
     removeOneWishlist(_id);
     dispatch(removeWishlistProduct(_id));
   };
@@ -90,9 +105,7 @@ function ProductItem(item) {
           disabled={cartItems?.hasOwnProperty(_id)}
           className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
           onClick={handleAddToCart}>
-          {cartItems?.hasOwnProperty(_id)
-            ? "Item added to Cart"
-            : "Add To Cart"}
+          {cartItems?.hasOwnProperty(_id) ? "In Cart" : "Add To Cart"}
         </button>
 
         <div className="cursor-pointer absolute top-3 right-3 z-[999] flex flex-col gap-2 items-center w-fit">

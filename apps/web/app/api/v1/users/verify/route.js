@@ -14,12 +14,12 @@ export async function POST(req) {
     const { token } = await req.json();
     console.log("Encoded Token:-->>", token);
     if (!token) {
-      return NextResponse.json({ message: "Invalid token" }, { status: 400 });
+      return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
 
     const user = await User.findOne({ mobileNoVerifyToken: token });
     if (!user) {
-      return NextResponse.json({ message: "Invalid token" }, { status: 400 });
+      return NextResponse.json({ message: "Token expired" }, { status: 401 });
     }
 
     user.isMobileNoVerified = true;

@@ -90,12 +90,13 @@ function LoginForm() {
         <input
           onKeyUp={handleOnChange}
           id="password"
-          className="h-[32px] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] rounded-none focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
+          className="h-[32px] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] rounded-none focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0 w-[100%]"
           type={isPasswordVisible ? "text" : "password"}
           placeholder="Password"
           name="password"
         />
         <Image
+          className="cursor-pointer"
           onClick={() => {
             setIsPasswordVisible((prev) => !prev);
           }}
