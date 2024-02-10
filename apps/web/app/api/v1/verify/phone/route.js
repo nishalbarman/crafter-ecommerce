@@ -1,12 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { Otp } from "../../../../models/models";
-import { sendSMS } from "../../../../helpter/sendSMS";
+import { Otp } from "../../../../../models/models";
+import { sendSMS } from "../../../../../helpter/sendSMS";
 import {
   generateRandomCode,
   isValidIndianMobileNumber,
-} from "../../../../helpter/utils";
+} from "../../../../../helpter/utils";
 
 export async function GET(request) {
   try {

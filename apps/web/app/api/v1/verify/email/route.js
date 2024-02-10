@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { Otp } from "../../../../models/models";
-import { generateRandomCode, isValidEmail } from "../../../../helpter/utils";
-import { sendMail } from "../../../../helpter/sendEmail";
+import { Otp } from "../../../../../models/models";
+import { generateRandomCode, isValidEmail } from "../../../../../helpter/utils";
+import { sendMail } from "../../../../../helpter/sendEmail";
 
 export async function GET(request) {
   try {
@@ -14,8 +14,8 @@ export async function GET(request) {
     }
     const sixDigitCode = generateRandomCode(); // will generate 6 digit random code
 
-    // const otpObject = new Otp({ email: email, otp: sixDigitCode });
-    // await otpObject.save();
+    const otpObject = new Otp({ email: email, otp: sixDigitCode });
+    await otpObject.save();
 
     await sendMail({
       from: '"Crafter 👻" <verify@crafter.sharestory.fun>', // sender address
