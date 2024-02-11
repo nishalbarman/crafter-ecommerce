@@ -92,7 +92,7 @@ function ProductItem(item) {
   };
 
   return (
-    <div className="w-fill  group/product_item">
+    <div className="w-fill group/product_item">
       {/* sm:w-[270px] */}
       {/* IMAGE SECTION */}
       <div className="relative rounded flex items-center justify-center w-full h-[200px] md:h-[250px] bg-[rgb(244,244,245)]">
@@ -182,10 +182,8 @@ function ProductItem(item) {
         </div>
       </div>
       {/* body section */}
-      <div className="relative w-full flex flex-col min-[0px]:items-center gap-1 pt-[16px] pb-[16px] bg-white z-[999]">
-        <span className="text-lg md:text-[19px] font-semibold font-andika">
-          {title}
-        </span>
+      <div className="relative w-[100%] flex flex-col items-left md:items-center gap-1 pt-[16px] pb-[16px] bg-white z-[999]">
+        <span className="text-lg md:text-[19px] font-semibold">{title}</span>
         <div className="flex gap-[16px] justify-left md:justify-center w-[100%]">
           <span className="text-[#DB4444] text-[16px] md:text-[18px]">
             &#8377;{discountedPrice} INR
@@ -194,8 +192,8 @@ function ProductItem(item) {
             &#8377;{originalPrice} INR
           </span>
         </div>
-        <div className="flex items-center max-sm:justify-left justify-center gap-4 w-[100%]">
-          <div className="flex items-center gap-1 mt-[5px] h-full">
+        <div className="flex justify-left md:justify-center gap-4 w-[100%]">
+          <div className="flex items-center gap-1 mt-[5px] h-full w-fit">
             <Image
               src={"/assets/star-filled.svg"}
               width={20}
