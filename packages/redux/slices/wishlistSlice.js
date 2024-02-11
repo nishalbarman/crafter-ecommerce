@@ -12,11 +12,11 @@ export const wishlistSlice = createSlice({
   reducers: {
     addWishlistProduct: (state, { payload: product }) => {
       state.wishlistItems[product._id] = product;
-      state.totalItems++;
+      state.totalItems += 1;
     },
     removeWishlistProduct: (state, { payload: id }) => {
       delete state.wishlistItems[id];
-      state.totalItems--;
+      state.totalItems -= 1;
     },
     updateWishlist: (state, { payload: { totalCount, wishlists } }) => {
       state.totalItems = totalCount;

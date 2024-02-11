@@ -1,0 +1,809 @@
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+* {
+  margin: 0px;
+  box-sizing: border-box;
+  font-family: "montserrat";
+}
+
+/* Main thing container  */
+.main-div > div:nth-of-type(2) {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 30px;
+}
+
+/* header My bag text  */
+.main-div > div:nth-of-type(2) > p {
+  font-size: 17px;
+  color: #181818;
+  padding-left: 5px;
+  margin-bottom: 30px;
+}
+
+/* outer of cart items and price and coupon */
+/* .main-div > div:nth-of-type(2) > div {
+  display: flex;
+  gap: 20px;
+} */
+
+/* #cart-item-container {
+  width: 58.33333333%;
+}
+
+#cart-item-container + div {
+  width: 41.66666667%;
+} */
+
+/* each card style for cart, where the product details are going to be shown  */
+/* .child {
+  padding: 2.5%;
+  padding-bottom: 0px;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 5px;
+  margin-bottom: 20px;
+} */
+
+/* upper section of the cart  */
+/* .child > div {
+  display: flex;
+  justify-content: space-between;
+} */
+
+/* title style for the product */
+/* .child > div > div > p:first-child {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 14px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  width: 100%;
+} */
+
+/* title on hover */
+/* .child > div > div > p:first-child:hover {
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 14px;
+  margin-bottom: 15px;
+} */
+
+/* price overall p styles */
+/* .child > div > div > p:nth-child(2) {
+  margin-bottom: 12px;
+} */
+
+/* price style for the cart, discounted price  */
+/* .child > div > div > p:nth-child(2) > span:nth-child(1) {
+  color: rgb(51, 51, 51);
+  font-size: 18px;
+  font-weight: bold;
+} */
+
+/* price style for the cart, original line through  */
+/* .child > div > div > p:nth-child(2) > span:nth-child(2) {
+  color: rgb(94, 99, 107);
+  font-size: 14px;
+  text-decoration: 1px solid rgb(94, 99, 107) line-through;
+  margin-left: 5px;
+} */
+
+/* you saved *** price discount saved tag */
+/* .child > div > div > p:nth-child(3) {
+  color: rgb(50, 140, 91);
+  font-size: 14px;
+  margin-bottom: 10px;
+} */
+
+/* cart product image holder */
+/* .child > div > div:last-of-type {
+  margin-left: 40px;
+} */
+
+/* cart product image  */
+/* .child > div > div:last-of-type > img {
+  width: 100%;
+  border-radius: 5px;
+  height: 150px;
+  object-fit: cover;
+} */
+
+/* free delivery container  */
+/* #cart-item-container > div:first-of-type {
+  display: flex;
+  border-radius: 5px;
+  background-color: rgb(252, 255, 238);
+  align-items: center;
+  padding: 20px 20px;
+  margin-bottom: 20px;
+} */
+
+/* free delevery icon */
+/* .truck {
+  width: 19px;
+  height: 12px;
+  animation-duration: 2s;
+  margin-right: 5px;
+} */
+
+/* .truck + p {
+  font-size: 15px;
+  color: black;
+  font-family: montserrat;
+} */
+
+/* .qp {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin-bottom: 30px;
+} */
+
+/* .qp > div {
+  margin-right: 16px;
+  font-family: montserrat;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+  font-size: 13px;
+} */
+
+/* .qp > div > i {
+  margin-left: 3px;
+} */
+
+/* .bottom_section {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.7);
+  border-top: 2px solid rgba(0, 0, 0, 0.04);
+  margin: 0px 10px;
+  font-size: 12px;
+  margin-top: 15px;
+} */
+
+/* .bottom_section > .remove_button {
+  padding: 18px 0px;
+  width: 35%;
+  border-right: 2px solid rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  font-size: 14px;
+} */
+
+/* .move_to_wishlist {
+  padding: 18px 0;
+  width: 65%;
+  cursor: pointer;
+  font-size: 14px;
+} */
+
+/* .bottom_images {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+} */
+
+/* .bottom_images > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
+
+/* .bottom_images > div > img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 6px;
+  color: #8f98a9;
+} */
+
+/* .bottom_images > div > img + p {
+  font-size: 8px;
+  line-height: 12px;
+  text-align: center;
+  color: #c7cbd4;
+} */
+
+/* #coupons_text > div {
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid rgb(234, 234, 234);
+  background-color: rgb(255, 255, 255);
+  color: rgb(45, 45, 45);
+  font-family: montserrat;
+  line-height: 1.44;
+  font-size: 14px;
+  padding: 5px 15px;
+} */
+
+/* #coupons_text > div > p {
+  font-size: 16px;
+} */
+
+/* .apply_coupon_outer {
+  padding: 6px;
+  border: 1px solid #eaeaea;
+  text-overflow: none;
+} */
+
+/* .apply_coupon_outer > .apply_coupon {
+  cursor: pointer;
+  height: 32px;
+  width: 100%;
+  background: rgba(66, 162, 161, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  text-overflow: none;
+} */
+
+/* .apply_coupon_outer > .apply_coupon {
+  display: flex;
+  align-items: center;
+  overflow: none;
+  text-overflow: none;
+} */
+
+/* .apply_coupon_outer > .apply_coupon > p:first-child {
+  font-family: "montserrat", sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  color: #42a2a2;
+  width: auto;
+  text-align: left;
+  overflow: none;
+  white-space: nowrap;
+  text-overflow: none;
+}
+
+.apply_coupon_outer > .apply_coupon > p:last-child {
+  font-family: "montserrat", "montserrat";
+  font-weight: 1000;
+  font-size: 12px;
+  color: #42a2a2;
+  width: 100%;
+  text-align: right;
+  overflow: none;
+  text-overflow: none;
+} */
+/* 
+.price_details {
+  border: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+  padding-right: 0;
+} */
+
+/* price sammary */
+/* .price_details > div:first-of-type {
+  font-size: 11px;
+  color: #000;
+  text-transform: uppercase;
+  background: rgb(235, 235, 235);
+  padding: 13px 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+} */
+
+/* total mrp incld  */
+/* .price_details > div:nth-of-type(2) {
+  display: flex;
+  font-size: 12px;
+  padding: 0px 20px;
+  padding-bottom: 15px;
+} */
+
+/* .price_details > div:nth-of-type(2) > p:first-child {
+  width: 100%;
+  text-align: left;
+}
+
+.price_details > div:nth-of-type(2) > p:last-child {
+  width: 100%;
+  text-align: right;
+} */
+
+/* shipping charge */
+/* .price_details > div:nth-of-type(3) {
+  display: flex;
+  font-size: 12px;
+  padding: 0px 20px;
+  padding-bottom: 15px;
+} */
+
+/* .price_details > div:nth-of-type(3) > p:first-child {
+  width: 100%;
+  text-align: left;
+}
+
+.price_details > div:nth-of-type(3) > p:last-child {
+  width: 100%;
+  text-align: right;
+} */
+
+/* Bag discount charge */
+/* .price_details > div:nth-of-type(4) {
+  display: flex;
+  font-size: 12px;
+  padding: 0px 20px;
+  padding-bottom: 15px;
+}
+
+.price_details > div:nth-of-type(4) > p:first-child {
+  width: 100%;
+  text-align: left;
+}
+
+.price_details > div:nth-of-type(4) > p:last-child {
+  width: 100%;
+  text-align: right;
+} */
+
+/* subtotal */
+/* .price_details > div:nth-of-type(5) {
+  display: flex;
+  font-size: 14px;
+  padding: 0px 20px;
+  padding-bottom: 15px;
+  font-weight: bold;
+} */
+
+/* .price_details > div:nth-of-type(5) > p:first-child {
+  width: 100%;
+  text-align: left;
+}
+
+.price_details > div:nth-of-type(5) > p:last-child {
+  width: 100%;
+  text-align: right;
+} */
+
+/* total price and payment button */
+/* .price_bottom_section {
+  display: flex;
+  font-size: 12px;
+  padding: 10px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: none;
+  position: static;
+  margin-top: 30px;
+  width: 100%;
+} */
+
+/* .price_bottom_section > div {
+  display: block;
+  font-size: 12px;
+  color: #000;
+  line-height: 20px;
+  padding: 0 0 4px;
+  width: 100%;
+} */
+
+/* .price_bottom_section > div > p:last-child {
+  font-size: 16px;
+} */
+
+/* .price_bottom_section > div + button {
+  background-color: rgb(66, 162, 162);
+  border-color: rgb(66, 162, 162);
+  color: white;
+  width: 280px;
+  padding: 15px;
+  vertical-align: middle;
+  background: #42a2a2;
+  border-radius: 5px;
+  font-size: 16px;
+  line-height: 18px;
+  text-transform: uppercase;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+} */
+
+/* coupon modal here  */
+/* #coupon_modal {
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+} */
+
+/* coupon modal here  */
+/* #coupon_thank_you {
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+} */
+
+/* .tickMarkCoupon {
+  width: 95px;
+  height: 95px;
+} */
+
+/* .coupon_applied_msg {
+  font-size: 14px;
+  margin-top: 16px;
+  font-family: montserrat;
+} */
+
+/* .coupon_model_thank_container {
+  position: absolute;
+  overflow: hidden;
+  width: 360px;
+  max-height: 100%;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  padding: 48px;
+  text-align: center;
+  border-radius: 5px;
+} */
+
+/* .coupon_model_container {
+  position: absolute;
+  overflow: hidden;
+  width: 370px;
+  max-height: 100%;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+} */
+
+/* .coupon_model_container > .coupon_title_apply_box {
+  font-family: sans-serif;
+  font-size: 16px;
+  color: #000;
+  position: relative;
+  margin-bottom: 40px;
+  text-align: center;
+  font-weight: bold;
+} */
+
+.coupon_title_apply_box:after {
+  content: "";
+  display: block;
+  background: #fdd835;
+  height: 2px;
+  width: 102px;
+  margin: 11px auto 0;
+}
+
+/* #error_coupon_holder {
+  font-family: Arial, Helvetica, sans-serif;
+  display: block;
+  padding: 12px;
+  background-color: rgb(253, 244, 244);
+  color: #e02020;
+  width: 100%;
+  font-size: 12px;
+  line-height: 13px;
+  border-radius: 5px;
+  text-align: left;
+  display: none;
+} */
+
+/* .coupon_model_container > form > input {
+  font-size: 14px;
+  font-family: montserrat-regular, sans-serif;
+  text-transform: uppercase;
+  box-shadow: none;
+  outline: none;
+  border: none;
+  padding: 5px 0;
+  border-bottom: 2px solid #42a2a2;
+  width: 100%;
+  margin-bottom: 10px;
+} */
+
+/* .coupon_model_container > form > input::placeholder { */
+/* letter-spacing: .4px; */
+/* color: rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  font-weight: bold;
+} */
+
+/* .coupon_model_container > form > :focus {
+  border-bottom: 2px solid #42a2a2;
+} */
+
+/* #coupon_apply_button {
+  background-color: #42a2a2;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  font-family: montserrat, sans-serif;
+  text-transform: uppercase;
+  padding: 16px 0;
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+  cursor: pointer;
+} */
+
+/* #size_modal {
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+} */
+
+/* .size_model_container {
+  position: absolute;
+  overflow: hidden;
+  width: fit-content;
+  max-height: 100%;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+} */
+
+/* .size_model_container > p:first-child {
+  margin-bottom: 15px;
+  font-size: 12px;
+  opacity: 0.7;
+  display: block;
+} */
+
+/* .size_model_container > p:nth-child(1) ~ p {
+  font-family: montserrat;
+  font-size: 16px;
+  padding: 10px 40px;
+  border: none;
+  text-decoration: initial;
+  letter-spacing: 2px;
+  line-height: 1.428571429;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.size_model_container > p:nth-child(1) ~ p:hover {
+  background-color: rgb(230, 230, 230);
+} */
+
+/* #qty_modal {
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+} */
+
+/* .qty_model_container {
+  position: absolute;
+  overflow: hidden;
+  width: fit-content;
+  max-height: 100%;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+} */
+
+/* .qty_model_container > p:first-child {
+  margin-bottom: 15px;
+  font-size: 12px;
+  opacity: 0.7;
+  display: block;
+} */
+
+/* .qty_model_container > p:nth-child(1) ~ p {
+  font-family: montserrat;
+  font-size: 16px;
+  padding: 10px 40px;
+  border: none;
+  text-decoration: initial;
+  letter-spacing: 2px;
+  line-height: 1.428571429;
+  background-color: #fff;
+  cursor: pointer;
+} */
+
+/* .qty_model_container > p:nth-child(1) ~ p:hover {
+  background-color: rgb(230, 230, 230);
+} */
+
+/* .no-item {
+  display: flex;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+} */
+
+/* .no-item > img + p {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.8);
+} */
+
+/* .no-item > img {
+  margin: auto;
+  width: 150px;
+} */
+
+#continuetohome {
+  padding: 12px 12px;
+  border: 2px solid;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 15px;
+  color: #51cccc;
+  text-decoration: none;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.category {
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.category > p:first-child {
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#resp-table {
+  display: table;
+}
+
+#resp-table-body {
+  display: table-row-group;
+}
+
+.resp-table-row {
+  display: table-row;
+}
+
+.table-body-cell {
+  display: table-cell;
+  padding: 0px 20px;
+}
+
+.table-body-cell:first-of-type ~ .table-body-cell {
+  text-decoration: underline !important;
+  color: #51cccc;
+}
+
+#removeBtn {
+  padding: 15px 10px;
+  color: rgb(230, 17, 17);
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+img[alt="coupon_applied"] {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+}
+
+.title_coupon_check {
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.cpn_title_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.coupon_card {
+  margin-bottom: 15px;
+  border-radius: 4px;
+  /* border-style: solid; */
+  /* border-color: rgb(234, 234, 234); */
+  line-height: 3px;
+  padding: 15px;
+  padding-top: 3px;
+  padding-bottom: 15px;
+  background-color: rgb(255, 251, 234);
+}
+
+.coupon_card > p {
+  margin-top: 10px;
+  font-family: montserrat;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.75);
+  line-height: 1.4;
+}
+
+#cpn_title {
+  font-family: montserrat;
+  font-weight: bolder;
+  font-size: 12px;
+  color: rgb(0, 0, 0);
+  line-height: 1.9;
+}
+
+.coupon_code {
+  padding: 3px;
+  color: #000;
+  border: 1px dashed #51cccc;
+  font-size: 10px;
+  font-family: montserrat;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 3px;
+}
+
+@media only screen and (max-width: 961px) {
+  .main-div > div:nth-of-type(2) > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #cart-item-container {
+    width: 100%;
+  }
+
+  #cart-item-container + div {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .main-div > div > img[alt="bewakoof log"] {
+    height: 30px;
+    padding: 2px;
+    padding-left: 5%;
+    cursor: pointer;
+  }
+
+  .main-div > div:nth-of-type(2) {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 30px;
+  }
+}

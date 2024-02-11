@@ -130,6 +130,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String, required: true },
     stars: { type: Number, default: 0 },
     totalFeedbacks: { type: Number, default: 0 },
+    quantity: { type: Number, default: 1 },
   },
   {
     timestamps: true,

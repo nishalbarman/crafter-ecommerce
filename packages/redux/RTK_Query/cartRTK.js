@@ -5,11 +5,11 @@ export const cartApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `/api/v1/`,
   }),
-  tagTypes: ["Cart"],
+  // tagTypes: ["Cart"],
   endpoints: (builder) => ({
     getCart: builder.query({
       query: () => "cart",
-      providesTags: ["Cart"],
+      // providesTags: ["Cart"],
       transformResponse: (res, meta, arg) => res.data,
       transformErrorResponse: (res, meta, arg) => res.message,
     }),
@@ -22,6 +22,7 @@ export const cartApi = createApi({
           productId: productId,
         },
       }),
+      transformErrorResponse: (res, meta, arg) => res.message,
     }),
 
     updateCart: builder.mutation({
@@ -30,16 +31,15 @@ export const cartApi = createApi({
         method: "PATCH",
         body: cartItem,
       }),
-      invalidatesTags: ["Cart"],
+      // invalidatesTags: ["Cart"],
       transformErrorResponse: (res, meta, arg) => res.message,
     }),
 
     deleteCart: builder.mutation({
-      query: () => ({
+      query: (id) => ({
         url: `cart/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Cart"],
       transformErrorResponse: (res, meta, arg) => res.message,
     }),
   }),
