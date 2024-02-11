@@ -45,7 +45,7 @@ export async function POST(request) {
     const user = await User.findOne({ email: email });
     if (!user) {
       return NextResponse.json(
-        { status: true, message: "Invalid credentials" },
+        { status: true, message: "The provided credentials are invalid." },
         { status: 400 }
       );
     }
@@ -53,7 +53,7 @@ export async function POST(request) {
     const isPassValid = bcrypt.compareSync(password, user.password); // generate hashed pass
     if (!isPassValid) {
       return NextResponse.json(
-        { status: true, message: "Invalid credentials" },
+        { status: true, message: "The provided credentials are invalid." },
         { status: 400 }
       );
     }
