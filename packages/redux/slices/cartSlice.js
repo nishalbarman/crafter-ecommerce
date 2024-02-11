@@ -11,11 +11,11 @@ export const cartSlice = createSlice({
   reducers: {
     addCartProduct: (state, { payload: product }) => {
       state.cartItems[product._id] = product;
-      state.totalItems++;
+      state.totalItems += 1;
     },
     removeCartProduct: (state, { payload: id }) => {
       delete state.cartItems[id];
-      state.totalItems--;
+      state.totalItems -= 1;
     },
     updateCart: (state, { payload: { totalCount, cartItems } }) => {
       state.totalItems = totalCount;

@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import SearchCartWishlist from "./SearchCartWishlist";
-import { cookies } from "next/headers";
 
 function Navbar({ title }) {
   const links = [
@@ -33,7 +32,11 @@ function Navbar({ title }) {
     <div className="flex w-full border-[rgb(0,0,0,0.1)] border-b-[1px] justify-between h-[80px] bg-white lg:pl-[10%] lg:pr-[10%] pl-[3%] pr-[3%]">
       <div className="flex flex-center items-center w-fit">
         <span className="max-sm:font-inconsolata font-marker text-2xl uppercase font-bold text-black">
-          {title}
+          <Link
+            className="max-sm:font-inconsolata font-marker text-2xl uppercase font-bold text-black"
+            href={"/"}>
+            {title}
+          </Link>
         </span>
       </div>
       <div className="hidden min-[1168px]:flex flex-center gap-5 items-center">

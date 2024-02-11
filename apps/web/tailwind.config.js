@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        sans: '"Andika", sans-serif',
         andika: "Andika, sans-serif", // Adds a new `font-andika` class
         marker: "'Permanent Marker', cursive",
         itim: "Itim, cursive",
