@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Carousel.module.css";
-import { useDispatch } from "react-redux";
 // import { updateBanner } from "@store/redux/banner";
 import axios from "axios";
 
@@ -14,7 +13,7 @@ const CustomPrevArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute flex items-center justify-center text-white rounded-sm p-3 h-[5px] w-[5px] bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center left-0 scale-[2] top-[50%] transform translate-y-[-50%] cursor-pointer z-10 font-marker">
+      className="absolute flex items-center justify-center text-white rounded-sm bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center left-0 scale-[2] top-[50%] transform translate-y-[-50%] cursor-pointer z-10 font-marker p-1">
       {"<"}
     </div>
   );
@@ -24,7 +23,7 @@ const CustomNextArrow = ({ className, style, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute flex items-center justify-center text-white rounded-sm p-3 h-[5px] w-[5px] bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center right-0 scale-[2] top-[50%] transform translate-y-[-50%] cursor-pointer z-10 font-marker">
+      className="absolute flex items-center justify-center text-white rounded-sm bg-[rgba(0,0,0,0.4)] backdrop-blur-[10px] flex items-center justify-center right-0 scale-[2] top-[50%] transform translate-y-[-50%] cursor-pointer z-10 font-marker p-1">
       {">"}
     </div>
   );
