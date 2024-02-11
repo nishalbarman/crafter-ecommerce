@@ -30,6 +30,8 @@ function ProductItem(item) {
     isWishlistIconVisible = true,
     deleteCartIconVisible = false,
     deleteWishlistIconVisible = false,
+
+    addToCartText = "Add To Cart",
   } = item;
 
   const dispatch = useDispatch();
@@ -56,7 +58,20 @@ function ProductItem(item) {
       dispatch(removeWishlistProduct(_id));
     } else {
       addNewWishlist(_id);
-      dispatch(addWishlistProduct(item));
+      dispatch(
+        addWishlistProduct({
+          _id,
+          title,
+          imageUrl,
+          originalPrice,
+          discountedPrice,
+          totalNumberOfRatings,
+        })
+      );
+      if (cartItems?.hasOwnProperty(_id)) {
+        removeOneFromCart(_id);
+        dispatch(removeCartProduct(_id));
+      }
     }
   };
 
@@ -70,7 +85,27 @@ function ProductItem(item) {
       dispatch(removeCartProduct(_id));
     } else {
       addOneToCart(_id);
-      dispatch(addCartProduct(item));
+      dispatch(
+        addCartProduct({
+          _id,
+          title,
+          imageUrl,
+          originalPrice,
+          discountedPrice,
+          totalNumberOfRatings,
+          quantity: 1,
+        })
+      );
+      console.log(
+        "Is wishlist available -->",
+        _id,
+        wishlistItems,
+        wishlistItems?.hasOwnProperty(_id)
+      );
+      if (wishlistItems?.hasOwnProperty(_id)) {
+        removeOneWishlist(_id);
+        dispatch(removeWishlistProduct(_id));
+      }
     }
   };
 
@@ -79,6 +114,7 @@ function ProductItem(item) {
     if (!token) {
       return toast.success("You need to be logged in first.");
     }
+    removeOneFromCart(_id);
     dispatch(removeCartProduct(_id));
   };
 
@@ -102,12 +138,14 @@ function ProductItem(item) {
         </div>
 
         {/* ADD TO CART BUTTON */}
-        <button
-          disabled={cartItems?.hasOwnProperty(_id)}
-          className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
-          onClick={handleAddToCart}>
-          {cartItems?.hasOwnProperty(_id) ? "In Cart" : "Add To Cart"}
-        </button>
+        {!deleteCartIconVisible && (
+          <button
+            disabled={cartItems?.hasOwnProperty(_id)}
+            className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
+            onClick={handleAddToCart}>
+            {cartItems?.hasOwnProperty(_id) ? "In Cart" : addToCartText}
+          </button>
+        )}
 
         <div className="cursor-pointer absolute top-3 right-3 z-[999] flex flex-col gap-2 items-center w-fit">
           {/* ADD TO WISHLIST */}

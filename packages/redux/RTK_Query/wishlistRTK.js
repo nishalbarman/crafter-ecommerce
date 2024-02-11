@@ -5,11 +5,11 @@ export const wishlistApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `/api/v1/`,
   }),
-  tagTypes: ["Wishlist"],
+  // tagTypes: ["Wishlist"],
   endpoints: (builder) => ({
     getWishlist: builder.query({
       query: () => "wishlist",
-      providesTags: ["Wishlist"],
+      // providesTags: ["Wishlist"],
       transformResponse: (response, meta, arg) => response.data,
       transformErrorResponse: (response, meta, arg) => response.message,
     }),
@@ -22,7 +22,7 @@ export const wishlistApi = createApi({
           productId: id,
         },
       }),
-      invalidatesTags: ["Wishlist"],
+      // invalidatesTags: ["Wishlist"],
       transformErrorResponse: (response, meta, arg) => response.message,
     }),
 
@@ -31,7 +31,7 @@ export const wishlistApi = createApi({
         url: `wishlist/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Wishlist"],
+      // invalidatesTags: ["Wishlist"],
       transformErrorResponse: (response, meta, arg) => response.message,
     }),
 
@@ -41,7 +41,7 @@ export const wishlistApi = createApi({
         method: "PATCH",
         body: item,
       }),
-      invalidatesTags: ["Wishlist"],
+      // invalidatesTags: ["Wishlist"],
       transformErrorResponse: (response, meta, arg) => response.message,
     }),
   }),

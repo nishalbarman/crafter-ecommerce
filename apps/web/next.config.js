@@ -10,6 +10,9 @@ module.exports = {
       {
         hostname: "s3-alpha-sig.figma.com",
       },
+      {
+        hostname: "imgs.search.brave.com",
+      },
     ],
   },
   productionBrowserSourceMaps: false,
