@@ -16,6 +16,7 @@
     "bcryptjs": "^2.4.3",
     "get-image-colors": "^4.0.1",
     "jsonwebtoken": "^9.0.2",
+    "jssha": "^3.3.1",
     "mongoose": "^8.1.1",
     "next": "^14.0.4",
     "next-client-cookies": "^1.1.0",
