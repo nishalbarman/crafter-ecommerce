@@ -1,8 +1,5 @@
-import Image from "next/image";
-
 import Navbar from "../../../components/Navbar/Navbar";
 import Footer from "../../../components/Footer/Footer";
-import Link from "next/link";
 import SignupForm from "../../../components/Auth/SignupForm";
 
 export default function Page() {
