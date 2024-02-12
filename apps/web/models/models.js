@@ -123,7 +123,7 @@ const productSchema = new mongoose.Schema(
   {
     previewUrl: { type: String, required: true },
     name: { type: String, required: true },
-    category: { type: mongoose.Types.ObjectId, ref: "Category" },
+    category: { type: mongoose.Types.ObjectId, ref: "categories" },
     discounted_price: { type: Number, required: true },
     original_price: { type: Number },
     showPictures: { type: Array, required: true },
@@ -131,6 +131,11 @@ const productSchema = new mongoose.Schema(
     stars: { type: Number, default: 0 },
     totalFeedbacks: { type: Number, default: 0 },
     quantity: { type: Number, default: 1 },
+    isSizeVaries: { type: Boolean, default: false },
+    availableSizes: [{ type: mongoose.Types.ObjectId, ref: "product_size" }],
+    isColorVaries: { type: Boolean, default: false },
+    availableColors: [{ type: mongoose.Types.ObjectId, ref: "product_colors" }],
+    shippingPrice: { type: Number, required: true, default: 49 },
   },
   {
     timestamps: true,
@@ -153,6 +158,8 @@ const cartSchema = new mongoose.Schema(
     user: { type: mongoose.Types.ObjectId, ref: "users" },
     product: { type: mongoose.Types.ObjectId, ref: "products" },
     quantity: { type: Number, default: 1 },
+    color: { type: mongoose.Types.ObjectId, ref: "product_colors" },
+    size: { type: mongoose.Types.ObjectId, ref: "product_size" },
   },
   {
     timestamps: true,

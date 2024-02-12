@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { useDeleteCartMutation } from "@store/redux/cart";
 import { useAddWishlistMutation } from "@store/redux/wishlist";
 
 import CartItem from "./CartItem";
+import Image from "next/image";
+import Link from "next/link";
 
 function Cart() {
   const [couponCode, setCouponCode] = useState({
@@ -18,6 +20,10 @@ function Cart() {
 
   const [appliedCoupon, setAppliedCoupon] = useState(); // coupon which needs to be sent to server, coupon will be stored here after applying.
 
+  const [subtotalPrice, setSubtotalPrice] = useState(0);
+  const [totalDiscountPrice, setTotalDiscountPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
   const cartData = useSelector((state) => state.cartLocal.cartItems);
   const cartCount = useSelector((state) => state.cartLocal.totalItems);
   const wishlistItems = useSelector(
@@ -26,9 +32,6 @@ function Cart() {
 
   const couponApplyModalRef = useRef();
   const couponThankYouRef = useRef();
-  const quantityModalRef = useRef();
-  const sizeModalRef = useRef();
-  const colourModalRef = useRef();
 
   const [
     removeOneFromCart,
@@ -44,8 +47,6 @@ function Cart() {
       value: e.target.value,
     }));
   };
-
-  console.log(couponCode);
 
   const handleCouponFormSubmit = async (e) => {
     e.preventDefault();
@@ -73,14 +74,30 @@ function Cart() {
     }, 800);
   };
 
+  useEffect(() => {
+    let totalPrice = 0;
+    let subtotalPrice = 0;
+    let totalDiscountPrice = 0;
+
+    Object.values(cartData).map((item) => {
+      totalPrice += item.originalPrice;
+      subtotalPrice += item.discountedPrice;
+      totalDiscountPrice += item.originalPrice - item.discountedPrice;
+    });
+
+    setTotalPrice(totalPrice);
+    setSubtotalPrice(subtotalPrice);
+    setTotalDiscountPrice(totalDiscountPrice);
+  }, [cartData]);
+
   return (
     <>
-      <div className="flex justify-between items-center mb-10">
+      {/* <div className="flex justify-between items-center mb-10">
         <p className="text-xl font-andika">Cart ({cartCount})</p>
         <button className="rounded-[4px] border-[1px] border-[black] h-[45px] w-[150px] p-[0px_20px]">
           Remove All
         </button>
-      </div>
+      </div> */}
 
       {cartCount !== 0 && (
         <div className="main-div">
@@ -166,7 +183,7 @@ function Cart() {
                   <p
                     className="text-right w-[100%] text-[14px] "
                     id="originalprice">
-                    ₹2598
+                    ₹{totalPrice}
                   </p>
                 </div>
                 <div className="flex p-[0px_20px] pb-[10px]">
@@ -184,13 +201,13 @@ function Cart() {
                   <p
                     className="text-right w-[100%] text-[14px]"
                     id="bagdiscount">
-                    - ₹1300
+                    - ₹{totalDiscountPrice}
                   </p>
                 </div>
                 <div className="flex p-[0px_20px] pb-[15px] font-bold">
                   <p className="text-left w-[100%] text-[14px]">Subtotal </p>
                   <p className="text-right w-[100%] text-[14px]" id="subtotal">
-                    ₹1298
+                    ₹{subtotalPrice}
                   </p>
                 </div>
 
@@ -201,10 +218,8 @@ function Cart() {
                       ₹ 1298
                     </p>
                   </div>
-
-                  <button
-                    className="bg-[rgb(66,162,162)] border-[rgb(66,162,162)] text-white p-[15px] bg-[#42a2a2] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer"
-                    id="continuePayment">
+                  {/* border-[rgb(66,162,162)] bg-[#42a2a2]  */}
+                  <button className="text-white p-[15px] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer">
                     Continue
                   </button>
                 </div>
@@ -247,61 +262,61 @@ function Cart() {
       )}
 
       {/* empty cart display */}
-      {cartCount === 0 && (
+      {cartCount <= 0 && (
         <div
           id="emptydisplay"
-          className="no-item hidden flex-col justify-center items-center gap-[10px] mt-[40px]">
-          <img
-            className="m-auto w-[150px]"
-            src="https://images.bewakoof.com/images/doodles/empty-cart-page-doodle.png"
+          className="flex flex-col justify-center items-center gap-[10px] mt-[40px]">
+          <Image
+            draggable={false}
+            className="m-auto w-[300px] select-none user-drag-none"
+            src="/assets/empty-cart.svg"
+            width={500}
+            height={500}
             alt="empty-bag"
-            style={{ margin: "auto", width: 150 }}
+            style={{ margin: "auto" }}
           />
-          <p className="text-[18px] text-[rgb(0,0,0,0.8)]">
+          <p className="text-[18px] text-[rgb(0,0,0,0.8)] text-center">
             Nothing in the bag
           </p>
-          <a
-            className="p-[12px_12px] border-[2opx] border-[black] inline-block mt-[15px] text-[#51cccc] mb-[20px] font-bold"
-            id="continuetohome"
-            href="/index.html">
+          <Link
+            className="p-[12px_20px] border-[2opx] border-[black] inline-block mt-[15px] text-[white] mb-[20px] font-bold text-center bg-[rgb(219,68,68)] rounded"
+            href="/products">
             Continue Shopping
-          </a>
+          </Link>
 
-          {/* <div className="category">
-            <p>You could try one of these categories:</p>
-            <div id="resp-table">
-              <div id="resp-table-body">
-                <div className="resp-table-row">
-                  <div className="table-body-cell">Men</div>
-                  <div className="table-body-cell">Topwear</div>
-                  <div className="table-body-cell">Bottomwear</div>
-                </div>
+          {/* <div className="category flex flex-col justify-center items-center gap-5">
+            <p className="">You could try one of these categories:</p>
+            <div className="flex gap-10">
+              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
+                <div className="table-body-cell">Men</div>
+                <div className="table-body-cell">Topwear</div>
+                <div className="table-body-cell">Bottomwear</div>
+              </div>
 
-                <div className="resp-table-row">
-                  <div className="table-body-cell"></div>
-                  <div className="table-body-cell">Footwear</div>
-                  <div className="table-body-cell">Bestsellers</div>
-                </div>
-                <br />
-                <br />
-                <div className="resp-table-row">
-                  <div className="table-body-cell">Women</div>
-                  <div className="table-body-cell">Topwear</div>
-                  <div className="table-body-cell">Bottomwear</div>
-                </div>
+              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
+                <div className="table-body-cell"></div>
+                <div className="table-body-cell">Footwear</div>
+                <div className="table-body-cell">Bestsellers</div>
+              </div>
+              <br />
+              <br />
+              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
+                <div className="table-body-cell">Women</div>
+                <div className="table-body-cell">Topwear</div>
+                <div className="table-body-cell">Bottomwear</div>
+              </div>
 
-                <div className="resp-table-row">
-                  <div className="table-body-cell"></div>
-                  <div className="table-body-cell">Bestsellers</div>
-                  <div className="table-body-cell"></div>
-                </div>
-                <br />
-                <br />
-                <div className="resp-table-row">
-                  <div className="table-body-cell">Mobile Covers</div>
-                  <div className="table-body-cell">All Mobile Covers</div>
-                  <div className="table-body-cell"></div>
-                </div>
+              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
+                <div className="table-body-cell"></div>
+                <div className="table-body-cell">Bestsellers</div>
+                <div className="table-body-cell"></div>
+              </div>
+              <br />
+              <br />
+              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
+                <div className="table-body-cell">Mobile Covers</div>
+                <div className="table-body-cell">All Mobile Covers</div>
+                <div className="table-body-cell"></div>
               </div>
             </div>
           </div> */}
@@ -328,7 +343,7 @@ function Cart() {
           <form onSubmit={handleCouponFormSubmit} id="coupon-form">
             <input
               onKeyUp={handleCouponCodeKeyUp}
-              className="text-[14px] uppercase outline-none p-[5px_0px] border-b-[2px] border-b-[#42a2a2] w-[100%] mb-[10px] placeholder:text-[rgba(0,0,0,0.3)] placeholder:opacity-[1] placeholder:font-bold focus:border-b-[2px] focus:border-b-[rgb(219,69,69)]"
+              className="text-[14px] uppercase outline-none p-[5px_0px] border-b-[2px] border-b-[#42a2a2] w-[100%] mb-[10px] placeholder:text-[rgba(0,0,0,0.3)] placeholder:opacity-[1] placeholder:font-bold focus:border-b-[2px] focus:border-b-[#42a2a2]"
               type="text"
               id="cpn_code"
               placeholder="ENTER CODE"
@@ -350,115 +365,11 @@ function Cart() {
               disabled={
                 !couponCode || !couponCode.isTouched || couponCode.isError
               }
-              className="bg-[#42a2a2] bg-[rgb(219,69,69)] disabled:cursor-not-allowed disabled:bg-[rgba(219,69,69,0.2)] border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[20px] cursor-pointer"
+              className="bg-[#42a2a2] disabled:cursor-not-allowed disabled:bg-[#42a2a2]-200 border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[20px] cursor-pointer"
               type="submit">
               APPLY
             </button>
           </form>
-        </div>
-      </div>
-
-      {/* size modal */}
-      <div
-        ref={sizeModalRef}
-        className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
-        id="size_modal">
-        <div className="size_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
-          <p className="hover:bg-[rgb(230,230,230)] mb-[15px] text-[12px] opacity-[0.7] block">
-            Select Size
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="S">
-            S
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="M">
-            M
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="L">
-            L
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="XL">
-            XL
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="2XL">
-            2XL
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="3XL">
-            3XL
-          </p>
-        </div>
-      </div>
-
-      {/* quantity modal  */}
-      <div
-        ref={quantityModalRef}
-        className="hidden bg-[rgb(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
-        id="qty_modal">
-        <div className="qty_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
-          <p className="mb-[15px] text-[12px] opacity-[0.7] block">
-            Select Quantity
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="1">
-            1
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="2">
-            2
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="3">
-            3
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="4">
-            4
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="5">
-            5
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="6">
-            6
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="7">
-            7
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="8">
-            8
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="9">
-            9
-          </p>
-          <p
-            className="hover:bg-[rgb(230,230,230)] text-[16px] p-[10px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer"
-            id="10">
-            10
-          </p>
         </div>
       </div>
 
