@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 
 import { useDeleteCartMutation } from "@store/redux/cart";
@@ -14,6 +14,11 @@ function Cart() {
   const wishlistItems = useSelector(
     (state) => state.wishlistLocal.wishlistItems
   );
+
+  const couponApplyModalRef = useRef();
+  const quantityModalRef = useRef();
+  const sizeModalRef = useRef();
+  const colourModalRef = useRef();
 
   const [
     removeOneFromCart,
@@ -42,7 +47,9 @@ function Cart() {
           {/* Cart items, price and coupon section  */}
           <div className="flex max-[961px]:flex-col gap-[20px] ">
             {/* cart items container  */}
-            <div className="w-[58.33333333%]" id="cart-item-container">
+            <div
+              className="w-[58.33333333%] max-[961px]:w-[100%]"
+              id="cart-item-container">
               <div className="flex rounded-[5px] bg-[rgb(252,255,238)] items-center p-[20px] mb-[20px]">
                 <img
                   className="w-[19px] h-[12px] duration-2000 transition mr-[5px]"
@@ -70,7 +77,7 @@ function Cart() {
             </div>
 
             {/* payments details and coupons */}
-            <div className="w-[41.66666667%]">
+            <div className="w-[41.66666667%] max-[961px]:w-[100%]">
               <div id="coupons_text">
                 <div className="mb-[15px] rounded-[4px] border-[1px] border-[rgb(234,234,234)] bg-[rgb(255,255,255)] text-[rgb(45,45,45)] leading-[1.44] text-[14px] p-[5px_15px]">
                   <p className="text-[16px]">
@@ -251,6 +258,7 @@ function Cart() {
 
       {/* modals section  */}
       <div
+        ref={couponApplyModalRef}
         className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
         id="coupon_modal">
         <div className="coupon_model_container absolute overflow-hidden w-[370px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transfrom translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
