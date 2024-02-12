@@ -84,6 +84,7 @@ export async function POST(request) {
       mobileNo,
       password: hashedPass,
       mobileNoVerifyToken: encoded,
+      role: "65c9b4c9a52cbc05d8c7c543",
     });
 
     sendSMS({

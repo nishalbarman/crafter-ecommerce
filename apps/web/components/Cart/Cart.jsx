@@ -9,6 +9,8 @@ import { useAddWishlistMutation } from "@store/redux/wishlist";
 import CartItem from "./CartItem";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 function Cart() {
   const [couponCode, setCouponCode] = useState({
@@ -38,6 +40,8 @@ function Cart() {
     { isLoading: isLoadingRmCart, isError: isErrorRmCart },
   ] = useDeleteCartMutation();
   const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
+
+  const navigation = useRouter();
 
   const handleCouponCodeKeyUp = (e) => {
     setCouponCode((prev) => ({
@@ -72,6 +76,15 @@ function Cart() {
     setTimeout(() => {
       couponThankYouRef.current.classList.add("hidden");
     }, 800);
+  };
+
+  const handlePaymentContinueClick = async () => {
+    const isAddressAvailble = true || localStorage.getItem("isAddressAvailble");
+    if (isAddressAvailble) {
+      const response = await axios.get(`/api/v1/payment/payu/cart`);
+    } else {
+      navigation.push("/billing?redirect=payment-cart");
+    }
   };
 
   useEffect(() => {
@@ -215,11 +228,13 @@ function Cart() {
                   <div className="block text-[#000] leading-[20px] p-[0_0_4px] w-[100%]">
                     <p className="text-[14px] mb-[1px]">Total</p>
                     <p className="text-[18px]" id="totalprice">
-                      ₹ 1298
+                      ₹{subtotalPrice}
                     </p>
                   </div>
                   {/* border-[rgb(66,162,162)] bg-[#42a2a2]  */}
-                  <button className="text-white p-[15px] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer">
+                  <button
+                    onClick={handlePaymentContinueClick}
+                    className="text-white p-[15px] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer">
                     Continue
                   </button>
                 </div>

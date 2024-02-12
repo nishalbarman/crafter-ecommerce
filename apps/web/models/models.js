@@ -27,6 +27,11 @@ const servicesSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const roleSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  value: { type: Number, required: true },
+});
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -38,7 +43,8 @@ const userSchema = new mongoose.Schema(
     isMobileNoVerified: { type: Boolean, default: false },
     mobileNoVerifyToken: { type: String, default: "" },
     resetToken: { type: String, default: "" },
-    role: { type: Number, default: 0 }, // 0 means normal user, 1 means admin, 2 means seller
+    role: { type: mongoose.Types.ObjectId, ref: "roles" }, // 0 means normal user, 1 means admin, 2 means seller
+    address: { type: mongoose.Types.ObjectId, ref: "addresses", default: null },
   },
   {
     timestamps: true,
@@ -47,7 +53,7 @@ const userSchema = new mongoose.Schema(
 
 const addressSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Types.ObjectId, ref: "User", required: true },
+    user: { type: mongoose.Types.ObjectId, ref: "users", required: true },
     address_1: { type: String, required: true },
     address_2: { type: String, default: "" },
     pincode: { type: Number, required: true },
@@ -206,6 +212,8 @@ const saleDetailsSchema = new mongoose.Schema({
 // ----------------------------------------->
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);
+
+const Role = mongoose.models.roles || mongoose.model("roles", roleSchema);
 
 const Otp =
   mongoose.models.registration_otp ||
