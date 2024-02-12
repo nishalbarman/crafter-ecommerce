@@ -76,7 +76,7 @@ function CartItem(item) {
 
   return (
     <div className="p-[2.5%_2.5%_0_2.5%] border-[1px] border-[rgb(204,204,204)] rounded-[5px] mb-[20px]">
-      <div className="upper flex justify-between">
+      <div className="upper flex justify-between max-[588px]:flex-col-reverse">
         <div>
           <p className="text-[rgba(0,0,0,0.7)] font-semibold text-[16px] mb-[15px] cursor-pointer w-[100%] hover:text-[rgba(0,0,0,0.9)] font-andika">
             {title}
@@ -90,10 +90,10 @@ function CartItem(item) {
             </span>
           </p>
           <p className="text-[rgb(50,140,91)] text-[16px] mb-[10px]">
-            You saved <span>₹{originalPrice - discountedPrice}</span>!
+            You saved <span>₹{originalPrice - discountedPrice} INR</span>!
           </p>
 
-          <div className="qp flex justify-start mt-[20px] mb-[30px]">
+          <div className="qp flex justify-start mt-[20px] mb-[30px] max-[961px]:flex-col max-[961px]:gap-2">
             <div
               className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
               id="sizeButton">
@@ -117,9 +117,9 @@ function CartItem(item) {
           </div>
         </div>
 
-        <div className="ml-[40px]">
+        <div className="ml-[40px] max-[588px]:ml-0 max-[588px]:w-[100%] max-[588px]:flex max-[588px]:items-center max-[588px]:justify-center">
           <img
-            className="w-[100%] rounded-[5px] h-[150px]"
+            className="rounded-[5px] h-[150px] max-[500px]:aspcet-square"
             src={
               "https://imgs.search.brave.com/rKZrmkTSLXfWaqAnvfSt_tW5IIPY3CC1G9d_ujAhEPo/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM5/NTE5MTU4NC9waG90/by9ibHVldG9vdGgt/c3BlYWtlci1pc29s/YXRlZC1vbi13aGl0/ZS5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9cFVhVWk1TVNq/SmJpbXdkXzBrQ2Nv/a1BlWHQ0WHlhQ3Qx/UnQ2S2h3ZXJzYz0"
             }
