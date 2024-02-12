@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { useDeleteCartMutation } from "@store/redux/cart";
@@ -9,6 +9,15 @@ import { useAddWishlistMutation } from "@store/redux/wishlist";
 import CartItem from "./CartItem";
 
 function Cart() {
+  const [couponCode, setCouponCode] = useState({
+    value: "",
+    isTouched: false,
+    isError: false,
+    error: "Coupon invalid",
+  });
+
+  const [appliedCoupon, setAppliedCoupon] = useState(); // coupon which needs to be sent to server, coupon will be stored here after applying.
+
   const cartData = useSelector((state) => state.cartLocal.cartItems);
   const cartCount = useSelector((state) => state.cartLocal.totalItems);
   const wishlistItems = useSelector(
@@ -16,6 +25,7 @@ function Cart() {
   );
 
   const couponApplyModalRef = useRef();
+  const couponThankYouRef = useRef();
   const quantityModalRef = useRef();
   const sizeModalRef = useRef();
   const colourModalRef = useRef();
@@ -25,6 +35,43 @@ function Cart() {
     { isLoading: isLoadingRmCart, isError: isErrorRmCart },
   ] = useDeleteCartMutation();
   const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
+
+  const handleCouponCodeKeyUp = (e) => {
+    setCouponCode((prev) => ({
+      ...prev,
+      isTouched: true,
+      isError: !prev.value,
+      value: e.target.value,
+    }));
+  };
+
+  console.log(couponCode);
+
+  const handleCouponFormSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(couponCode);
+    if (couponCode.value === "") {
+      return setCouponCode((prev) => ({ ...prev, isError: true }));
+    }
+
+    const response = await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ status: true });
+      }, 500);
+    });
+
+    if (response.status) {
+      couponApplyModalRef.current.classList.add("hidden");
+      couponThankYouRef.current.classList.remove("hidden");
+    }
+
+    setCouponCode((prev) => ({ value: "", isError: false, isTouched: false }));
+
+    setTimeout(() => {
+      couponThankYouRef.current.classList.add("hidden");
+    }, 800);
+  };
 
   return (
     <>
@@ -88,18 +135,22 @@ function Cart() {
               </div>
               <div className="apply_coupon_outer p-[6px] border-[1px] border-[#eaeaea] text-overflow-none overflow-none">
                 <div
-                  className="flex items-center apply_coupon cursor-pointer h-[32px] w-[100%] bg-[rgba(66,162,161,0.1)] rounded-[5px] p-[10px] text-overflow-none overflow-none"
+                  onClick={() => {
+                    couponApplyModalRef.current.classList.remove("hidden");
+                  }}
+                  className="flex items-center justify-between items-center cursor-pointer h-[32px] w-[100%] bg-[rgba(66,162,161,0.1)] rounded-[5px] p-[10px] text-overflow-none overflow-none"
                   id="couponApply">
-                  <p className="font-bold text-[12px] text-[#42a2a2] w-auto text-center overflow-none text-nowrap text-overflow-none">
-                    Apply Coupon / Gift Card / Referral
-                  </p>
-                  <p className="font-bold text-[12px] text-[#42a2a2] w-[100%] text-left overflow-none text-nowrap text-overflow-none">
+                  <span className="font-bold text-[12px] text-[#42a2a2] w-auto text-center overflow-none text-nowrap text-overflow-none">
+                    Apply Coupon / Gift Card
+                  </span>
+
+                  <span className="font-bold text-[12px] text-[#42a2a2] text-left overflow-none text-nowrap text-overflow-none">
                     Redeem!{" "}
                     <img
                       src="https://images.bewakoof.com/web/coupon-redeem-arrow-1634641878.png"
                       alt=""
                     />
-                  </p>
+                  </span>
                 </div>
               </div>
               <div id="couponApplied"></div>
@@ -151,7 +202,7 @@ function Cart() {
                   </div>
 
                   <button
-                    className="bg-[rgb(66,162,162)] border-[rgb(66,162,162)] text-white p-[15px] bg-[#42a2a2] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer"
+                    className="bg-[rgb(66,162,162)] border-[rgb(66,162,162)] text-white p-[15px] bg-[#42a2a2] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer"
                     id="continuePayment">
                     Continue
                   </button>
@@ -258,31 +309,49 @@ function Cart() {
 
       {/* modals section  */}
       <div
+        onClick={(e) => {
+          e.stopPropagation();
+          couponApplyModalRef.current.classList.add("hidden");
+        }}
         ref={couponApplyModalRef}
         className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
         id="coupon_modal">
-        <div className="coupon_model_container absolute overflow-hidden w-[370px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transfrom translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          className="coupon_model_container absolute overflow-hidden w-[370px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transfrom translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
           <p className="coupon_title_apply_box text-[16px] text-[#000] relative mb-[40px] text-center font-bold">
             Apply Coupon / Gift Card
           </p>
-          <form id="coupon-form">
+          <form onSubmit={handleCouponFormSubmit} id="coupon-form">
             <input
-              className="text-[14px] uppercase outline-none border-none p-[5px_0px] border-b-[2px] border-b-[#42a2a2] w-[100%] mb-[10px] placeholder:text-[rgba(0,0,0,0.3)] placeholder:opacity-[1] placeholder:font-bold focus:border-b-[2px] focus:border-b-[#42a2a2]"
+              //
+              onKeyUp={handleCouponCodeKeyUp}
+              className="text-[14px] uppercase outline-none p-[5px_0px] border-b-[2px] border-b-[#42a2a2] border-b-[rgb(219,69,69)] w-[100%] mb-[10px] placeholder:text-[rgba(0,0,0,0.3)] placeholder:opacity-[1] placeholder:font-bold focus:border-b-[2px] focus:border-b-[rgb(219,69,69)]"
               type="text"
               id="cpn_code"
               placeholder="ENTER CODE"
               autoComplete="false"
             />
-            <div
-              className="p-[12px] bg-[rgb(253,244,244)] text-[#e02020] w-[100%] text-[12px] leading-[13px] rounded-[5px] text-left hidden"
-              id="error_coupon_holder">
-              <span id="error-text">Invalid Code</span>
-            </div>
+            {couponCode?.isError && (
+              <div
+                className="p-[12px] bg-[rgb(253,244,244)] w-[100%] rounded-[5px]"
+                id="error_coupon_holder">
+                <p
+                  className="text-[12px] leading-[13px] text-[#e02020] text-left"
+                  id="error-text">
+                  {couponCode?.error || "Coupon invalid"}
+                </p>
+              </div>
+            )}
 
             <button
-              className="bg-[#42a2a2] border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[30px] cursor-pointer"
-              type="submit"
-              id="coupon_apply_button">
+              disabled={
+                !couponCode || !couponCode.isTouched || couponCode.isError
+              }
+              className="bg-[#42a2a2] bg-[rgb(219,69,69)] disabled:cursor-not-allowed disabled:bg-[rgba(219,69,69,0.2)] border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[20px] cursor-pointer"
+              type="submit">
               APPLY
             </button>
           </form>
@@ -291,6 +360,7 @@ function Cart() {
 
       {/* size modal */}
       <div
+        ref={sizeModalRef}
         className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
         id="size_modal">
         <div className="size_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
@@ -332,6 +402,7 @@ function Cart() {
 
       {/* quantity modal  */}
       <div
+        ref={quantityModalRef}
         className="hidden bg-[rgb(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
         id="qty_modal">
         <div className="qty_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
@@ -391,14 +462,15 @@ function Cart() {
         </div>
       </div>
 
-      {/* modals section  */}
+      {/* coupon applied tick mark modal */}
       <div
+        ref={couponThankYouRef}
         className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
         id="coupon_thank_you">
-        <div className="coupon_model_thank_container absolute overflow-hidden w-[360px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[48px] text-center rounded-[5px]">
+        <div className="coupon_model_thank_container absolute overflow-hidden w-[360px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[48px] text-center rounded-[5px] flex flex-col gap-3 justify-center items-center">
           <img
             className="tickMarkCoupon w-[95px] h-[95px]"
-            src="./img/tick_mark.png"
+            src="/assets/tickmark-animation.gif"
             alt="couponTick"
           />
           <p className="coupon_applied_msg text-[14px] mt-[16px] ">
