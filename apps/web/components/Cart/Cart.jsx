@@ -104,7 +104,8 @@ function Cart() {
                   alt="truck"
                 />
                 <p className="text-black text-[15px]">
-                  Yay! You get FREE delivery on this order
+                  {/* Yay! You get FREE delivery on this order */}
+                  Get FREE delivery over ₹499
                 </p>
               </div>
               <div id="cart-append">
@@ -145,7 +146,7 @@ function Cart() {
                   </span>
 
                   <span className="font-bold text-[12px] text-[#42a2a2] text-left overflow-none text-nowrap text-overflow-none">
-                    Redeem!{" "}
+                    Redeem!&nbsp;
                     <img
                       src="https://images.bewakoof.com/web/coupon-redeem-arrow-1634641878.png"
                       alt=""
@@ -326,9 +327,8 @@ function Cart() {
           </p>
           <form onSubmit={handleCouponFormSubmit} id="coupon-form">
             <input
-              //
               onKeyUp={handleCouponCodeKeyUp}
-              className="text-[14px] uppercase outline-none p-[5px_0px] border-b-[2px] border-b-[#42a2a2] border-b-[rgb(219,69,69)] w-[100%] mb-[10px] placeholder:text-[rgba(0,0,0,0.3)] placeholder:opacity-[1] placeholder:font-bold focus:border-b-[2px] focus:border-b-[rgb(219,69,69)]"
+              className="text-[14px] uppercase outline-none p-[5px_0px] border-b-[2px] border-b-[#42a2a2] w-[100%] mb-[10px] placeholder:text-[rgba(0,0,0,0.3)] placeholder:opacity-[1] placeholder:font-bold focus:border-b-[2px] focus:border-b-[rgb(219,69,69)]"
               type="text"
               id="cpn_code"
               placeholder="ENTER CODE"
