@@ -104,20 +104,6 @@ function Cart() {
       }
     }
 
-    console.log(form);
-
-    // const popup = window.open("/blank");
-    // console.log(popup);
-    // popup.document.body.appendChild(form);
-    // form.submit();
-    // popup.document.body.removeChild(form);
-
-    // popup.addEventListener("unload", (e) => {
-    //   if (!orderStatus) {
-    //     transactionLoadingRef.current.classList.add("hidden");
-    //   }
-    // });
-
     // Append the form to the body and submit it
     document.body.appendChild(form);
     form.submit();

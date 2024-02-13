@@ -81,7 +81,7 @@ export async function GET(req) {
 
     const hash = generateHash(payuObject);
 
-    payuObject.key = "PgtKFFx";
+    payuObject.key = "gtKFFx";
     payuObject.surl = "http://localhost:3000/api/v1/payment/payu/success";
     payuObject.furl = "http://localhost:3000/api/v1/payment/payu/success";
     // payuObject.furl = "http://localhost:3000/api/v1/payment/payu/failure";
