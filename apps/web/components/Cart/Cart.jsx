@@ -104,24 +104,26 @@ function Cart() {
       }
     }
 
-    const popup = window.open("/blank");
-    console.log(popup);
-    popup.document.body.appendChild(form);
-    form.submit();
-    popup.document.body.removeChild(form);
+    console.log(form);
 
-    popup.addEventListener("unload", (e) => {
-      if (!orderStatus) {
-        transactionLoadingRef.current.classList.add("hidden");
-      }
-    });
-
-    // // Append the form to the body and submit it
-    // document.body.appendChild(form);
+    // const popup = window.open("/blank");
+    // console.log(popup);
+    // popup.document.body.appendChild(form);
     // form.submit();
+    // popup.document.body.removeChild(form);
 
-    // // Clean up the form after submission
-    // document.body.removeChild(form);
+    // popup.addEventListener("unload", (e) => {
+    //   if (!orderStatus) {
+    //     transactionLoadingRef.current.classList.add("hidden");
+    //   }
+    // });
+
+    // Append the form to the body and submit it
+    document.body.appendChild(form);
+    form.submit();
+
+    // Clean up the form after submission
+    document.body.removeChild(form);
   };
 
   const handlePaymentContinueClick = async () => {
