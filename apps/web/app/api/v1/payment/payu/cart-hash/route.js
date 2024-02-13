@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
+import { getBackendUrl } from "../../../../../../helpter/utils";
 import { Cart, Order } from "../../../../../../models/models";
 import getTokenDetails from "../../../../../../helpter/getTokenDetails";
 import generateHash from "../../../../../../helpter/generateHash";
@@ -82,10 +83,11 @@ export async function GET(req) {
 
     const hash = generateHash(payuObject);
 
+    const backendUrl = getBackendUrl();
+
     payuObject.key = PAYU_MERCHANT_KEY;
-    payuObject.surl = "http://localhost:3000/api/v1/payment/payu/success";
-    payuObject.furl = "http://localhost:3000/api/v1/payment/payu/success";
-    // payuObject.furl = "http://localhost:3000/api/v1/payment/payu/failure";
+    payuObject.surl = `${backendUrl}api/v1/payment/payu/success`;
+    payuObject.furl = `${backendUrl}api/v1/payment/payu/failure`;
     payuObject.hash = hash;
 
     return NextResponse.json({
