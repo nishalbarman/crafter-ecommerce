@@ -91,7 +91,7 @@ function Cart() {
     const form = document.createElement("form");
     form.method = "POST";
     form.action = "https://test.payu.in/_payment"; // URL of your payment page
-    form.target = "_blank";
+    // form.target = "_blank";
 
     // Add each key-value pair from postData as a hidden input field
     for (const key in pay) {
@@ -104,12 +104,24 @@ function Cart() {
       }
     }
 
-    // Append the form to the body and submit it
-    document.body.appendChild(form);
+    const popup = window.open("/blank");
+    console.log(popup);
+    popup.document.body.appendChild(form);
     form.submit();
+    popup.document.body.removeChild(form);
 
-    // Clean up the form after submission
-    document.body.removeChild(form);
+    popup.addEventListener("unload", (e) => {
+      if (!orderStatus) {
+        transactionLoadingRef.current.classList.add("hidden");
+      }
+    });
+
+    // // Append the form to the body and submit it
+    // document.body.appendChild(form);
+    // form.submit();
+
+    // // Clean up the form after submission
+    // document.body.removeChild(form);
   };
 
   const handlePaymentContinueClick = async () => {
