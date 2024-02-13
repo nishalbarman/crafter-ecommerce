@@ -94,7 +94,7 @@ function Cart() {
     form.method = "POST";
     // form.action = "https://test.payu.in/_payment"; // URL of your payment page
     form.action = "https://secure.payu.in/_payment"; // URL of your payment page
-    form.target = "PaymentPopup";
+    form.target = "PaymentPopup" + Date.now();
 
     // Add each key-value pair from postData as a hidden input field
     for (const key in pay) {
@@ -110,7 +110,7 @@ function Cart() {
     const popup = window.open("", "_blank");
     if (popup) {
       // Submit the form when the popup is allowed
-      
+
       // Append the form to the body and submit it
       document.body.appendChild(form);
       form.submit();
