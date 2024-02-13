@@ -13,6 +13,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+import "../../app/scrollbar.css";
+
 function Cart() {
   const [couponCode, setCouponCode] = useState({
     value: "",
@@ -76,22 +78,23 @@ function Cart() {
     });
 
     if (response.status) {
-      couponApplyModalRef.current.classList.add("hidden");
-      couponThankYouRef.current.classList.remove("hidden");
+      couponApplyModalRef.current?.classList.add("hidden");
+      couponThankYouRef.current?.classList.remove("hidden");
     }
 
     setCouponCode((prev) => ({ value: "", isError: false, isTouched: false }));
 
     setTimeout(() => {
-      couponThankYouRef.current.classList.add("hidden");
+      couponThankYouRef.current?.classList.add("hidden");
     }, 800);
   };
 
   const initiatePayment = (pay) => {
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "https://test.payu.in/_payment"; // URL of your payment page
-    form.target = "_blank";
+    // form.action = "https://test.payu.in/_payment"; // URL of your payment page
+    form.action = "https://secure.payu.in/_payment"; // URL of your payment page
+    form.target = "PaymentPopup";
 
     // Add each key-value pair from postData as a hidden input field
     for (const key in pay) {
@@ -123,7 +126,7 @@ function Cart() {
 
       initiatePayment(pay);
 
-      transactionLoadingRef.current.classList.remove("hidden");
+      transactionLoadingRef.current?.classList.remove("hidden");
 
       // Define a function to handle custom events from the popup
       function handlePopupEvent(event) {
@@ -134,8 +137,8 @@ function Cart() {
         // Close loading indicator or perform any other actions
 
         if (!data?.success) {
-          transactionLoadingRef.current.classList.add("hidden");
-          transactionStatusRef.current.classList.remove("hidden");
+          transactionLoadingRef.current?.classList.add("hidden");
+          transactionStatusRef.current?.classList.remove("hidden");
           setOrderStatusText("Order Placed Successfully");
           setOrderStatus(true);
           dispatch(updateCart({ totalCount: 0, cartItems: {} }));
@@ -206,7 +209,7 @@ function Cart() {
                   Get FREE delivery over ₹499
                 </p>
               </div>
-              <div id="cart-append">
+              <div className="h-[100vh] classname">
                 {Object.values(cartData)?.map((item) => {
                   return (
                     <CartItem
@@ -235,7 +238,7 @@ function Cart() {
               <div className="apply_coupon_outer p-[6px] border-[1px] border-[#eaeaea] text-overflow-none overflow-none">
                 <div
                   onClick={() => {
-                    couponApplyModalRef.current.classList.remove("hidden");
+                    couponApplyModalRef.current?.classList.remove("hidden");
                   }}
                   className="flex items-center justify-between items-center cursor-pointer h-[32px] w-[100%] bg-[rgba(66,162,161,0.1)] rounded-[5px] p-[10px] text-overflow-none overflow-none"
                   id="couponApply">
@@ -410,7 +413,7 @@ function Cart() {
       <div
         onClick={(e) => {
           e.stopPropagation();
-          couponApplyModalRef.current.classList.add("hidden");
+          couponApplyModalRef.current?.classList.add("hidden");
         }}
         ref={couponApplyModalRef}
         className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
