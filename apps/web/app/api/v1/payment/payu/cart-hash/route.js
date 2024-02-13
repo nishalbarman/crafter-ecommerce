@@ -59,6 +59,7 @@ export async function GET(req) {
 
     const payuObject = cartItemsForUser?.reduce(
       (pay, cartItem) => {
+        const itemID = cartItem._id;
         const itemTitle = cartItem.product.title;
         const itemPrice = cartItem.product.discountedPrice;
         const itemQuantity = cartItem.quantity;
@@ -66,7 +67,7 @@ export async function GET(req) {
 
         return {
           amount: pay.amount + totalItemPrice,
-          productinfo: [...pay.productinfo, itemTitle],
+          productinfo: [...pay.productinfo, { title: itemTitle, id: itemID }],
         };
       },
       { amount: 0, productinfo: [] }
@@ -75,13 +76,14 @@ export async function GET(req) {
     payuObject.txnid = txnid;
     payuObject.firstname = userDetails.name;
     payuObject.email = userDetails.email;
-    payuObject.productinfo = payuObject.productinfo.join(", ");
+    payuObject.productinfo = JSON.stringify(payuObject.productinfo);
+    payuObject.phone = userDetails.mobileNo;
 
     const hash = generateHash(payuObject);
 
     payuObject.key = PAYU_MERCHANT_KEY;
     payuObject.surl = "http://localhost:3000/api/v1/payment/payu/success";
-    payuObject.surl = "http://localhost:3000/api/v1/payment/payu/success";
+    payuObject.furl = "http://localhost:3000/api/v1/payment/payu/success";
     // payuObject.furl = "http://localhost:3000/api/v1/payment/payu/failure";
     payuObject.hash = hash;
 
