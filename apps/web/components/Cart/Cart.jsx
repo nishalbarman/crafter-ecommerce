@@ -91,7 +91,7 @@ function Cart() {
     const form = document.createElement("form");
     form.method = "POST";
     form.action = "https://test.payu.in/_payment"; // URL of your payment page
-    // form.target = "_blank";
+    form.target = "_blank";
 
     // Add each key-value pair from postData as a hidden input field
     for (const key in pay) {
