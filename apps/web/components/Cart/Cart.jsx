@@ -107,12 +107,20 @@ function Cart() {
       }
     }
 
-    // Append the form to the body and submit it
-    document.body.appendChild(form);
-    form.submit();
+    const popup = window.open("", "_blank");
+    if (popup) {
+      // Submit the form when the popup is allowed
+      
+      // Append the form to the body and submit it
+      document.body.appendChild(form);
+      form.submit();
 
-    // Clean up the form after submission
-    document.body.removeChild(form);
+      // Clean up the form after submission
+      document.body.removeChild(form);
+    } else {
+      // Inform the user if the popup was blocked
+      alert("Please enable pop-ups to proceed with payment.");
+    }
   };
 
   const handlePaymentContinueClick = async () => {
