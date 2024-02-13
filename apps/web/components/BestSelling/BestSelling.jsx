@@ -1,12 +1,16 @@
 import React from "react";
+import axios from "axios";
+
 import TitleWithBar from "../TitleWithBar/TitleWithBar";
 import ProductSlider from "../ProductSlider/ProductSlider";
 import { getBackendUrl } from "../../helpter/utils";
 
 const getProducts = async () => {
   const backendUrl = getBackendUrl();
-  const response = await fetch(`${backendUrl}api/v1/products?&page=1&limit=25`);
-  const data = await response.json();
+  const response = await axios.get(
+    `${backendUrl}api/v1/products?&page=1&limit=25`
+  );
+  const data = response.data;
   return data.data;
 };
 
