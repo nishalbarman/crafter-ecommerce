@@ -53,6 +53,7 @@ export async function GET(req) {
     const txnInsertedCartItems = cartItemsForUser.map((item) => ({
       ...item,
       txnid,
+      user: userDetails._id,
     }));
 
     await Order.insertMany(txnInsertedCartItems);
