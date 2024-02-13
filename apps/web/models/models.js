@@ -128,10 +128,10 @@ const feedbackSchema = new mongoose.Schema(
 const productSchema = new mongoose.Schema(
   {
     previewUrl: { type: String, required: true },
-    name: { type: String, required: true },
+    title: { type: String, required: true },
     category: { type: mongoose.Types.ObjectId, ref: "categories" },
-    discounted_price: { type: Number, required: true },
-    original_price: { type: Number },
+    discountedPrice: { type: Number, required: true },
+    originalPrice: { type: Number },
     showPictures: { type: Array, required: true },
     description: { type: String, required: true },
     stars: { type: Number, default: 0 },
@@ -184,8 +184,12 @@ const wishlistSchema = new mongoose.Schema(
 
 const orderSchema = new mongoose.Schema(
   {
+    txnid: { type: String, required: true },
     user: { type: mongoose.Types.ObjectId, ref: "users" },
     product: { type: mongoose.Types.ObjectId, ref: "products" },
+    orderStatus: { type: String, default: "Pending" },
+    paymentStatus: { type: Boolean, default: false },
+    trackingLink: { type: String, default: null },
   },
   {
     timestamps: true,
@@ -239,8 +243,7 @@ const Wishlist =
 const Address =
   mongoose.models.address || mongoose.model("address", addressSchema);
 
-const Order =
-  mongoose.models.address || mongoose.model("address", addressSchema);
+const Order = mongoose.models.orders || mongoose.model("orders", orderSchema);
 
 // ----------------------------------------->
 /****************************************** */
@@ -338,7 +341,7 @@ Product.schema.path("previewUrl").validate({
   message: "Invalid Preview URL",
 });
 
-Product.schema.path("discounted_price").validate({
+Product.schema.path("discountedPrice").validate({
   validator: (value) => value && !isNaN(parseFloat(value)),
   message: "Discounted Price must be number",
 });
@@ -360,4 +363,5 @@ module.exports = {
   Cart,
   Wishlist,
   Address,
+  Order,
 };

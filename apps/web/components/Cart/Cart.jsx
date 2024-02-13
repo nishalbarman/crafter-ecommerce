@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useDeleteCartMutation } from "@store/redux/cart";
+import { updateCart } from "@store/redux/cartLocal";
 import { useAddWishlistMutation } from "@store/redux/wishlist";
 
 import CartItem from "./CartItem";
@@ -22,9 +23,13 @@ function Cart() {
 
   const [appliedCoupon, setAppliedCoupon] = useState(); // coupon which needs to be sent to server, coupon will be stored here after applying.
 
+  const [hash, setHash] = useState("");
   const [subtotalPrice, setSubtotalPrice] = useState(0);
   const [totalDiscountPrice, setTotalDiscountPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const [orderStatus, setOrderStatus] = useState(true);
+  const [orderStatusText, setOrderStatusText] = useState("");
 
   const cartData = useSelector((state) => state.cartLocal.cartItems);
   const cartCount = useSelector((state) => state.cartLocal.totalItems);
@@ -32,8 +37,12 @@ function Cart() {
     (state) => state.wishlistLocal.wishlistItems
   );
 
+  const dispatch = useDispatch();
+
   const couponApplyModalRef = useRef();
   const couponThankYouRef = useRef();
+  const transactionLoadingRef = useRef();
+  const transactionStatusRef = useRef();
 
   const [
     removeOneFromCart,
@@ -78,10 +87,69 @@ function Cart() {
     }, 800);
   };
 
+  const initiatePayment = (pay) => {
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://test.payu.in/_payment"; // URL of your payment page
+    form.target = "PaymentPopup";
+
+    // Add each key-value pair from postData as a hidden input field
+    for (const key in pay) {
+      if (pay.hasOwnProperty(key)) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = pay[key];
+        form.appendChild(input);
+      }
+    }
+
+    // Append the form to the body and submit it
+    document.body.appendChild(form);
+    form.submit();
+
+    // Clean up the form after submission
+    document.body.removeChild(form);
+  };
+
   const handlePaymentContinueClick = async () => {
     const isAddressAvailble = true || localStorage.getItem("isAddressAvailble");
     if (isAddressAvailble) {
-      const response = await axios.get(`/api/v1/payment/payu/cart`);
+      const response = await axios.get(`/api/v1/payment/payu/cart-hash`); // generate hash
+
+      console.log(response?.data);
+
+      const pay = response.data.paymentDetails;
+
+      initiatePayment(pay);
+
+      transactionLoadingRef.current.classList.remove("hidden");
+
+      // Define a function to handle custom events from the popup
+      function handlePopupEvent(event) {
+        // Handle the event from the popup
+        var data = event.detail;
+        console.log("Received data from popup:", data);
+
+        // Close loading indicator or perform any other actions
+
+        if (!data?.success) {
+          transactionLoadingRef.current.classList.add("hidden");
+          transactionStatusRef.current.classList.remove("hidden");
+          setOrderStatusText("Order Placed Successfully");
+          setOrderStatus(true);
+          dispatch(updateCart({ totalCount: 0, cartItems: {} }));
+        } else {
+          transactionLoadingRef.current?.classList.add("hidden");
+          transactionStatusRef.current?.classList.remove("hidden");
+          setOrderStatus(false);
+          setOrderStatusText("Order Failed");
+        }
+        document.removeEventListener("paymentResponseData", handlePopupEvent);
+      }
+
+      // Listen for custom events from the popup
+      document.addEventListener("paymentResponseData", handlePopupEvent);
     } else {
       navigation.push("/billing?redirect=payment-cart");
     }
@@ -404,7 +472,56 @@ function Cart() {
           </p>
         </div>
       </div>
-      {/* </div> */}
+
+      {/* transaction loading */}
+      <div
+        ref={transactionLoadingRef}
+        className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
+        id="coupon_thank_you">
+        <div className="coupon_model_thank_container absolute overflow-hidden w-[360px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[48px] text-center rounded-[5px] flex flex-col gap-3 justify-center items-center">
+          <Image
+            className="w-[95px] h-[95px]"
+            src="/assets/loading-animation1.gif"
+            width={95}
+            height={95}
+            alt="couponTick"
+          />
+          <p className="coupon_applied_msg text-[14px] mt-[6px] ">
+            Loading... Please complete the payment
+          </p>
+        </div>
+      </div>
+
+      {/* transaction status */}
+      <div
+        ref={transactionStatusRef}
+        className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]">
+        <div className="absolute overflow-hidden w-[360px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[48px] text-center rounded-[5px] flex flex-col gap-3 justify-center items-center">
+          <img
+            className="w-[95px] h-[95px]"
+            src={`${orderStatus ? "/assets/tickmark-animation.gif" : "/assets/cross-failed-animation.gif"}`}
+            alt="couponTick"
+          />
+          <p className="text-[16px] mt-[16px] font-bold">{orderStatusText}</p>
+          {orderStatus ? (
+            <Link
+              className="bg-[rgb(219,69,69)] mt-[20px] rounded-md p-3 w-[250px] text-center text-white text-[16px]"
+              href={"/myorders"}>
+              My Orders
+            </Link>
+          ) : (
+            <button
+              onClick={() => {
+                console.log(transactionStatusRef.current);
+                transactionStatusRef.current?.classList.add("hidden");
+              }}
+              className="bg-[rgb(219,69,69)] disabled:cursor-not-allowed disabled:bg-[rgb(219,69,69)] border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[20px] cursor-pointer"
+              type="submit">
+              CLOSE
+            </button>
+          )}
+        </div>
+      </div>
     </>
   );
 }

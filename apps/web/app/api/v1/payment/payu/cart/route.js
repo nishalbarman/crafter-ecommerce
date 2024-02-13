@@ -3,13 +3,12 @@ import { v4 as uuidv4 } from "uuid";
 import jsSHA from "jssha";
 import { connect } from "../../../../../../dbConfig/dbConfig";
 import getTokenDetails from "../../../../../../helpter/getTokenDetails";
-import { request } from "https";
-import axios from "axios";
-
-connect();
+import request from "request";
+import generateHash from "../../../../../../helpter/generateHash";
 
 const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY;
-const PAYU_MERCHANT_SALT = process.env.PAYU_MERCHANT_SALT;
+
+connect();
 
 export async function GET(req) {
   try {
@@ -30,48 +29,11 @@ export async function GET(req) {
     const firstname = "Nishal";
     const email = "nishalbarman@gmail.com";
 
-    const hashString =
-      PAYU_MERCHANT_KEY +
-      "|" +
-      txnid +
-      "|" +
-      amount +
-      "|" +
-      productinfo +
-      "|" +
-      firstname +
-      "|" +
-      email +
-      "|" +
-      "||||||||||" +
-      PAYU_MERCHANT_SALT;
+    const hash = generateHash({ txnid, amount, productinfo, firstname, email });
 
-    const sha = new jsSHA("SHA-512", "TEXT");
-    sha.update(hashString);
-    const hash = sha.getHash("HEX");
+    //Making an HTTP/HTTPS call with request
 
-    const response = await axios.post(
-      `https://sandboxsecure.payu.in/_payment`,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: {
-          txnid,
-          amount,
-          productinfo,
-          firstname,
-          email,
-          hash,
-          key: PAYU_MERCHANT_KEY,
-          surl: "https://localhost:3000/api/v1/payu/success",
-          furl: "https://localhost:3000/api/v1/payu/failure",
-        },
-      }
-    );
-
-    return NextResponse.send(response.data);
+    return NextResponse.json({ status: false, message: "Payment failed" });
   } catch (error) {
     console.log(error);
     if (error.response.status >= 300 && error.response.status <= 400) {

@@ -122,7 +122,7 @@ const ProductSlider = ({ items }) => {
 
   return (
     <Slider {...settings}>
-      {items.map((item, index) => (
+      {items?.map((item, index) => (
         <div
           className="w-full h-fit flex flex-row justify-center p-1"
           onClick={() => {
