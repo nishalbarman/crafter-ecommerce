@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { connect } from "../../../../dbConfig/dbConfig";
 import { Coupon } from "../../../../models/models";
@@ -9,6 +11,13 @@ export async function GET(req, { params }) {
     const searchParams = req.nextUrl.searchParams;
     const code = searchParams.get("code") || null;
     // console.log("Coupon code-------->", code);
+
+    const userToken = req.cookies.get("token") || null;
+    const token = userToken?.value || null;
+
+    if (!token) {
+      return NextResponse.redirect(new URL("/login?redirect=cart", req.url));
+    }
 
     if (!code) {
       return NextResponse.json({

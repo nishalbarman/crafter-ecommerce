@@ -5,7 +5,7 @@ import Link from "next/link";
 import { isValidEmail, isValidPassword } from "../../helpter/utils";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 const validateInputs = (name, value) => {
@@ -18,6 +18,8 @@ const validateInputs = (name, value) => {
 };
 
 function LoginForm() {
+  const searchParams = useSearchParams();
+
   const [formData, setFormData] = useState({
     email: { value: "", isTouched: false, isError: null },
     password: { value: "", isTouched: false, isError: null },
@@ -55,7 +57,10 @@ function LoginForm() {
       });
       toast.dismiss(loadingToast);
       toast.success(response?.data?.message || "Unknown error occured");
-      if (response?.data?.status) navigator.push("/");
+      if (response?.data?.status) {
+        const redirectPath = searchParams?.get("redirect") || null;
+        navigator.push(`/${redirectPath || ""}`);
+      }
     } catch (error) {
       console.log(error);
       setIsLoading(false);
