@@ -13,11 +13,25 @@ import toast from "react-hot-toast";
 function ProductItem(item) {
   const {
     _id,
+    _cartProductId,
+    previewUrl,
     title,
-    imageUrl,
-    originalPrice,
+    category,
     discountedPrice,
-    totalNumberOfRatings,
+    originalPrice,
+    showPictures,
+    description,
+    stars,
+    totalFeedbacks,
+    shippingPrice,
+    availableStocks,
+    isSizeVaries,
+    isColorVaries,
+    availableSizes,
+    availableColors,
+    quantity,
+    size,
+    color,
 
     wishlistItems,
     cartItems,
@@ -61,11 +75,25 @@ function ProductItem(item) {
       dispatch(
         addWishlistProduct({
           _id,
+          _cartProductId,
+          previewUrl,
           title,
-          imageUrl,
-          originalPrice,
+          category,
           discountedPrice,
-          totalNumberOfRatings,
+          originalPrice,
+          showPictures,
+          description,
+          stars,
+          totalFeedbacks,
+          shippingPrice,
+          availableStocks,
+          isSizeVaries,
+          isColorVaries,
+          availableSizes,
+          availableColors,
+          quantity,
+          size,
+          color,
         })
       );
       if (cartItems?.hasOwnProperty(_id)) {
@@ -88,20 +116,28 @@ function ProductItem(item) {
       dispatch(
         addCartProduct({
           _id,
+          _cartProductId,
+          previewUrl,
           title,
-          imageUrl,
-          originalPrice,
+          category,
           discountedPrice,
-          totalNumberOfRatings,
-          quantity: 1,
+          originalPrice,
+          showPictures,
+          description,
+          stars,
+          totalFeedbacks,
+          shippingPrice,
+          availableStocks,
+          isSizeVaries,
+          isColorVaries,
+          availableSizes,
+          availableColors,
+          quantity,
+          size,
+          color,
         })
       );
-      console.log(
-        "Is wishlist available -->",
-        _id,
-        wishlistItems,
-        wishlistItems?.hasOwnProperty(_id)
-      );
+
       if (wishlistItems?.hasOwnProperty(_id)) {
         removeOneWishlist(_id);
         dispatch(removeWishlistProduct(_id));
@@ -213,7 +249,7 @@ function ProductItem(item) {
         <div className="box-border p-5">
           <img
             className="object-scale-down mix-blend-multiply h-[200px] md:h-fit md:w-fit rounded aspect-sqaure"
-            // src={imageUrl || "https://static-assets-web.flixcart.com/www/linchpin/batman-returns/images/fk-default-image-75ff340b.png?q=90"}
+            // src={previewUrl || "https://static-assets-web.flixcart.com/www/linchpin/batman-returns/images/fk-default-image-75ff340b.png?q=90"}
             src={
               "https://imgs.search.brave.com/rKZrmkTSLXfWaqAnvfSt_tW5IIPY3CC1G9d_ujAhEPo/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM5/NTE5MTU4NC9waG90/by9ibHVldG9vdGgt/c3BlYWtlci1pc29s/YXRlZC1vbi13aGl0/ZS5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9cFVhVWk1TVNq/SmJpbXdkXzBrQ2Nv/a1BlWHQ0WHlhQ3Qx/UnQ2S2h3ZXJzYz0"
             }
@@ -281,7 +317,7 @@ function ProductItem(item) {
           </div>
           <div className="flex items-center h-full max-sm:hidden">
             <span className="text-[#000] text-[18px] font-semibold opacity-[0.5]">
-              ({totalNumberOfRatings})
+              ({totalFeedbacks})
             </span>
           </div>
         </div>

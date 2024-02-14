@@ -70,7 +70,6 @@ export default function SearchCartWishlist() {
   const getWishlistData = async () => {
     try {
       const response = await axios.get(`/api/v1/wishlist`);
-      console.log(response.data.data);
       setWishlistData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -108,14 +107,15 @@ export default function SearchCartWishlist() {
     if (cartData?.length > 0) {
       const cartDataForStore = {};
       cartData?.forEach((item) => {
-        console.log(item);
         cartDataForStore[item.product._id] = {
           ...item, //will override the previouse product _id
           ...item.product, // fix override with destructuring the product later
           _id: item.product._id, // or we can also manually add the _id field
           _cartProductId: item._id,
+          product: null,
         };
       });
+
       dispatch(
         updateCart({
           totalCount: cartData.length || 0,
