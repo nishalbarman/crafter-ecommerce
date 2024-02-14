@@ -13,7 +13,7 @@ const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY;
 export async function POST(req) {
   try {
     const userCookies = req.cookies.get("token") || null;
-    const token = userCookies.value || null;
+    const token = userCookies?.value || null;
 
     if (!token) {
       return NextResponse.json(
@@ -22,26 +22,25 @@ export async function POST(req) {
           message: "User token details not found",
           cookies: userCookies,
         },
-        { status: 401 }
+        { status: 400 }
       );
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
-      );
+      // return NextResponse.json(
+      //   { status: false, message: "Unauthorised access" },
+      //   { status: 401 }
+      // );
     }
 
     const userDetails = getTokenDetails(token) || null;
-    console.log(userDetails);
 
     if (!userDetails) {
       return NextResponse.json(
         { status: false, message: "Token data is manupulated" },
-        { status: 401 }
+        { status: 400 }
       );
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
-      );
+      // return NextResponse.json(
+      //   { status: false, message: "Unauthorised access" },
+      //   { status: 401 }
+      // );
     }
 
     await Order.updateMany(
@@ -57,7 +56,7 @@ export async function POST(req) {
         </body>
         <script>
             function sendPaymentData() {
-                const paymentData = { success: false, status: 'failed' };
+                const paymentData = { success: false, status: 'Failed' };
 
                 // Dispatch a custom event to the parent window
                 const event = new CustomEvent('paymentResponseData', { detail: paymentData });
@@ -80,7 +79,7 @@ export async function POST(req) {
         </body>
         <script>
             function sendPaymentData() {
-                const paymentData = { success: false, status: 'failed' };
+                const paymentData = { success: false, status: 'Failed' };
 
                 // Dispatch a custom event to the parent window
                 const event = new CustomEvent('paymentResponseData', { detail: paymentData });

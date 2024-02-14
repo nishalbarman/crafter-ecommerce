@@ -213,10 +213,12 @@ function Cart() {
     let totalDiscountPrice = 0;
 
     Object.values(cartData).map((item) => {
-      totalPrice += item.originalPrice || item.discountedPrice;
-      subtotalPrice += item.discountedPrice;
+      totalPrice +=
+        (item.originalPrice || item.discountedPrice) * (item.quantity || 1);
+      subtotalPrice += item.discountedPrice * (item.quantity || 1);
       totalDiscountPrice += !!item.originalPrice
-        ? item.originalPrice - item.discountedPrice
+        ? item.originalPrice * (item.quantity || 1) -
+          item.discountedPrice * (item.quantity || 1)
         : 0;
     });
 
@@ -601,9 +603,23 @@ function Cart() {
       {/* transaction loading */}
       <div
         ref={transactionLoadingRef}
-        className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
-        id="coupon_thank_you">
+        className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]">
         <div className="coupon_model_thank_container absolute overflow-hidden w-[360px] max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[48px] text-center rounded-[5px] flex flex-col gap-3 justify-center items-center">
+          <div
+            onClick={() => {
+              transactionLoadingRef.current?.classList.add("hidden");
+            }}
+            className="absolute top-0 right-0 p-2 cursor-pointer">
+            <Image
+              className="w-8 h-8"
+              src="/assets/close-window.png"
+              width={20}
+              height={20}
+              title="Cancel"
+              alt="close icon"
+            />
+          </div>
+
           <Image
             className="w-[95px] h-[95px]"
             src="/assets/loading-animation1.gif"

@@ -17,6 +17,10 @@ export const cartSlice = createSlice({
       delete state.cartItems[id];
       state.totalItems -= 1;
     },
+    updateSingleCartItem: (state, { payload: { id, updatedCartItem } }) => {
+      state.cartItems[id] = updatedCartItem;
+    },
+
     updateCart: (state, { payload: { totalCount, cartItems } }) => {
       state.totalItems = totalCount;
       state.cartItems = cartItems;
@@ -24,6 +28,6 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addCartProduct, removeCartProduct, updateCart } =
+export const { addCartProduct, removeCartProduct, updateCart, updateSingleCartItem } =
   cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
