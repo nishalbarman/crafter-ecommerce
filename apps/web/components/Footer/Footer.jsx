@@ -81,6 +81,22 @@ function Footer() {
             <p className=" font-andika font-andika text-white">Contact</p>
           </div>
         </div>
+
+        {/* credits links */}
+        <div>
+          <p className=" font-andika text-white text-xl font-bold mt-[24px] mb-[24px]">
+            Credits
+          </p>
+          <div className="font-andika flex flex-col gap-[16px]">
+            <a
+              className="font-andika font-andika text-white"
+              target="_blank"
+              href="https://www.flaticon.com/free-icons/tick"
+              title="tick icons">
+              Vectors Market - Flaticon
+            </a>
+          </div>
+        </div>
       </div>
 
       <div className="bg-[rgba(223,223,223,0.1)] mt-[3.5rem]  h-[1px] w-fill"></div>

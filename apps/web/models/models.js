@@ -125,6 +125,12 @@ const feedbackSchema = new mongoose.Schema(
   }
 );
 
+const categorySchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+  path: { type: String, required: true },
+});
+
 const productSchema = new mongoose.Schema(
   {
     previewUrl: { type: String, required: true },
@@ -209,6 +215,13 @@ const saleDetailsSchema = new mongoose.Schema({
   saleEndTime: { type: Number, default: -1 },
 });
 
+const couponSchema = new mongoose.Schema({
+  code: { type: String, required: true },
+  off: { type: Number, required: true },
+  isPercentage: { type: Boolean, required: true },
+  description: { type: String, required: true },
+});
+
 // ----------------------------------------->
 /****************************************** */
 /**            Mongoose Models             **/
@@ -216,6 +229,9 @@ const saleDetailsSchema = new mongoose.Schema({
 // ----------------------------------------->
 
 const User = mongoose.models.users || mongoose.model("users", userSchema);
+
+const Coupon =
+  mongoose.models.coupons || mongoose.model("coupons", couponSchema);
 
 const Role = mongoose.models.roles || mongoose.model("roles", roleSchema);
 
@@ -228,6 +244,9 @@ const Message =
 
 const Banner =
   mongoose.models.banners || mongoose.model("banners", bannerSchema);
+
+const Category =
+  mongoose.models.categories || mongoose.model("categories", categorySchema);
 
 const Product =
   mongoose.models.products || mongoose.model("products", productSchema);
@@ -353,15 +372,18 @@ Product.schema.path("showPictures").validate({
 
 /***************************************** */
 
-module.exports = {
+export {
   User,
+  Role,
   Message,
   Otp,
   Banner,
+  Category,
   Product,
   Feedback,
   Cart,
   Wishlist,
   Address,
   Order,
+  Coupon,
 };
