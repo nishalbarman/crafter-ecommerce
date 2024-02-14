@@ -67,8 +67,6 @@ export async function GET(req) {
       user: userDetails._id,
     }));
 
-    console.log(txnInsertedCartItems);
-
     await Order.insertMany(txnInsertedCartItems);
 
     const payuObject = cartItemsForUser?.reduce(
@@ -88,8 +86,6 @@ export async function GET(req) {
       },
       { amount: 0, productinfo: [] }
     );
-
-    console.log("Generated Payment Amount --->", payuObject.amount);
 
     if (!!appliedCouponID) {
       // check if applied coupon is avaible
