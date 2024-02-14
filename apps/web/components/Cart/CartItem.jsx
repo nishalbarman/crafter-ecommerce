@@ -35,7 +35,7 @@ function CartItem({
     isColorVaries,
     availableSizes,
     availableColors,
-    quantity,
+    quantity = 1,
     size,
     color,
   } = item;

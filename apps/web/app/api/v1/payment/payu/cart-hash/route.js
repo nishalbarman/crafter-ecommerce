@@ -108,6 +108,7 @@ export async function GET(req) {
     payuObject.email = userDetails.email;
     payuObject.productinfo = JSON.stringify(payuObject.productinfo);
     payuObject.phone = userDetails.mobileNo;
+    payuObject.udf1 = userDetails._id;
 
     const hash = generateHash(payuObject);
 
