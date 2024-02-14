@@ -105,8 +105,6 @@ const ProductSlider = ({ items }) => {
   );
   const cartItems = useSelector((state) => state.cartLocal.cartItems);
 
-  console.log(wishlistItems);
-
   const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
   const [
     removeOneWishlist,
