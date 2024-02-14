@@ -36,7 +36,9 @@ export async function GET(req) {
 
     const orderDetails = await Order.find({
       user: userDetails._id,
-    }).populate("user");
+    })
+      .sort({ createdAt: "desc" })
+      .populate("user");
 
     console.log("Order details -->", orderDetails);
 
