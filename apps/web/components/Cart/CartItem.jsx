@@ -1,33 +1,44 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { removeCartProduct, updateSingleCartItem } from "@store/redux/cartLocal";
+import {
+  removeCartProduct,
+  updateSingleCartItem,
+} from "@store/redux/cartLocal";
 import { useUpdateCartMutation } from "@store/redux/cart";
 import { addWishlistProduct } from "@store/redux/wishlistLocal";
 import { useCookies } from "next-client-cookies";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-function CartItem(item) {
+function CartItem({
+  item,
+  cartItems,
+  wishlistItems,
+  addNewWishlist,
+  removeOneFromCart,
+}) {
   const {
     _id,
     _cartProductId,
+    previewUrl,
     title,
-    imageUrl,
-    originalPrice,
+    category,
     discountedPrice,
-    quantity,
-    totalNumberOfRatings,
+    originalPrice,
+    showPictures,
+    description,
+    stars,
+    totalFeedbacks,
+    shippingPrice,
+    availableStocks,
     isSizeVaries,
     isColorVaries,
-
-    cartItems,
-    wishlistItems,
-
-    addNewWishlist,
-    removeOneFromCart,
+    availableSizes,
+    availableColors,
+    quantity,
+    size,
+    color,
   } = item;
-
-  console.log(item);
 
   const dispatch = useDispatch();
   const cookiesStore = useCookies();
@@ -40,12 +51,39 @@ function CartItem(item) {
   const [productQuantity, setProductQuantity] = useState(quantity);
 
   useEffect(() => {
-    if (productQuantity?._id) {
+    if (productQuantity > 0) {
       updateCart({
         id: _id,
         updatedItem: { quantity: productQuantity },
       });
-      updateSingleCartItem(id, { ...item, size: productQuantity });
+
+      dispatch(
+        updateSingleCartItem({
+          id: _id,
+          updatedCartItem: {
+            _id,
+            _cartProductId,
+            previewUrl,
+            title,
+            category,
+            discountedPrice,
+            originalPrice,
+            showPictures,
+            description,
+            stars,
+            totalFeedbacks,
+            shippingPrice,
+            availableStocks,
+            isSizeVaries,
+            isColorVaries,
+            availableSizes,
+            availableColors,
+            size,
+            color,
+            quantity: productQuantity,
+          },
+        })
+      );
     }
   }, [productQuantity]);
 
@@ -55,7 +93,33 @@ function CartItem(item) {
         id: _id,
         updatedItem: { size: productSize._id },
       });
-      updateSingleCartItem(id, { ...item, size: productSize });
+
+      dispatch(
+        updateSingleCartItem({
+          id: _id,
+          updatedCartItem: {
+            _id,
+            _cartProductId,
+            previewUrl,
+            title,
+            category,
+            discountedPrice,
+            originalPrice,
+            showPictures,
+            description,
+            stars,
+            totalFeedbacks,
+            shippingPrice,
+            availableStocks,
+            isSizeVaries,
+            isColorVaries,
+            availableSizes,
+            availableColors,
+            color,
+            size: productSize,
+          },
+        })
+      );
     }
   }, [productSize]);
 
@@ -76,11 +140,25 @@ function CartItem(item) {
       dispatch(
         addWishlistProduct({
           _id,
+          _cartProductId,
+          previewUrl,
           title,
-          imageUrl,
-          originalPrice,
+          category,
           discountedPrice,
-          totalNumberOfRatings,
+          originalPrice,
+          showPictures,
+          description,
+          stars,
+          totalFeedbacks,
+          shippingPrice,
+          availableStocks,
+          isSizeVaries,
+          isColorVaries,
+          availableSizes,
+          availableColors,
+          quantity,
+          size,
+          color,
         })
       );
       if (cartItems?.hasOwnProperty(_id)) {

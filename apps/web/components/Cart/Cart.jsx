@@ -280,7 +280,7 @@ function Cart() {
                   return (
                     <CartItem
                       key={item._id}
-                      {...item}
+                      item={item}
                       removeOneFromCart={removeOneFromCart}
                       addNewWishlist={addNewWishlist}
                       wishlistItems={wishlistItems}

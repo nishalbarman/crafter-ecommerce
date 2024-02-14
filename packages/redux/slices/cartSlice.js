@@ -28,6 +28,10 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addCartProduct, removeCartProduct, updateCart, updateSingleCartItem } =
-  cartSlice.actions;
+export const {
+  addCartProduct,
+  removeCartProduct,
+  updateCart,
+  updateSingleCartItem,
+} = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
