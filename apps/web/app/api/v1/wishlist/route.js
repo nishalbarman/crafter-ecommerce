@@ -20,6 +20,8 @@ export async function GET(req) {
       .populate("product")
       .select("-user");
 
+    console.log(wishlistDetails);
+
     return NextResponse.json({
       status: true,
       data: wishlistDetails,

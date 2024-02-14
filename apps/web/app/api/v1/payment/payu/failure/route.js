@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import getTokenDetails from "../../../../../../helpter/getTokenDetails";
-import { Order } from "../../../../../../models/models";
+import { Cart, Order } from "../../../../../../models/models";
 import { connect } from "../../../../../../dbConfig/dbConfig";
 
 connect();
@@ -12,19 +12,18 @@ const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY;
 
 export async function POST(req) {
   try {
-    const paymentFormData = await req.formData();
-    const transactionId = paymentFormData.get("txnid");
+    const userCookies = req.cookies.get("token") || null;
+    const token = userCookies.value || null;
 
-    const tokenCookies = req.cookies.get("token") || null;
-    if (!tokenCookies) {
+    if (!token) {
       return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
+        {
+          status: false,
+          message: "User token details not found",
+          cookies: userCookies,
+        },
         { status: 401 }
       );
-    }
-
-    const token = tokenCookies?.value || null;
-    if (!token) {
       return NextResponse.json(
         { status: false, message: "Unauthorised access" },
         { status: 401 }
@@ -36,6 +35,10 @@ export async function POST(req) {
 
     if (!userDetails) {
       return NextResponse.json(
+        { status: false, message: "Token data is manupulated" },
+        { status: 401 }
+      );
+      return NextResponse.json(
         { status: false, message: "Unauthorised access" },
         { status: 401 }
       );
@@ -43,8 +46,10 @@ export async function POST(req) {
 
     await Order.updateMany(
       { txnid: transactionId },
-      { $set: { paymentStatus: false, orderStatus: "Rejected" } }
+      { $set: { paymentStatus: true, orderStatus: "Placed" } }
     );
+
+    await Cart.deleteMany({ user: userDetails._id });
 
     return new Response(
       ` <body onload='sendPaymentData()'>
@@ -52,7 +57,7 @@ export async function POST(req) {
         </body>
         <script>
             function sendPaymentData() {
-                const paymentData = { success: false, status: 'failed', transactionId: '${paymentFormData.get("txnid")}' };
+                const paymentData = { success: false, status: 'failed' };
 
                 // Dispatch a custom event to the parent window
                 const event = new CustomEvent('paymentResponseData', { detail: paymentData });
@@ -75,7 +80,7 @@ export async function POST(req) {
         </body>
         <script>
             function sendPaymentData() {
-                const paymentData = { success: false, status: 'failed', transactionId: '${paymentFormData.get("txnid")}' };
+                const paymentData = { success: false, status: 'failed' };
 
                 // Dispatch a custom event to the parent window
                 const event = new CustomEvent('paymentResponseData', { detail: paymentData });

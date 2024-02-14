@@ -8,16 +8,41 @@ connect();
 export async function GET(req) {
   try {
     const userToken = req.cookies.get("token") || null;
+    const token = userToken.value || null;
 
-    // handle invalid token
-    if (!userToken) return NextResponse.json("Invalid token");
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: false,
+          message: "Token validation failed",
+        },
+        { status: 400 }
+      );
+    }
 
     const userDetails = getTokenDetails(userToken.value);
+
+    if (!userDetails) {
+      return NextResponse.json(
+        {
+          status: false,
+          message: "Token validation failed",
+        },
+        { status: 400 }
+      );
+    }
 
     const cartDetails = await Cart.find({
       user: userDetails._id,
     })
-      .populate("product")
+      .populate([
+        {
+          path: "product",
+          populate: { path: "availableSizes" },
+        },
+        "size",
+        "color",
+      ])
       .select("-user");
 
     return NextResponse.json({
@@ -36,17 +61,44 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const userToken = req.cookies.get("token") || null;
-    // handle invalid token
-    if (!userToken) return NextResponse.json("Invalid token");
+    const token = userToken.value || null;
 
-    const { productId } = await req.json();
+    if (!token) {
+      return NextResponse.json(
+        {
+          status: false,
+          message: "Token validation failed",
+        },
+        { status: 400 }
+      );
+    }
 
     const userDetails = getTokenDetails(userToken.value);
+
+    if (!userDetails) {
+      return NextResponse.json(
+        {
+          status: false,
+          message: "Token validation failed",
+        },
+        { status: 400 }
+      );
+    }
+
+    const { productId, size, color } = await req.json();
 
     const cart = new Cart({
       user: userDetails._id,
       product: productId,
     });
+
+    if (size) {
+      cart.size = size;
+    }
+
+    if (color) {
+      cart.color = color;
+    }
 
     await cart.save();
 

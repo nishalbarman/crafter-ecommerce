@@ -133,9 +133,11 @@ function ProductItem(item) {
       {/* IMAGE SECTION */}
       <div className="relative rounded flex items-center justify-center w-full h-[200px] md:h-[250px] bg-[rgb(244,244,245)]">
         {/* DISCOUNT */}
-        <div className="z-[999] h-8 absolute top-3 left-3 w-[80px] p-3 rounded bg-[#DB4444] flex items-center justify-center">
-          <span className="text-white text-[15px]">{discount}%</span>
-        </div>
+        {!!originalPrice && (
+          <div className="z-[999] h-8 absolute top-3 left-3 w-[80px] p-3 rounded bg-[#DB4444] flex items-center justify-center">
+            <span className="text-white text-[15px]">{discount}%</span>
+          </div>
+        )}
 
         {/* ADD TO CART BUTTON */}
         {!deleteCartIconVisible && (
@@ -226,9 +228,11 @@ function ProductItem(item) {
           <span className="text-[#DB4444] text-[16px] md:text-[18px]">
             &#8377;{discountedPrice} INR
           </span>
-          <span className="line-through text-[#000] text-[16px] md:text-[18px] opacity-[0.6]">
-            &#8377;{originalPrice} INR
-          </span>
+          {!!originalPrice && (
+            <span className="line-through text-[#000] text-[16px] md:text-[18px] opacity-[0.6]">
+              &#8377;{originalPrice} INR
+            </span>
+          )}
         </div>
         <div className="flex justify-left md:justify-center gap-4 w-[100%]">
           <div className="flex items-center gap-1 mt-[5px] h-full w-fit">
