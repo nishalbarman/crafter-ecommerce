@@ -12,8 +12,6 @@ export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
 
-    // console.log("TAG", searchParams);
-
     const PAGE = searchParams.get("page") || 1;
     const LIMIT = searchParams.get("limit") || 50;
     const SKIP = (PAGE - 1) * LIMIT;
@@ -25,7 +23,7 @@ export async function GET(req) {
 
     return NextResponse.json({ data: products, status: true }, { status: 200 });
   } catch (error) {
-    // console.error(TAG, error);
+    console.error(TAG, error);
     return NextResponse.json(
       { message: "Some error occured", status: false },
       { status: 500 }
