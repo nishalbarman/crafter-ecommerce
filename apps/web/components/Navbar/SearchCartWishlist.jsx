@@ -21,7 +21,6 @@ export default function SearchCartWishlist() {
   const cookieStore = useCookies();
 
   const token = cookieStore?.get("token") || null;
-  console.log("Client side token---->", token);
 
   if (!token) {
     return (
@@ -71,6 +70,7 @@ export default function SearchCartWishlist() {
   const getWishlistData = async () => {
     try {
       const response = await axios.get(`/api/v1/wishlist`);
+      console.log(response.data.data);
       setWishlistData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -108,9 +108,12 @@ export default function SearchCartWishlist() {
     if (cartData?.length > 0) {
       const cartDataForStore = {};
       cartData?.forEach((item) => {
+        console.log(item);
         cartDataForStore[item.product._id] = {
-          ...item.product,
-          quantity: item.quantity,
+          ...item, //will override the previouse product _id
+          ...item.product, // fix override with destructuring the product later
+          _id: item.product._id, // or we can also manually add the _id field
+          _cartProductId: item._id,
         };
       });
       dispatch(

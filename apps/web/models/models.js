@@ -142,12 +142,13 @@ const productSchema = new mongoose.Schema(
     description: { type: String, required: true },
     stars: { type: Number, default: 0 },
     totalFeedbacks: { type: Number, default: 0 },
-    quantity: { type: Number, default: 1 },
-    isSizeVaries: { type: Boolean, default: false },
-    availableSizes: [{ type: mongoose.Types.ObjectId, ref: "product_size" }],
-    isColorVaries: { type: Boolean, default: false },
-    availableColors: [{ type: mongoose.Types.ObjectId, ref: "product_colors" }],
     shippingPrice: { type: Number, required: true, default: 49 },
+    availableStocks: { type: Number, required: true, default: 0 },
+
+    isSizeVaries: { type: Boolean, default: false },
+    isColorVaries: { type: Boolean, default: false },
+    availableSizes: [{ type: mongoose.Types.ObjectId, ref: "product_sizes" }],
+    availableColors: [{ type: mongoose.Types.ObjectId, ref: "product_colors" }],
   },
   {
     timestamps: true,
@@ -169,9 +170,20 @@ const cartSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Types.ObjectId, ref: "users" },
     product: { type: mongoose.Types.ObjectId, ref: "products" },
+
     quantity: { type: Number, default: 1 },
-    color: { type: mongoose.Types.ObjectId, ref: "product_colors" },
-    size: { type: mongoose.Types.ObjectId, ref: "product_size" },
+
+    size: {
+      type: mongoose.Types.ObjectId,
+      ref: "product_sizes",
+      default: "65ccbb46bd028c8adafdd971",
+    },
+
+    color: {
+      type: mongoose.Types.ObjectId,
+      ref: "product_colors",
+      default: "65ccbb46bd028c8adafdd971",
+    },
   },
   {
     timestamps: true,
@@ -222,6 +234,14 @@ const couponSchema = new mongoose.Schema({
   description: { type: String, required: true },
 });
 
+const sizeSchema = new mongoose.Schema({
+  title: { type: mongoose.Types.ObjectId, required: true },
+});
+
+const colorSchema = new mongoose.Schema({
+  title: { type: mongoose.Types.ObjectId, required: true },
+});
+
 // ----------------------------------------->
 /****************************************** */
 /**            Mongoose Models             **/
@@ -263,6 +283,13 @@ const Address =
   mongoose.models.address || mongoose.model("address", addressSchema);
 
 const Order = mongoose.models.orders || mongoose.model("orders", orderSchema);
+
+const Size =
+  mongoose.models.product_sizes || mongoose.model("product_sizes", sizeSchema);
+
+const Color =
+  mongoose.models.product_colors ||
+  mongoose.model("product_colors", colorSchema);
 
 // ----------------------------------------->
 /****************************************** */
@@ -386,4 +413,6 @@ export {
   Address,
   Order,
   Coupon,
+  Size,
+  Color,
 };

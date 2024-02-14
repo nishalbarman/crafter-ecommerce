@@ -7,7 +7,9 @@ import { getBackendUrl } from "../../helpter/utils";
 // benifit of using server component
 const getProducts = async () => {
   const backendUrl = getBackendUrl();
-  const response = await fetch(`${backendUrl}api/v1/products?&page=1&limit=25`);
+  const response = await fetch(
+    `${backendUrl}api/v1/products?&page=1&limit=500`
+  );
   const data = await response.json();
   return data.data;
 };

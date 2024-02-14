@@ -26,11 +26,14 @@ export const cartApi = createApi({
     }),
 
     updateCart: builder.mutation({
-      query: (id, cartItem) => ({
-        url: `cart/${id}`,
-        method: "PATCH",
-        body: cartItem,
-      }),
+      query: ({ id, updatedItem }) => {
+        console.log("From cartRTK.js--->", updatedItem);
+        return {
+          url: `cart/${id}`,
+          method: "PATCH",
+          body: updatedItem,
+        };
+      },
       // invalidatesTags: ["Cart"],
       transformErrorResponse: (res, meta, arg) => res.message,
     }),

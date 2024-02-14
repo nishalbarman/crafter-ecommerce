@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { getBackendUrl } from "../../../../../../helpter/utils";
-import { Cart, Order } from "../../../../../../models/models";
+import { Cart, Coupon, Order } from "../../../../../../models/models";
 import getTokenDetails from "../../../../../../helpter/getTokenDetails";
 import generateHash from "../../../../../../helpter/generateHash";
 import { connect } from "../../../../../../dbConfig/dbConfig";
@@ -14,30 +14,25 @@ const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY;
 
 export async function GET(req) {
   try {
-    const tokenCookies = req.cookies.get("token") || null;
-    if (!tokenCookies) {
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
-      );
-    }
+    const userCookies = req.cookies.get("token") || null;
+    const token = userCookies.value || null;
 
-    const token = tokenCookies?.value || null;
     if (!token) {
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
+      return NextResponse.redirect(
+        new URL("/auth/login?redirect=cart", req.url)
       );
     }
 
     const userDetails = getTokenDetails(token) || null;
 
     if (!userDetails) {
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
+      return NextResponse.redirect(
+        new URL("/auth/login?redirect=cart", req.url)
       );
     }
+
+    const searchParams = req.nextUrl.searchParams;
+    const appliedCouponID = searchParams.get("coupon") || null;
 
     const cartItemsForUser = await Cart.find({
       user: userDetails._id,
@@ -74,6 +69,22 @@ export async function GET(req) {
       },
       { amount: 0, productinfo: [] }
     );
+
+    if (!!appliedCouponID) {
+      // check if applied coupon is avaible
+      const appliedCoupon = await Coupon.findOne({ _id: appliedCouponID }); // check if applied coupon is available on databse
+      if (!!appliedCoupon) {
+        // if discounted price is written as direct price then check the minumum required amount for the cart reached or not
+        const discountedPrice = appliedCoupon?.isPercentage
+          ? (payuObject.amount / 100) * (parseInt(appliedCoupon.off) || 0)
+          : payuObject.amount >
+              (appliedCoupon.minimumPayAmount || payuObject.amount + 100)
+            ? appliedCoupon.off
+            : 0;
+
+        payuObject.amount -= discountedPrice;
+      }
+    }
 
     payuObject.txnid = txnid;
     payuObject.firstname = userDetails.name;

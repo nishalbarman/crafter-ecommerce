@@ -1,12 +1,9 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { removeCartProduct } from "@store/redux/cartLocal";
-import {
-  addWishlistProduct,
-  removeWishlistProduct,
-} from "@store/redux/wishlistLocal";
-import { useRouter } from "next/navigation";
+import { useUpdateCartMutation } from "@store/redux/cart";
+import { addWishlistProduct } from "@store/redux/wishlistLocal";
 import { useCookies } from "next-client-cookies";
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -14,25 +11,50 @@ import Link from "next/link";
 function CartItem(item) {
   const {
     _id,
+    _cartProductId,
     title,
     imageUrl,
     originalPrice,
     discountedPrice,
     quantity,
     totalNumberOfRatings,
+    isSizeVaries,
+    isColorVaries,
 
     cartItems,
     wishlistItems,
 
     addNewWishlist,
-    removeOneWishlist,
     removeOneFromCart,
   } = item;
+
+  console.log(item);
 
   const dispatch = useDispatch();
   const cookiesStore = useCookies();
 
   const token = cookiesStore?.get("token") || null;
+
+  const [updateCart] = useUpdateCartMutation();
+
+  const [productSize, setProductSize] = useState(item.size);
+  const [productQuantity, setProductQuantity] = useState(quantity);
+
+  useEffect(() => {
+    updateCart({
+      id: _id,
+      updatedItem: { quantity: productQuantity },
+    });
+  }, [productQuantity]);
+
+  useEffect(() => {
+    if (productSize?._id) {
+      updateCart({
+        id: _id,
+        updatedItem: { size: productSize._id },
+      });
+    }
+  }, [productSize]);
 
   const quantityModalRef = useRef();
   const sizeModalRef = useRef();
@@ -74,6 +96,14 @@ function CartItem(item) {
     dispatch(removeCartProduct(_id));
   };
 
+  const handleOnQuanityChangeClick = (e) => {
+    quantityModalRef.current?.classList.remove("hidden");
+  };
+
+  const handleOnSizeChangeClick = () => {
+    sizeModalRef.current?.classList.remove("hidden");
+  };
+
   return (
     <>
       {/* cart item */}
@@ -91,32 +121,40 @@ function CartItem(item) {
               <span className="text-[rgb(51,51,51)] text-[18px] font-bold">
                 ₹{discountedPrice}
               </span>{" "}
-              <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px] line-through">
-                ₹{originalPrice}
-              </span>
+              {!!originalPrice && (
+                <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px] line-through">
+                  ₹{originalPrice}
+                </span>
+              )}
             </p>
-            <p className="text-[rgb(50,140,91)] text-[16px] mb-[10px]">
-              You saved <span>₹{originalPrice - discountedPrice} INR</span>
-            </p>
+            {!!originalPrice && (
+              <p className="text-[rgb(50,140,91)] text-[16px] mb-[10px]">
+                You saved <span>₹{originalPrice - discountedPrice} INR</span>
+              </p>
+            )}
 
             <div className="qp flex justify-start mt-[20px] mb-[30px] max-[961px]:flex-col max-[961px]:gap-2">
+              {isSizeVaries && item.availableSizes && (
+                <div
+                  onClick={handleOnSizeChangeClick}
+                  className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
+                  id="sizeButton">
+                  <span>Size :</span>{" "}
+                  <b>
+                    {" "}
+                    <span id="size">{productSize?.name}</span>{" "}
+                  </b>{" "}
+                  <i className="fa-solid fa-angle-down mr-[3px]" />
+                </div>
+              )}
               <div
-                className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
-                id="sizeButton">
-                <span>Size :</span>{" "}
-                <b>
-                  {" "}
-                  <span id="size">S</span>{" "}
-                </b>{" "}
-                <i className="fa-solid fa-angle-down mr-[3px]" />
-              </div>
-              <div
+                onClick={handleOnQuanityChangeClick}
                 className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
                 id="qtyButton">
                 <span>Qty :</span>{" "}
                 <b>
                   {" "}
-                  <span id="qty">{quantity}</span>{" "}
+                  <span id="qty">{productQuantity}</span>{" "}
                 </b>{" "}
                 <i className="fa-solid fa-angle-down mr-[3px]" />
               </div>
@@ -154,100 +192,191 @@ function CartItem(item) {
       {/* size modal */}
       <div
         ref={sizeModalRef}
+        onClick={() => {
+          sizeModalRef.current?.classList.add("hidden");
+        }}
         className="hidden bg-[rgba(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
         id="size_modal">
-        <div className="size_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] rounded-[5px]">
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          className="size_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] rounded-[5px]">
           <p className="text-center mb-[15px] text-[14px] opacity-[0.7] block">
             Select Size
           </p>
-          <p
+
+          {item?.availableSizes?.map((size) => {
+            return (
+              <p
+                onClick={() => {
+                  setProductSize(size);
+                  sizeModalRef.current?.classList.add("hidden");
+                }}
+                className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika">
+                {size.name}
+              </p>
+            );
+          })}
+          {/* <p
+            onClick={() => {
+              setProductSize("S");
+              sizeModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
             id="S">
             S
           </p>
           <p
+            onClick={() => {
+              setProductSize("M");
+              sizeModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
             id="M">
             M
           </p>
           <p
+            onClick={() => {
+              setProductSize("L");
+              sizeModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
             id="L">
             L
           </p>
           <p
+            onClick={() => {
+              setProductSize("XL");
+              sizeModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
             id="XL">
             XL
           </p>
           <p
+            onClick={() => {
+              setProductSize("2XL");
+              sizeModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
             id="2XL">
             2XL
           </p>
           <p
+            onClick={() => {
+              setProductSize("3XL");
+              sizeModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
             id="3XL">
             3XL
-          </p>
+          </p> */}
         </div>
       </div>
 
       {/* quantity modal  */}
       <div
         ref={quantityModalRef}
+        onClick={() => {
+          quantityModalRef.current?.classList.add("hidden");
+        }}
         className="hidden bg-[rgb(0,0,0,0.5)] fixed top-0 left-0 w-[100%] h-[100%] z-[1]"
         id="qty_modal">
-        <div className="qty_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          className="qty_model_container absolute overflow-hidden w-fit max-h-[100%] top-[50%] left-[50%] bg-[#fff] transform translate-x-[-50%] translate-y-[-50%] p-[20px] text-center rounded-[5px]">
           <p className="mb-[15px] text-[14px] opacity-[0.7] block">
             Select Quantity
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(1);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="1">
             1
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(2);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="2">
             2
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(3);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="3">
             3
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(4);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="4">
             4
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(4);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="5">
             5
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(6);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="6">
             6
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(7);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="7">
             7
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(8);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="8">
             8
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(9);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="9">
             9
           </p>
           <p
+            onClick={() => {
+              setProductQuantity(10);
+              quantityModalRef.current?.classList.add("hidden");
+            }}
             className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded"
             id="10">
             10

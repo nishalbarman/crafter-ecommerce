@@ -57,7 +57,7 @@ function Cart() {
     setCouponCode((prev) => ({
       ...prev,
       isTouched: true,
-      isError: !prev.value,
+      isError: !!!e.target.value,
       value: e.target.value,
     }));
   };
@@ -71,11 +71,20 @@ function Cart() {
         return setCouponCode((prev) => ({ ...prev, isError: true }));
       }
 
+      if (
+        !!appliedCoupon &&
+        couponCode.value.toLowerCase() === appliedCoupon.code.toLowerCase()
+      ) {
+        return setCouponCode((prev) => ({
+          ...prev,
+          isError: true,
+          error: "Coupon already applied!",
+        }));
+      }
+
       const response = await axios.get(
         `/api/v1/coupon?code=${couponCode.value}`
       );
-
-      console.log(response);
 
       const data = response.data;
 
@@ -87,15 +96,14 @@ function Cart() {
         }));
       }
 
-      if (data.coupon.isPercentage) {
-        const couponDiscountPrice =
-          (subtotalPrice / 100) * (data.coupon.off || 0);
-        setCouponDiscountPrice(couponDiscountPrice);
-        setAppliedCoupon(data.coupon);
-      } else {
-        setAppliedCoupon(data.coupon);
-        setCouponDiscountPrice(data.off || 0);
-      }
+      const couponDiscountPrice = data.coupon.isPercentage
+        ? (subtotalPrice / 100) * (parseInt(data.coupon.off) || 0)
+        : subtotalPrice > (data.coupon.minimumPayAmount || subtotalPrice + 100)
+          ? data.coupon.off
+          : 0;
+      setCouponDiscountPrice(couponDiscountPrice);
+      setAppliedCoupon(couponDiscountPrice > 0 ? data.coupon : null);
+      setSubtotalPrice((prev) => prev - couponDiscountPrice);
 
       couponApplyModalRef.current?.classList.add("hidden");
       couponThankYouRef.current?.classList.remove("hidden");
@@ -124,7 +132,7 @@ function Cart() {
     form.method = "POST";
     // form.action = "https://test.payu.in/_payment"; // URL of your payment page
     form.action = "https://secure.payu.in/_payment"; // URL of your payment page
-    form.target = "PaymentPopup" + Date.now();
+    form.target = "CARFTER_PaymentPopup";
 
     // Add each key-value pair from postData as a hidden input field
     for (const key in pay) {
@@ -140,13 +148,13 @@ function Cart() {
     const popup = window.open("", "_blank");
     if (popup) {
       // Submit the form when the popup is allowed
-
       // Append the form to the body and submit it
       document.body.appendChild(form);
       form.submit();
 
       // Clean up the form after submission
       document.body.removeChild(form);
+      popup?.close();
     } else {
       // Inform the user if the popup was blocked
       alert("Please enable pop-ups to proceed with payment.");
@@ -155,8 +163,11 @@ function Cart() {
 
   const handlePaymentContinueClick = async () => {
     const isAddressAvailble = true || localStorage.getItem("isAddressAvailble");
+
     if (isAddressAvailble) {
-      const response = await axios.get(`/api/v1/payment/payu/cart-hash`); // generate hash
+      const response = await axios.get(
+        `/api/v1/payment/payu/cart-hash${!!appliedCoupon && appliedCoupon._id ? "?coupon=" + appliedCoupon._id : ""}`
+      ); // generate hash with coupon
 
       console.log(response?.data);
 
@@ -174,7 +185,7 @@ function Cart() {
 
         // Close loading indicator or perform any other actions
 
-        if (!data?.success) {
+        if (data?.success) {
           transactionLoadingRef.current?.classList.add("hidden");
           transactionStatusRef.current?.classList.remove("hidden");
           setOrderStatusText("Order Placed Successfully");
@@ -202,15 +213,30 @@ function Cart() {
     let totalDiscountPrice = 0;
 
     Object.values(cartData).map((item) => {
-      totalPrice += item.originalPrice;
+      totalPrice += item.originalPrice || item.discountedPrice;
       subtotalPrice += item.discountedPrice;
-      totalDiscountPrice += item.originalPrice - item.discountedPrice;
+      totalDiscountPrice += !!item.originalPrice
+        ? item.originalPrice - item.discountedPrice
+        : 0;
     });
 
     setTotalPrice(totalPrice);
-    setSubtotalPrice(subtotalPrice);
     setTotalDiscountPrice(totalDiscountPrice);
-  }, [cartData]);
+
+    if (!!appliedCoupon && appliedCoupon._id) {
+      let couponDiscountPrice = appliedCoupon?.isPercentage
+        ? (subtotalPrice / 100) * (parseInt(appliedCoupon.off) || 0)
+        : subtotalPrice >
+            (appliedCoupon.minimumPayAmount || subtotalPrice + 100)
+          ? appliedCoupon.off
+          : 0;
+
+      setCouponDiscountPrice(couponDiscountPrice);
+      setSubtotalPrice(subtotalPrice - (couponDiscountPrice || 0));
+    } else {
+      setSubtotalPrice(subtotalPrice);
+    }
+  }, [cartData, appliedCoupon]);
 
   return (
     <>
@@ -266,13 +292,15 @@ function Cart() {
             {/* payments details and coupons */}
             <div className="w-[41.66666667%] max-[961px]:w-[100%]">
               <div id="coupons_text">
-                <div className="mb-[15px] rounded-[4px] border-[1px] border-[rgb(234,234,234)] bg-[rgb(255,255,255)] text-[rgb(45,45,45)] leading-[1.44] text-[14px] p-[5px_15px]">
+                {/* <div className="mb-[15px] rounded-[4px] border-[1px] border-[rgb(234,234,234)] bg-[rgb(255,255,255)] text-[rgb(45,45,45)] leading-[1.44] text-[14px] p-[5px_15px]">
                   <p className="text-[16px]">
                     Whistles! Get extra 20% Cashback on any orders. Coupon code
                     - MASAI20. Applicable for new/old customers!
                   </p>
+                </div> */}
+                <div className="mb-[15px] rounded-[4px] border-[1px] border-[rgb(234,234,234)] bg-[rgb(255,255,255)] text-[rgb(45,45,45)] leading-[1.44] text-[14px] p-[5px_15px]">
                   <p className="text-[16px]">
-                    Whistles! Get extra 10% off on any orders. Coupon code -
+                    Whistles! Get extra 10% off on any orders. Coupon code:
                     NEW10. Applicable for new customers!
                   </p>
                 </div>
@@ -288,15 +316,19 @@ function Cart() {
                     Apply Coupon / Gift Card
                   </span>
 
-                  <span className="font-bold text-[12px] text-[#42a2a2] text-left overflow-none text-nowrap text-overflow-none">
-                    Redeem!&nbsp;
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="font-bold text-[12px] text-[#42a2a2] text-left overflow-none text-nowrap text-overflow-none">
+                      Redeem!
+                    </span>
                     <img
-                      src="https://images.bewakoof.com/web/coupon-redeem-arrow-1634641878.png"
+                      className="inline"
+                      src="/assets/coupon-redeem-arrow.png"
                       alt=""
                     />
-                  </span>
+                  </div>
                 </div>
               </div>
+
               <div id="couponApplied">
                 {!!appliedCoupon && (
                   <div className="coupon_card mb-[15px] rounded-[4px] leading-[3px] p-[3px_15px_15px_15px] bg-[rgb(255,251,234)]">
@@ -354,14 +386,18 @@ function Cart() {
                     FREE
                   </p>
                 </div>
-                <div className="flex p-[0px_20px] pb-[15px]">
-                  <p className="text-left w-[100%] text-[14px]">Bag Discount</p>
-                  <p
-                    className="text-right w-[100%] text-[14px]"
-                    id="bagdiscount">
-                    - ₹{totalDiscountPrice}
-                  </p>
-                </div>
+                {totalDiscountPrice > 0 && (
+                  <div className="flex p-[0px_20px] pb-[15px]">
+                    <p className="text-left w-[100%] text-[14px]">
+                      Bag Discount
+                    </p>
+                    <p
+                      className="text-right w-[100%] text-[14px]"
+                      id="bagdiscount">
+                      - ₹{totalDiscountPrice}
+                    </p>
+                  </div>
+                )}
                 {couponDiscountPrice > 0 && (
                   <div className="flex p-[0px_20px] pb-[15px]">
                     <p className="text-left w-[100%] text-[14px]">

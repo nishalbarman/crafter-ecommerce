@@ -17,9 +17,7 @@ function Wishlist() {
   const wishlist = useSelector((state) => state.wishlistLocal.wishlistItems);
   const wishlistCount = useSelector((state) => state.wishlistLocal.totalItems);
 
-  const [
-    removeOneWishlist,
-    { isLoading: isLoadingRmWishlist, isError: isErrorRmWishlist },
+  const [removeOneWishlist, { isLoading: isLoadingRmWishlist, isError: isErrorRmWishlist },
   ] = useDeleteWishlistMutation();
 
   const [addOneToCart, { isLoading: isCartLoading, isError: isCartError }] =

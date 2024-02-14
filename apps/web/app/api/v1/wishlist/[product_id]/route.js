@@ -16,8 +16,8 @@ export async function DELETE(req, { params }) {
     const userDetails = getTokenDetails(userToken.value);
 
     const wishlistDetails = await Wishlist.findOneAndDelete({
-      user: userDetails._id,
       product: product_id,
+      user: userDetails._id,
     });
 
     if (!wishlistDetails) {

@@ -54,7 +54,7 @@ export async function POST(req) {
         </body>
         <script>
             function sendPaymentData() {
-                const paymentData = { success: false, status: 'failed', transactionId: '${paymentFormData.get("txnid")}' };
+                const paymentData = { success: true, status: 'success', transactionId: '${paymentFormData.get("txnid")}' };
 
                 // Dispatch a custom event to the parent window
                 const event = new CustomEvent('paymentResponseData', { detail: paymentData });
