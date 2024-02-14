@@ -18,30 +18,13 @@ function OrderItem({ item }) {
   return (
     <>
       {/* cart item */}
-      <div className="p-[2.5%_2.5%_0_2.5%] border-[1px] border-[rgb(204,204,204)] rounded-[5px] mb-[20px]">
+      <div className="p-[2.5%_2.5%_0_2.5%] border-[1px] border-[rgb(204,204,204)] rounded-[5px] ">
         <div className="upper flex justify-between max-[588px]:flex-col-reverse">
           <div>
             <p className="text-[rgba(0,0,0,0.7)] font-semibold text-[16px] mb-[8px] cursor-pointer w-[100%] font-andika text-left">
               {" "}
               {/* hover:text-[rgba(0,0,0,0.9)]  */}
               TXN ID: {txnid}
-            </p>
-
-            <p className="mb-[5px]">
-              <span className="text-[rgb(51,51,51)] text-[14px] font-bold">
-                Payment:
-              </span>{" "}
-              <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px]">
-                {paymentStatus ? "Successful" : "Failed"}
-              </span>
-            </p>
-            <p className="mb-[8px]">
-              <span className="text-[rgb(51,51,51)] text-[14px] font-bold">
-                Order Status:
-              </span>{" "}
-              <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px]">
-                {orderStatus}
-              </span>
             </p>
 
             <Link
@@ -51,15 +34,43 @@ function OrderItem({ item }) {
                 {title}
               </p>
             </Link>
+
+            <p className="mb-[5px]">
+              <span className="text-[rgb(51,51,51)] text-[14px] font-bold">
+                Payment:
+              </span>{" "}
+              <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px]">
+                {paymentStatus ? "Successful" : "Failed"}
+              </span>
+            </p>
+
+            <p className="mb-[5px]">
+              <span className="text-[rgb(51,51,51)] text-[14px] font-bold">
+                Order Status:
+              </span>{" "}
+              <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px]">
+                {orderStatus}
+              </span>
+            </p>
+
+            <p className="mb-[8px]">
+              <span className="text-[rgb(51,51,51)] text-[14px] font-bold">
+                Order Qty:
+              </span>{" "}
+              <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px]">
+                {1}
+              </span>
+            </p>
+
             <p className="mb-[8px]">
               <span className="text-[rgb(51,51,51)] text-[18px] font-bold">
-                ₹{discountedPrice}
+                ₹{discountedPrice} INR
               </span>{" "}
-              {!!originalPrice && (
+              {/* {!!originalPrice && (
                 <span className="text-[rgb(94,99,107)] ml-[5px] text-[14px] line-through">
                   ₹{originalPrice}
                 </span>
-              )}
+              )} */}
             </p>
             <p className="mb-[8px]">
               <span className="text-[rgb(51,51,51)] text-[16px] font-bold">
@@ -69,7 +80,7 @@ function OrderItem({ item }) {
                 Vill./P.O. - Balikaria, Nalbari, 781341
               </span>
             </p>
-            <div className="qp flex justify-start mt-[20px] mb-[30px] max-[961px]:flex-col max-[961px]:gap-2">
+            <div className="qp flex justify-start mt-[20px] mb-[10px] max-[961px]:flex-col max-[961px]:gap-2">
               <div className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px] w-[100%] flex items-center justify-center">
                 <span>Track</span>
               </div>
@@ -93,11 +104,11 @@ function OrderItem({ item }) {
 
         <div className="bottom_section flex w-[100%] text-center text-[rgba(0,0,0,0.7)] border-t-[2px] border-t-[rgba(0,0,0,0.04)]  text-[12px] mt-[15px] mb-0">
           {/* m-[0px_10px] */}
-          {/* <div className="p-[18px_0px] w-[100%] border-r-[2px] border-r-[rgba(0,0,0,0.04)] cursor-pointer text-[14px]">
+          {/* <div className="flex justify-center items-center p-[18px_0px] w-[100%] border-r-[2px] border-r-[rgba(0,0,0,0.04)] cursor-pointer text-[14px]">
             Return
           </div> */}
 
-          <div className="p-[18px_0px] w-[100%] cursor-pointer text-[14px]">
+          <div className="flex justify-center items-center p-[18px_0px] w-[100%] cursor-pointer text-[14px]">
             Cancel
           </div>
         </div>
