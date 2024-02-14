@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { removeCartProduct } from "@store/redux/cartLocal";
+import { removeCartProduct, updateSingleCartItem } from "@store/redux/cartLocal";
 import { useUpdateCartMutation } from "@store/redux/cart";
 import { addWishlistProduct } from "@store/redux/wishlistLocal";
 import { useCookies } from "next-client-cookies";
@@ -41,10 +40,13 @@ function CartItem(item) {
   const [productQuantity, setProductQuantity] = useState(quantity);
 
   useEffect(() => {
-    updateCart({
-      id: _id,
-      updatedItem: { quantity: productQuantity },
-    });
+    if (productQuantity?._id) {
+      updateCart({
+        id: _id,
+        updatedItem: { quantity: productQuantity },
+      });
+      updateSingleCartItem(id, { ...item, size: productQuantity });
+    }
   }, [productQuantity]);
 
   useEffect(() => {
@@ -53,6 +55,7 @@ function CartItem(item) {
         id: _id,
         updatedItem: { size: productSize._id },
       });
+      updateSingleCartItem(id, { ...item, size: productSize });
     }
   }, [productSize]);
 
