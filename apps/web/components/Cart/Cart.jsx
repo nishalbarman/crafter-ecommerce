@@ -212,14 +212,10 @@ function Cart() {
     let subtotalPrice = 0;
     let totalDiscountPrice = 0;
 
-    Object.values(cartData).map((item) => {
-      totalPrice +=
-        (item.originalPrice || item.discountedPrice) * (item.quantity || 1);
+    Object.values(cartData).forEach((item) => {
+      totalPrice += (item.originalPrice || item.discountedPrice) * (item.quantity || 1);
       subtotalPrice += item.discountedPrice * (item.quantity || 1);
-      totalDiscountPrice += !!item.originalPrice
-        ? item.originalPrice * (item.quantity || 1) -
-          item.discountedPrice * (item.quantity || 1)
-        : 0;
+      totalDiscountPrice += !!item.originalPrice ? (item.quantity || 1) * (item.originalPrice - item.discountedPrice) : 0;
     });
 
     setTotalPrice(totalPrice);

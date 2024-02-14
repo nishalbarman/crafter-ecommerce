@@ -13,40 +13,18 @@ const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY;
 export async function POST(req) {
   try {
     const paymentFormData = await req.formData();
-    const transactionId = paymentFormData.get("txnid");
 
-    const tokenCookies = req.cookies.get("token") || null;
-    if (!tokenCookies) {
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
-      );
-    }
-
-    const token = tokenCookies?.value || null;
-    if (!token) {
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
-      );
-    }
-
-    const userDetails = getTokenDetails(token) || null;
-    console.log(userDetails);
-
-    if (!userDetails) {
-      return NextResponse.json(
-        { status: false, message: "Unauthorised access" },
-        { status: 401 }
-      );
-    }
+    const transactionId = paymentFormData?.get("txnid");
+    const email = paymentFormData?.get("email");
+    const phone = paymentFormData?.get("phone");
+    const userId = paymentFormData?.get("udf1");
 
     await Order.updateMany(
-      { txnid: transactionId },
+      { txnid: transactionId, user: userId },
       { $set: { paymentStatus: true, orderStatus: "Placed" } }
     );
 
-    await Cart.deleteMany({ user: userDetails._id });
+    await Cart.deleteMany({ user: userId });
 
     return new Response(
       ` <body onload='sendPaymentData()'>

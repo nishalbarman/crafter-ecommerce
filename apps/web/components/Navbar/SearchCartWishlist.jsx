@@ -108,9 +108,9 @@ export default function SearchCartWishlist() {
       const cartDataForStore = {};
       cartData?.forEach((item) => {
         cartDataForStore[item.product._id] = {
+          ...item.product, // to fix the override _id issue we should place this line in 2nd place
           ...item, //will override the previouse product _id
-          ...item.product, // fix override with destructuring the product later
-          _id: item.product._id, // or we can also manually add the _id field
+          _id: item.product._id, // we can also manually add the _id field to fix the issue
           _cartProductId: item._id,
           product: null,
         };

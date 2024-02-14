@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import getTokenDetails from "../../../../../../helpter/getTokenDetails";
 import { Cart, Order } from "../../../../../../models/models";
 import { connect } from "../../../../../../dbConfig/dbConfig";
 
@@ -12,43 +11,17 @@ const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY;
 
 export async function POST(req) {
   try {
-    const userCookies = req.cookies.get("token") || null;
-    const token = userCookies?.value || null;
+    const paymentFormData = await req.formData();
 
-    if (!token) {
-      return NextResponse.json(
-        {
-          status: false,
-          message: "User token details not found",
-          cookies: userCookies,
-        },
-        { status: 400 }
-      );
-      // return NextResponse.json(
-      //   { status: false, message: "Unauthorised access" },
-      //   { status: 401 }
-      // );
-    }
-
-    const userDetails = getTokenDetails(token) || null;
-
-    if (!userDetails) {
-      return NextResponse.json(
-        { status: false, message: "Token data is manupulated" },
-        { status: 400 }
-      );
-      // return NextResponse.json(
-      //   { status: false, message: "Unauthorised access" },
-      //   { status: 401 }
-      // );
-    }
+    const transactionId = paymentFormData?.get("txnid");
+    const email = paymentFormData?.get("email");
+    const phone = paymentFormData?.get("phone");
+    const userId = paymentFormData?.get("udf1");
 
     await Order.updateMany(
-      { txnid: transactionId },
-      { $set: { paymentStatus: true, orderStatus: "Placed" } }
+      { txnid: transactionId, user: userId },
+      { $set: { paymentStatus: false, orderStatus: "Not Placed" } }
     );
-
-    await Cart.deleteMany({ user: userDetails._id });
 
     return new Response(
       ` <body onload='sendPaymentData()'>
