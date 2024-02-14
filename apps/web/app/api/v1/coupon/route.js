@@ -1,0 +1,39 @@
+import { NextResponse } from "next/server";
+import { connect } from "../../../../dbConfig/dbConfig";
+import { Coupon } from "../../../../models/models";
+
+connect();
+
+export async function GET(req, { params }) {
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const code = searchParams.get("code") || null;
+    // console.log("Coupon code-------->", code);
+
+    if (!code) {
+      return NextResponse.json({
+        status: false,
+        message: "Coupon invalid",
+      });
+    }
+
+    const coupon = await Coupon.findOne({ code: code.toUpperCase() });
+    console.log("Coupon from DB ------>", coupon);
+
+    if (!coupon) {
+      return NextResponse.json({
+        status: false,
+        message: "Coupon invalid",
+      });
+    }
+
+    return NextResponse.json({
+      status: true,
+      message: "Coupon applied",
+      coupon: coupon,
+    });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ status: false, message: "Server error" });
+  }
+}

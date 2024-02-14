@@ -10,7 +10,7 @@ const getCategories = async () => {
     const response = await axios.get(`${backendUrl}api/v1/categories`);
     return response.data.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return [];
   }
 };

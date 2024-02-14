@@ -23,12 +23,12 @@ function Cart() {
     error: "Coupon invalid",
   });
 
-  const [appliedCoupon, setAppliedCoupon] = useState(); // coupon which needs to be sent to server, coupon will be stored here after applying.
+  const [appliedCoupon, setAppliedCoupon] = useState(null); // coupon which needs to be sent to server, coupon will be stored here after applying. // id of the coupon
 
-  const [hash, setHash] = useState("");
-  const [subtotalPrice, setSubtotalPrice] = useState(0);
+  const [subtotalPrice, setSubtotalPrice] = useState(0); // purchase price
   const [totalDiscountPrice, setTotalDiscountPrice] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0); // original price without the discounts
+  const [couponDiscountPrice, setCouponDiscountPrice] = useState(0); // discount of the applied coupon/if any
 
   const [orderStatus, setOrderStatus] = useState(true);
   const [orderStatusText, setOrderStatusText] = useState("");
@@ -40,6 +40,7 @@ function Cart() {
   );
 
   const dispatch = useDispatch();
+  const navigation = useRouter();
 
   const couponApplyModalRef = useRef();
   const couponThankYouRef = useRef();
@@ -52,8 +53,6 @@ function Cart() {
   ] = useDeleteCartMutation();
   const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
 
-  const navigation = useRouter();
-
   const handleCouponCodeKeyUp = (e) => {
     setCouponCode((prev) => ({
       ...prev,
@@ -64,29 +63,60 @@ function Cart() {
   };
 
   const handleCouponFormSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    console.log(couponCode);
-    if (couponCode.value === "") {
-      return setCouponCode((prev) => ({ ...prev, isError: true }));
-    }
+      console.log(couponCode);
+      if (couponCode.value === "") {
+        return setCouponCode((prev) => ({ ...prev, isError: true }));
+      }
 
-    const response = await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({ status: true });
-      }, 500);
-    });
+      const response = await axios.get(
+        `/api/v1/coupon?code=${couponCode.value}`
+      );
 
-    if (response.status) {
+      console.log(response);
+
+      const data = response.data;
+
+      if (!data.status) {
+        return setCouponCode((prev) => ({
+          ...prev,
+          isError: true,
+          error: data.message,
+        }));
+      }
+
+      if (data.coupon.isPercentage) {
+        const couponDiscountPrice =
+          (subtotalPrice / 100) * (data.coupon.off || 0);
+        setCouponDiscountPrice(couponDiscountPrice);
+        setAppliedCoupon(data.coupon);
+      } else {
+        setAppliedCoupon(data.coupon);
+        setCouponDiscountPrice(data.off || 0);
+      }
+
       couponApplyModalRef.current?.classList.add("hidden");
       couponThankYouRef.current?.classList.remove("hidden");
+
+      setCouponCode((prev) => ({
+        value: "",
+        isError: false,
+        isTouched: false,
+      }));
+
+      setTimeout(() => {
+        couponThankYouRef.current?.classList.add("hidden");
+      }, 800);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    setCouponCode((prev) => ({ value: "", isError: false, isTouched: false }));
-
-    setTimeout(() => {
-      couponThankYouRef.current?.classList.add("hidden");
-    }, 800);
+  const handleCouponRemove = (e) => {
+    setAppliedCoupon(null);
+    setCouponDiscountPrice(0);
   };
 
   const initiatePayment = (pay) => {
@@ -241,6 +271,10 @@ function Cart() {
                     Whistles! Get extra 20% Cashback on any orders. Coupon code
                     - MASAI20. Applicable for new/old customers!
                   </p>
+                  <p className="text-[16px]">
+                    Whistles! Get extra 10% off on any orders. Coupon code -
+                    NEW10. Applicable for new customers!
+                  </p>
                 </div>
               </div>
               <div className="apply_coupon_outer p-[6px] border-[1px] border-[#eaeaea] text-overflow-none overflow-none">
@@ -263,7 +297,39 @@ function Cart() {
                   </span>
                 </div>
               </div>
-              <div id="couponApplied"></div>
+              <div id="couponApplied">
+                {!!appliedCoupon && (
+                  <div className="coupon_card mb-[15px] rounded-[4px] leading-[3px] p-[3px_15px_15px_15px] bg-[rgb(255,251,234)]">
+                    <div className="cpn_title_flex flex justify-between items-center">
+                      <div className="title_coupon_check flex justify-between items-center">
+                        <img
+                          className="inline-block w-[14px] h-[14px] mr-[5px]"
+                          src="/assets/small-tickmark-checked.png"
+                          alt="coupon_applied"
+                        />
+                        <p
+                          className="font-bold text-[13px] text-[rgb(0,0,0)] leading-[1.9]"
+                          id="cpn_title">
+                          Coupon Applied{" "}
+                          <span className="coupon_code p-[3px] text-[#000] border-[1px] border-[#51cccc] border-style-[dashed] text-[12px] uppercase text-nowrap overflow-hidden ml-[3px]">
+                            {appliedCoupon?.code}
+                          </span>
+                        </p>
+                      </div>
+                      <span
+                        onClick={handleCouponRemove}
+                        className="p-[15px_10px] text-[rgb(230,17,17)] text-[11px] font-bold cursor-pointer"
+                        id="removeBtn">
+                        REMOVE
+                      </span>
+                    </div>
+                    <p className="mt-[10px] text-[13px] text-[rgba(0,0,0,0.75)] leading-[1.4]">
+                      {appliedCoupon?.description}
+                    </p>
+                  </div>
+                )}
+              </div>
+
               <div className="price_details border-[1px] border-[#e0e0e0] mb-[20px] pr-0">
                 <div className="text-[11px] uppercase bg-[rgb(235,235,235)] p-[13px_20px] font-bold mb-[20px]">
                   <p>PRICE SUMMARY</p>
@@ -296,6 +362,18 @@ function Cart() {
                     - ₹{totalDiscountPrice}
                   </p>
                 </div>
+                {couponDiscountPrice > 0 && (
+                  <div className="flex p-[0px_20px] pb-[15px]">
+                    <p className="text-left w-[100%] text-[14px]">
+                      Coupon Discount
+                    </p>
+                    <p
+                      className="text-right w-[100%] text-[14px]"
+                      id="bagdiscount">
+                      - ₹{couponDiscountPrice}
+                    </p>
+                  </div>
+                )}
                 <div className="flex p-[0px_20px] pb-[15px] font-bold">
                   <p className="text-left w-[100%] text-[14px]">Subtotal </p>
                   <p className="text-right w-[100%] text-[14px]" id="subtotal">
@@ -321,7 +399,7 @@ function Cart() {
                   <div className="flex flex-col justify-center items-center">
                     <img
                       className="w-[40px] h-[40px] mb-[6px] text-[#8f98a9]"
-                      src="https://images.bewakoof.com/web/cart-badge-trust.svg"
+                      src="/assets/cart-badge-trust.svg"
                       alt="cart_100%_secure"
                     />
                     <p className="text-[8px] leading-[12px] text-center text-[#c7cbd4]">
@@ -331,7 +409,7 @@ function Cart() {
                   <div className="flex flex-col justify-center items-center">
                     <img
                       className="w-[40px] h-[40px] mb-[6px] text-[#8f98a9]"
-                      src="https://images.bewakoof.com/web/cart-easy-return.svg"
+                      src="/assets/cart-easy-return.svg"
                       alt="quick_return"
                     />
                     <p className="text-[8px] leading-[12px] text-center text-[#c7cbd4]">
@@ -341,7 +419,7 @@ function Cart() {
                   <div className="flex flex-col justify-center items-center">
                     <img
                       className="w-[40px] h-[40px] mb-[6px] text-[#8f98a9]"
-                      src="https://images.bewakoof.com/web/quality-check.svg"
+                      src="/assets/quality-check.svg"
                       alt="quality_assurance"
                     />
                     <p className="text-[8px] leading-[12px] text-center text-[#c7cbd4]">
@@ -538,26 +616,3 @@ function Cart() {
 }
 
 export default Cart;
-
-{
-  /* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl-grid-cols-6 gap-5 items-center m-[40px_0] w-[100%]"> */
-}
-{
-  /* <div className="grid grid-cols-4 w-[100%] shadow rounded p-[20px_25px]">
-        <div className="w-[100%] flex justify-start items-center">
-          <span className="font-semibold">Product</span>
-        </div>
-        <div className="w-[100%] flex justify-center items-center">
-          <span className="font-semibold">Price</span>
-        </div>
-        <div className="w-[100%] flex justify-center items-center">
-          <span className="font-semibold">Quantity</span>
-        </div>
-        <div className="w-[100%] flex justify-center items-center">
-          <span className="font-semibold">Subtotal</span>
-        </div>
-      </div> */
-}
-{
-  /* /* bewakoof cart section */
-}

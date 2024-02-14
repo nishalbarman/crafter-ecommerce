@@ -709,62 +709,62 @@
   color: #51cccc;
 }
 
-#removeBtn {
+/* #removeBtn {
   padding: 15px 10px;
   color: rgb(230, 17, 17);
   font-size: 11px;
   font-weight: bold;
   cursor: pointer;
-}
+} */
 
-img[alt="coupon_applied"] {
+/* img[alt="coupon_applied"] {
   display: inline-block;
   width: 14px;
   height: 14px;
   margin-right: 5px;
-}
+} */
 
-.title_coupon_check {
+/* .title_coupon_check {
   display: flex;
   vertical-align: middle;
   align-items: center;
-}
+} */
 
-.cpn_title_flex {
+/* .cpn_title_flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
+} */
 
-.coupon_card {
+/* .coupon_card {
   margin-bottom: 15px;
-  border-radius: 4px;
-  /* border-style: solid; */
-  /* border-color: rgb(234, 234, 234); */
-  line-height: 3px;
+  border-radius: 4px; */
+/* border-style: solid; */
+/* border-color: rgb(234, 234, 234); */
+/* line-height: 3px;
   padding: 15px;
   padding-top: 3px;
   padding-bottom: 15px;
   background-color: rgb(255, 251, 234);
-}
+} */
 
-.coupon_card > p {
+/* .coupon_card > p {
   margin-top: 10px;
   font-family: montserrat;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.75);
   line-height: 1.4;
-}
+} */
 
-#cpn_title {
+/* #cpn_title {
   font-family: montserrat;
   font-weight: bolder;
   font-size: 12px;
   color: rgb(0, 0, 0);
   line-height: 1.9;
-}
+} */
 
-.coupon_code {
+/* .coupon_code {
   padding: 3px;
   color: #000;
   border: 1px dashed #51cccc;
@@ -775,7 +775,7 @@ img[alt="coupon_applied"] {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-left: 3px;
-}
+} */
 
 @media only screen and (max-width: 961px) {
   .main-div > div:nth-of-type(2) > div {
