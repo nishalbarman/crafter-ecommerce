@@ -36,7 +36,16 @@ export async function GET(req) {
 
     const cartItemsForUser = await Cart.find({
       user: userDetails._id,
-    }).populate("product");
+    }).populate([
+      "size",
+      "color",
+      {
+        path: "product",
+        select:
+          "-_id title discountedPrice originalPrice previewUrl shippingPrice",
+      },
+    ]);
+
     if (!cartItemsForUser) {
       return NextResponse.json(
         { status: false, message: "No items on cart" },
@@ -49,8 +58,16 @@ export async function GET(req) {
     const txnInsertedCartItems = cartItemsForUser.map((item) => ({
       ...item,
       txnid,
+      title: item.product.title,
+      previewUrl: item.product.previewUrl,
+      discountedPrice: item.product.discountedPrice,
+      originalPrice: item.product.originalPrice,
+      shippingPrice: item.product.shippingPrice,
+      orderId: "OIDC-" + uuidv4(),
       user: userDetails._id,
     }));
+
+    console.log(txnInsertedCartItems);
 
     await Order.insertMany(txnInsertedCartItems);
 
@@ -58,9 +75,11 @@ export async function GET(req) {
       (pay, cartItem) => {
         const itemID = cartItem._id;
         const itemTitle = cartItem.product.title;
-        const itemPrice = cartItem.product.discountedPrice;
+
+        const itemBuyPrice = cartItem.product.discountedPrice; // the bying price
         const itemQuantity = cartItem.quantity;
-        const totalItemPrice = itemPrice * itemQuantity;
+
+        const totalItemPrice = itemBuyPrice * itemQuantity;
 
         return {
           amount: pay.amount + totalItemPrice,
@@ -70,13 +89,15 @@ export async function GET(req) {
       { amount: 0, productinfo: [] }
     );
 
+    console.log("Generated Payment Amount --->", payuObject.amount);
+
     if (!!appliedCouponID) {
       // check if applied coupon is avaible
       const appliedCoupon = await Coupon.findOne({ _id: appliedCouponID }); // check if applied coupon is available on databse
       if (!!appliedCoupon) {
         // if discounted price is written as direct price then check the minumum required amount for the cart reached or not
         const discountedPrice = appliedCoupon?.isPercentage
-          ? (payuObject.amount / 100) * (parseInt(appliedCoupon.off) || 0)
+          ? (payuObject.amount / 100) * parseInt(appliedCoupon.off) || 0
           : payuObject.amount >
               (appliedCoupon.minimumPayAmount || payuObject.amount + 100)
             ? appliedCoupon.off
