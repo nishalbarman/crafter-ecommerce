@@ -45,8 +45,6 @@ function SignupForm() {
     const value = e.target.value;
     const validation = validateInputs(name, value);
 
-    console.log(validation);
-
     setFormData((prev) => ({
       ...prev,
       [name]: {

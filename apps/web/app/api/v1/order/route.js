@@ -40,8 +40,6 @@ export async function GET(req) {
       .sort({ createdAt: "desc" })
       .populate("user");
 
-    console.log("Order details -->", orderDetails);
-
     return NextResponse.json({
       status: true,
       data: orderDetails,

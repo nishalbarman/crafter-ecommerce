@@ -10,7 +10,8 @@ Crafter is an ecommerce website where users can buy products.
 Run the following command:
 
 ```sh
-npm install ## install the dependencies first
+npm install --workspace=web ## install the dependencies first
+npm install --workspace=@store/redux ## install the dependencies first
 npm run dev ## run the development server
 ```
 
