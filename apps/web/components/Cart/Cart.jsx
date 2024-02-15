@@ -66,7 +66,6 @@ function Cart() {
     try {
       e.preventDefault();
 
-      console.log(couponCode);
       if (couponCode.value === "") {
         return setCouponCode((prev) => ({ ...prev, isError: true }));
       }
@@ -169,8 +168,6 @@ function Cart() {
         `/api/v1/payment/payu/cart-hash${!!appliedCoupon && appliedCoupon._id ? "?coupon=" + appliedCoupon._id : ""}`
       ); // generate hash with coupon
 
-      console.log(response?.data);
-
       const pay = response.data.paymentDetails;
 
       initiatePayment(pay);
@@ -181,7 +178,6 @@ function Cart() {
       function handlePopupEvent(event) {
         // Handle the event from the popup
         var data = event.detail;
-        console.log("Received data from popup:", data);
 
         // Close loading indicator or perform any other actions
 
@@ -213,9 +209,12 @@ function Cart() {
     let totalDiscountPrice = 0;
 
     Object.values(cartData).forEach((item) => {
-      totalPrice += (item.originalPrice || item.discountedPrice) * (item.quantity || 1);
+      totalPrice +=
+        (item.originalPrice || item.discountedPrice) * (item.quantity || 1);
       subtotalPrice += item.discountedPrice * (item.quantity || 1);
-      totalDiscountPrice += !!item.originalPrice ? (item.quantity || 1) * (item.originalPrice - item.discountedPrice) : 0;
+      totalDiscountPrice += !!item.originalPrice
+        ? (item.quantity || 1) * (item.originalPrice - item.discountedPrice)
+        : 0;
     });
 
     setTotalPrice(totalPrice);
@@ -649,7 +648,6 @@ function Cart() {
           ) : (
             <button
               onClick={() => {
-                console.log(transactionStatusRef.current);
                 transactionStatusRef.current?.classList.add("hidden");
               }}
               className="bg-[rgb(219,69,69)] disabled:cursor-not-allowed disabled:bg-[rgb(219,69,69)] border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[20px] cursor-pointer"

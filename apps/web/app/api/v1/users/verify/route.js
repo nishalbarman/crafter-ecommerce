@@ -12,7 +12,6 @@ export async function GET() {
 export async function POST(req) {
   try {
     const { token } = await req.json();
-    console.log("Encoded Token:-->>", token);
     if (!token) {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }

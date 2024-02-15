@@ -2,12 +2,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function middleware(request) {
-  console.log("I am in middleware");
 
   const nextCookies = cookies();
   const reqUrl = new URL(request.url);
 
-  console.log("Request URL ===>>>", reqUrl);
   const token = nextCookies.get("token")?.value || null;
 
   const isPublicPath =

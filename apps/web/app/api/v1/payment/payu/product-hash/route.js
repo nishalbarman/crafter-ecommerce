@@ -24,7 +24,6 @@ export async function GET(req) {
     }
 
     const userDetails = getTokenDetails(token) || null;
-    console.log(userDetails);
 
     if (!userDetails) {
       return NextResponse.json(

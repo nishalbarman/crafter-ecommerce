@@ -10,7 +10,6 @@ export async function GET(req, { params }) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const code = searchParams.get("code") || null;
-    // console.log("Coupon code-------->", code);
 
     const userToken = req.cookies.get("token") || null;
     const token = userToken?.value || null;
@@ -27,7 +26,6 @@ export async function GET(req, { params }) {
     }
 
     const coupon = await Coupon.findOne({ code: code.toUpperCase() });
-    console.log("Coupon from DB ------>", coupon);
 
     if (!coupon) {
       return NextResponse.json({
