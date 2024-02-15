@@ -28,8 +28,6 @@ async function page({ params }) {
   if (!token) redirect("/auth/signup");
   const response = await verifyWithToken(token);
 
-  console.log(TAG, response.success);
-
   return (
     <main className="flex m-[20px_0] sm:items-center min-h-[80vh] ml-[3%] mr-[3%] lg:ml-[10%] lg:mr-[10%]">
       <div className="grid grid-col-1 md:grid-cols-3 h-fill w-[100%] justify-center">

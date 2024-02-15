@@ -31,8 +31,6 @@ export async function POST(request) {
     const { email, name, mobileNo, password, confirmpassword } =
       await request.json(); // get all the form details for registration of a new user
 
-    console.log("Signup Route ------->", email);
-
     if (!isValidEmail(email)) {
       /* validate password */
       error.push("Invalid email");
@@ -75,8 +73,6 @@ export async function POST(request) {
     // const encoded = base64.encode(bytes);
     const encoded = uuidv4();
 
-    console.log("Encoded text:-->", encoded);
-
     // create new user if everything is ok, and then save it on db
     const userObject = new User({
       email,
@@ -102,7 +98,6 @@ export async function POST(request) {
   } catch (error) {
     console.log(error);
     if (error instanceof mongoose.Error) {
-      console.log("I am here ------------------------>");
       /* I added custom validator functions in mongoose models, so the code is to chcek whether the errors are from mongoose or not */
       const errArray = [];
       for (let key in error.errors) {

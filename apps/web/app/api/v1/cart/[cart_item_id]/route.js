@@ -37,8 +37,6 @@ export async function PATCH(req, { params }) {
     const { cart_item_id } = params;
     const reqBody = await req.json();
 
-    console.log("ReqBody for Cart Update", reqBody);
-
     const quantity = parseInt(reqBody.quantity) || null; // quantity
     const size = reqBody.size || null; // id of size
     const color = reqBody.color || null; // id of color
@@ -64,7 +62,6 @@ export async function PATCH(req, { params }) {
     const responseText = [];
 
     if (quantity && cartProduct.product.availableStocks > quantity) {
-      console.log("Quanity updated!");
       cartProduct.quantity = quantity;
       responseText.push("Quantity Updated");
     }

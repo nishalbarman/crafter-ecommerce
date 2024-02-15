@@ -11,7 +11,6 @@ connect();
 export async function GET() {
   try {
     const categories = await Category.find({});
-    console.log(TAG, categories);
     return NextResponse.json(
       { data: categories, status: true },
       { status: 200 }

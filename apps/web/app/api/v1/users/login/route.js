@@ -93,7 +93,6 @@ export async function POST(request) {
   } catch (error) {
     console.log(error);
     if (error instanceof mongoose.Error) {
-      console.log("I am here ------------------------>");
       /* I added custom validator functions in mongoose models, so the code is to chcek whether the errors are from mongoose or not */
       const errArray = [];
       for (let key in error.errors) {

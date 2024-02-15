@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 function Footer() {
-  console.log("Is it a server component or client component!");
+  ("Is it a server component or client component!");
 
   return (
     <div className="bg-black ">

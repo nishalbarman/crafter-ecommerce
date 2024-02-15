@@ -21,7 +21,6 @@ export async function GET(req) {
   } catch (err) {
     console.log(err);
     if (err instanceof mongoose.Error) {
-      console.log("I am here ------------------------>");
       /* I added custom validator functions in mongoose models, so the code is to chcek whether the errors are from mongoose or not */
       const errArray = [];
       for (let key in err.errors) {

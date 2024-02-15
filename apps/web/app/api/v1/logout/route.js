@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
-    console.log("Logout route request is there");
-
     const response = NextResponse.json({
       status: true,
       message: "Logout successful",
