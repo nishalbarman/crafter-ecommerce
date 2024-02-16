@@ -1,27 +1,34 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
+import useRazorpay from "react-razorpay";
+
+import "../../app/scrollbar.css";
+import "./spinner.css";
 
 import { useDeleteCartMutation } from "@store/redux/cart";
 import { updateCart } from "@store/redux/cartLocal";
 import { useAddWishlistMutation } from "@store/redux/wishlist";
 
 import CartItem from "./CartItem";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-
-import "../../app/scrollbar.css";
 
 function Cart() {
+  const [Razorpay] = useRazorpay();
+
   const [couponCode, setCouponCode] = useState({
     value: "",
     isTouched: false,
     isError: false,
     error: "Coupon invalid",
   });
+
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
+  const [gatewayOptions, setGatewayOptions] = useState("razorpay");
 
   const [appliedCoupon, setAppliedCoupon] = useState(null); // coupon which needs to be sent to server, coupon will be stored here after applying. // id of the coupon
 
@@ -160,46 +167,121 @@ function Cart() {
     }
   };
 
-  const handlePaymentContinueClick = async () => {
+  const handlePayUContinue = async () => {
     const isAddressAvailble = true || localStorage.getItem("isAddressAvailble");
 
     if (isAddressAvailble) {
-      const response = await axios.get(
-        `/api/v1/payment/payu/cart-hash${!!appliedCoupon && appliedCoupon._id ? "?coupon=" + appliedCoupon._id : ""}`
-      ); // generate hash with coupon
+      try {
+        setIsPaymentLoading(true);
+        const response = await axios.get(
+          `/api/v1/payment/payu/cart-hash${!!appliedCoupon && appliedCoupon._id ? "?coupon=" + appliedCoupon._id : ""}`
+        ); // generate hash with coupon
 
-      const pay = response.data.paymentDetails;
+        const pay = response.data.paymentDetails;
 
-      initiatePayment(pay);
+        initiatePayment(pay);
 
-      transactionLoadingRef.current?.classList.remove("hidden");
+        transactionLoadingRef.current?.classList.remove("hidden");
 
-      // Define a function to handle custom events from the popup
-      function handlePopupEvent(event) {
-        // Handle the event from the popup
-        var data = event.detail;
+        // Define a function to handle custom events from the popup
+        function handlePopupEvent(event) {
+          // Handle the event from the popup
+          var data = event.detail;
 
-        // Close loading indicator or perform any other actions
+          // Close loading indicator or perform any other actions
 
-        if (data?.success) {
-          transactionLoadingRef.current?.classList.add("hidden");
-          transactionStatusRef.current?.classList.remove("hidden");
-          setOrderStatusText("Order Placed Successfully");
-          setOrderStatus(true);
-          dispatch(updateCart({ totalCount: 0, cartItems: {} }));
-        } else {
-          transactionLoadingRef.current?.classList.add("hidden");
-          transactionStatusRef.current?.classList.remove("hidden");
-          setOrderStatus(false);
-          setOrderStatusText("Order Failed");
+          if (data?.success) {
+            transactionLoadingRef.current?.classList.add("hidden");
+            transactionStatusRef.current?.classList.remove("hidden");
+            setOrderStatusText("Order Placed Successfully");
+            setOrderStatus(true);
+            dispatch(updateCart({ totalCount: 0, cartItems: {} }));
+          } else {
+            transactionLoadingRef.current?.classList.add("hidden");
+            transactionStatusRef.current?.classList.remove("hidden");
+            setOrderStatus(false);
+            setOrderStatusText("Order Failed");
+          }
+          document.removeEventListener("paymentResponseData", handlePopupEvent);
         }
-        document.removeEventListener("paymentResponseData", handlePopupEvent);
-      }
 
-      // Listen for custom events from the popup
-      document.addEventListener("paymentResponseData", handlePopupEvent);
+        // Listen for custom events from the popup
+        document.addEventListener("paymentResponseData", handlePopupEvent);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsPaymentLoading(false);
+      }
     } else {
       navigation.push("/billing?redirect=payment-cart");
+    }
+  };
+
+  const handleRazorPayContinue = useCallback(async () => {
+    if (true) {
+      try {
+        setIsPaymentLoading(true);
+        const response = await axios.get(
+          `/api/v1/payment/razorpay/create-cart-order${!!appliedCoupon && appliedCoupon._id ? "?coupon=" + appliedCoupon._id : ""}`
+        ); // generate razor pay order id and also apply coupon if applicable
+
+        const config = {
+          key: "***REMOVED***",
+          amount: response.data.payment.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: "INR",
+          name: "Crafter Ecommerce", //your business name
+          description: response.data.payment.productinfo,
+          // image: "https://example.com/your_logo",
+          order_id: response.data.payment.razorpayOrderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+          handler: function (response) {
+            console.log(response);
+            dispatch(updateCart({ totalCount: 0, cartItems: {} }));
+            setOrderStatus(true);
+            setOrderStatusText("Order successful");
+            transactionStatusRef.current?.classList.remove("hidden");
+            setIsPaymentLoading(false);
+            window.scrollTo(0);
+          },
+          prefill: {
+            name: response.data.payment.name, //your customer's name
+            email: response.data.payment.email,
+            contact: response.data.payment.mobileNo, //Provide the customer's phone number for better conversion rates
+          },
+          theme: {
+            color: "#DB4545",
+          },
+        };
+
+        const razorPay = new Razorpay(config);
+
+        razorPay.on("payment.failed", function (response) {
+          setIsPaymentLoading(false);
+          console.log(response.error.code);
+          console.log(response.error.description);
+          console.log(response.error.source);
+          console.log(response.error.step);
+          console.log(response.error.reason);
+          console.log(response.error.metadata.order_id);
+          console.log(response.error.metadata.payment_id);
+        });
+
+        razorPay.open();
+      } catch (error) {
+        console.error(error.message);
+      }
+    } else {
+      navigation.push("/billing?redirect=cart&form=submit");
+    }
+  }, [Razorpay]);
+
+  const handlePayment = (e) => {
+    switch (gatewayOptions) {
+      case "razorpay":
+        return handleRazorPayContinue(e);
+      case "payu":
+        return handlePayUContinue(e);
+      default:
+        return handleRazorPayContinue(e);
     }
   };
 
@@ -413,7 +495,47 @@ function Cart() {
                     ₹{subtotalPrice}
                   </p>
                 </div>
-
+                <div className="flex flex-col font-bold border-t-[2px] border-t-[rgba(0,0,0,0.12)]">
+                  <div className="text-[11px] uppercase bg-[rgb(235,235,235)] p-[13px_20px] font-bold mb-[20px]">
+                    <p>SELECT Payment GATEWAY</p>
+                  </div>
+                  <div className="flex flex-col p-[0px_20px] mb-[-10px] font-bold justify-center gap-1">
+                    <label className="flex items-center gap-4">
+                      <input
+                        className="w-4 h-4"
+                        type="checkbox"
+                        name="gateway"
+                        value={"razorpay"}
+                        checked={gatewayOptions === "razorpay"}
+                        onChange={() => {
+                          setGatewayOptions("razorpay");
+                        }}
+                      />{" "}
+                      <img
+                        src="/Razorpay_logo.svg"
+                        className="inline-block h-10 object-contain aspect-[3/1]"
+                        alt="Razorpay"
+                      />
+                    </label>
+                    <label className="flex items-center gap-4">
+                      <input
+                        className="w-4 h-4"
+                        type="checkbox"
+                        name="gateway"
+                        value={"payu"}
+                        checked={gatewayOptions === "payu"}
+                        onChange={(e) => {
+                          setGatewayOptions("payu");
+                        }}
+                      />{" "}
+                      <img
+                        src="/PayU-logo.webp"
+                        className="inline-block h-10 object-contain aspect-[3/1]"
+                        alt="PayU"
+                      />
+                    </label>
+                  </div>
+                </div>
                 <div className="price_bottom_section flex text-[12px] p-[10px_20px] border-t-[1px] border-t-[rgba(0,0,0,0.12)] shadow-none static mt-[30px] w-[100%]">
                   <div className="block text-[#000] leading-[20px] p-[0_0_4px] w-[100%]">
                     <p className="text-[14px] mb-[1px]">Total</p>
@@ -421,11 +543,16 @@ function Cart() {
                       ₹{subtotalPrice}
                     </p>
                   </div>
+
                   {/* border-[rgb(66,162,162)] bg-[#42a2a2]  */}
                   <button
-                    onClick={handlePaymentContinueClick}
-                    className="text-white p-[15px] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer">
-                    Continue
+                    disabled={isPaymentLoading}
+                    onClick={handlePayment}
+                    className="text-white p-[15px] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer disabled:bg-[rgba(219,69,69,0.3)] disabled:cursor-not-allowed">
+                    Continue{" "}
+                    {isPaymentLoading && (
+                      <div className="spinner max-lg:ml-5"></div>
+                    )}
                   </button>
                 </div>
                 <div className="flex justify-around p-[15px]">
@@ -488,43 +615,6 @@ function Cart() {
             href="/products">
             Continue Shopping
           </Link>
-
-          {/* <div className="category flex flex-col justify-center items-center gap-5">
-            <p className="">You could try one of these categories:</p>
-            <div className="flex gap-10">
-              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
-                <div className="table-body-cell">Men</div>
-                <div className="table-body-cell">Topwear</div>
-                <div className="table-body-cell">Bottomwear</div>
-              </div>
-
-              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
-                <div className="table-body-cell"></div>
-                <div className="table-body-cell">Footwear</div>
-                <div className="table-body-cell">Bestsellers</div>
-              </div>
-              <br />
-              <br />
-              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
-                <div className="table-body-cell">Women</div>
-                <div className="table-body-cell">Topwear</div>
-                <div className="table-body-cell">Bottomwear</div>
-              </div>
-
-              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
-                <div className="table-body-cell"></div>
-                <div className="table-body-cell">Bestsellers</div>
-                <div className="table-body-cell"></div>
-              </div>
-              <br />
-              <br />
-              <div className="resp-table-row flex flex-col gap-2 items-start justify-start">
-                <div className="table-body-cell">Mobile Covers</div>
-                <div className="table-body-cell">All Mobile Covers</div>
-                <div className="table-body-cell"></div>
-              </div>
-            </div>
-          </div> */}
         </div>
       )}
 

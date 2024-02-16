@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import RazorPay from "razorpay";
+import { v4 as uuidv4 } from "uuid";
 import { Cart, Order, RazorPayOrder } from "../../../../../../models/models";
+import getTokenDetails from "../../../../../../helpter/getTokenDetails";
+
+const RAZORPAY_KEY_id = "***REMOVED***";
+const RAZORPAY_KEY_SECRET = "***REMOVED***";
 
 export async function GET(req) {
   try {
     const userCookies = req.cookies.get("token") || null;
-    const token = userCookies.value || null;
+    const token = userCookies?.value || null;
 
     if (!token) {
       return NextResponse.redirect(
@@ -45,7 +50,7 @@ export async function GET(req) {
 
     const paymentObject = cartItemsForUser?.reduce(
       (pay, singleProduct) => {
-        const itemID = singleProduct._id;
+        // const itemID = singleProduct._id;
         const itemTitle = singleProduct.product.title;
 
         const itemBuyPrice = singleProduct.product.discountedPrice; // the bying price
@@ -55,11 +60,13 @@ export async function GET(req) {
 
         return {
           amount: pay.amount + totalItemPrice,
-          productinfo: [...pay.productinfo, { title: itemTitle, id: itemID }],
+          productinfo: [...pay.productinfo, itemTitle],
         };
       },
       { amount: 0, productinfo: [] }
     );
+
+    paymentObject.amount *= 100; // convert the amount into paise (100 paise = 1 rupees)
 
     /***  if coupon available apply that ***/
     if (!!appliedCouponID) {
@@ -76,20 +83,26 @@ export async function GET(req) {
       }
     }
 
-    const instance = new RazorPay(); // initialize razorpay sdk
+    const instance = new RazorPay({
+      key_id: RAZORPAY_KEY_id,
+      key_secret: RAZORPAY_KEY_SECRET,
+    }); // initialize razorpay sdk
 
     const txnid = uuidv4(); // random txnid
 
+    const productNames = paymentObject.productinfo.join(", ");
+
     /***  Create an order and get the order ID with the help of razorpay SDK ***/
-    const razorpayOrderId = instance.orders.create({
+    const razorpayOrder = await instance.orders.create({
       amount: paymentObject.amount,
       currency: "INR",
-      receipt: "receipt#" + txnid,
+      receipt: txnid,
       partial_payment: false,
       notes: {
         customerName: userDetails.name,
         customerEmail: userDetails.email,
         productIDs: cartItemsForUser.map((item) => item._id).join(", "),
+        productinfo: productNames,
       },
     });
 
@@ -112,7 +125,7 @@ export async function GET(req) {
     // generating razorpay list, indivisual record for each order and assining the razorpay generaetd order id
     const razorpayOrderIdList = orders.map((item) => {
       return {
-        razorPayOrderId: razorpayOrderId, // the order id created by razorpay for the order
+        razorPayOrderId: razorpayOrder.id, // the order id created by razorpay for the order
         order: item._id, // the id of an order
         user: userDetails._id, // also store the userId
       };
@@ -124,9 +137,16 @@ export async function GET(req) {
     return NextResponse.json(
       {
         status: true,
-        razorpayOrderId: razorpayOrderId,
+        payment: {
+          razorpayOrderId: razorpayOrder.id,
+          amount: razorpayOrder.amount,
+          name: userDetails.name,
+          email: userDetails.email,
+          mobileNo: userDetails.mobileNo,
+          productinfo: productNames,
+        },
       },
-      { status: true }
+      { status: 201 }
     );
   } catch (error) {
     console.log(error);
