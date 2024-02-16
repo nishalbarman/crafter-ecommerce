@@ -27,10 +27,10 @@ function Cart() {
     error: "Coupon invalid",
   });
 
-  console.log(couponCode);
-
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
-  const [gatewayOptions, setGatewayOptions] = useState("razorpay");
+  const [gatewayOption, setGatewayOption] = useState(null);
+
+  const [paymentGatewayList, setPaymentGatewaysList] = useState([]);
 
   const [appliedCoupon, setAppliedCoupon] = useState(null); // coupon which needs to be sent to server, coupon will be stored here after applying. // id of the coupon
 
@@ -170,8 +170,8 @@ function Cart() {
   };
 
   const handlePayUContinue = useCallback(async () => {
+    if (!gatewayOption) return;
     const isAddressAvailble = true || localStorage.getItem("isAddressAvailble");
-
     if (isAddressAvailble) {
       try {
         setIsPaymentLoading(true);
@@ -220,6 +220,7 @@ function Cart() {
   }, [appliedCoupon]);
 
   const handleRazorPayContinue = useCallback(async () => {
+    if (!gatewayOption) return;
     if (true) {
       try {
         setIsPaymentLoading(true);
@@ -291,7 +292,7 @@ function Cart() {
   }, [Razorpay, appliedCoupon]);
 
   const handlePayment = (e) => {
-    switch (gatewayOptions) {
+    switch (gatewayOption) {
       case "razorpay":
         return handleRazorPayContinue(e);
       case "payu":
@@ -332,6 +333,27 @@ function Cart() {
       setSubtotalPrice(subtotalPrice);
     }
   }, [cartData, appliedCoupon]);
+
+  const getPaymentGateways = async () => {
+    try {
+      const response = await axios.get(`/api/v1/payment/gateways`);
+      console.log(response.data.data);
+      setPaymentGatewaysList(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(paymentGatewayList);
+    setGatewayOption(
+      paymentGatewayList.length > 0 ? paymentGatewayList[0].title : null
+    );
+  }, [paymentGatewayList]);
+
+  useEffect(() => {
+    getPaymentGateways();
+  }, []);
 
   return (
     <>
@@ -511,45 +533,34 @@ function Cart() {
                     ₹{subtotalPrice}
                   </p>
                 </div>
+
+                {/* payment gateways */}
                 <div className="flex flex-col font-bold border-t-[2px] border-t-[rgba(0,0,0,0.12)]">
                   <div className="text-[11px] uppercase bg-[rgb(235,235,235)] p-[13px_20px] font-bold mb-[20px]">
                     <p>SELECT Payment GATEWAY</p>
                   </div>
                   <div className="flex flex-col p-[0px_20px] mb-[-10px] font-bold justify-center gap-1">
-                    <label className="flex items-center gap-4">
-                      <input
-                        className="w-4 h-4"
-                        type="checkbox"
-                        name="gateway"
-                        value={"razorpay"}
-                        checked={gatewayOptions === "razorpay"}
-                        onChange={() => {
-                          setGatewayOptions("razorpay");
-                        }}
-                      />{" "}
-                      <img
-                        src="/Razorpay_logo.svg"
-                        className="inline-block h-10 object-contain aspect-[3/1]"
-                        alt="Razorpay"
-                      />
-                    </label>
-                    <label className="flex items-center gap-4">
-                      <input
-                        className="w-4 h-4"
-                        type="checkbox"
-                        name="gateway"
-                        value={"payu"}
-                        checked={gatewayOptions === "payu"}
-                        onChange={(e) => {
-                          setGatewayOptions("payu");
-                        }}
-                      />{" "}
-                      <img
-                        src="/PayU-logo.webp"
-                        className="inline-block h-10 object-contain aspect-[3/1]"
-                        alt="PayU"
-                      />
-                    </label>
+                    {paymentGatewayList.map(({ title, imageUrl }, index) => {
+                      return (
+                        <label key={index} className="flex items-center gap-4">
+                          <input
+                            className="w-4 h-4"
+                            type="checkbox"
+                            name="gateway"
+                            value={title}
+                            checked={gatewayOption === title}
+                            onChange={(e) => {
+                              setGatewayOption(title);
+                            }}
+                          />{" "}
+                          <img
+                            src={imageUrl}
+                            className="inline-block h-10 object-contain aspect-[3/1]"
+                            alt={title}
+                          />
+                        </label>
+                      );
+                    })}
                   </div>
                 </div>
                 <div className="price_bottom_section flex text-[12px] p-[10px_20px] border-t-[1px] border-t-[rgba(0,0,0,0.12)] shadow-none static mt-[30px] w-[100%]">
@@ -562,7 +573,7 @@ function Cart() {
 
                   {/* border-[rgb(66,162,162)] bg-[#42a2a2]  */}
                   <button
-                    disabled={isPaymentLoading}
+                    disabled={isPaymentLoading || !gatewayOption}
                     onClick={handlePayment}
                     className="text-white p-[15px] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer disabled:bg-[rgba(219,69,69,0.3)] disabled:cursor-not-allowed">
                     Continue{" "}

@@ -245,11 +245,17 @@ const razorpayOrderIdSchema = new mongoose.Schema({
 });
 
 const sizeSchema = new mongoose.Schema({
-  title: { type: mongoose.Types.ObjectId, required: true },
+  title: { type: String, required: true },
 });
 
 const colorSchema = new mongoose.Schema({
-  title: { type: mongoose.Types.ObjectId, required: true },
+  title: { type: String, required: true },
+});
+
+const paymentGatewaySchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+  isActive: { type: Boolean, default: true, required: true },
 });
 
 // ----------------------------------------->
@@ -304,6 +310,10 @@ const Color =
 const RazorPayOrder =
   mongoose.models.razorpay_orderids ||
   mongoose.model("razorpay_orderids", razorpayOrderIdSchema);
+
+const PaymentGateway =
+  mongoose.models.paymentgateways ||
+  mongoose.model("paymentgateways", paymentGatewaySchema);
 
 // ----------------------------------------->
 /****************************************** */
@@ -430,4 +440,5 @@ export {
   Size,
   Color,
   RazorPayOrder,
+  PaymentGateway,
 };
