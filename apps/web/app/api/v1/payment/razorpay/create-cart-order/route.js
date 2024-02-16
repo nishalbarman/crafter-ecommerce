@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import RazorPay from "razorpay";
 import { v4 as uuidv4 } from "uuid";
-import { Cart, Order, RazorPayOrder } from "../../../../../../models/models";
+import {
+  Cart,
+  Coupon,
+  Order,
+  RazorPayOrder,
+} from "../../../../../../models/models";
 import getTokenDetails from "../../../../../../helpter/getTokenDetails";
 
 const RAZORPAY_KEY_id = "***REMOVED***";
@@ -73,9 +78,9 @@ export async function GET(req) {
       const appliedCoupon = await Coupon.findOne({ _id: appliedCouponID }); // check if applied coupon is available on database
       if (!!appliedCoupon) {
         const discountedPrice = appliedCoupon?.isPercentage
-          ? (payuObject.amount / 100) * parseInt(appliedCoupon.off) || 0
-          : payuObject.amount >
-              (appliedCoupon.minimumPayAmount || payuObject.amount + 100)
+          ? (paymentObject.amount / 100) * parseInt(appliedCoupon.off) || 0
+          : paymentObject.amount >
+              (appliedCoupon.minimumPayAmount || paymentObject.amount + 100)
             ? appliedCoupon.off
             : 0;
 
