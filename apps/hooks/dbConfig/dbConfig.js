@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-function connect() {
+module.exports = function connect() {
   const connectionString = process.env.MONGO_URI;
   mongoose.connect(connectionString);
 
@@ -13,6 +13,4 @@ function connect() {
   connection.on("error", (error) => {
     console.error("Mongoose connection error:-> ", error);
   });
-}
-
-module.exports = connect;
+};

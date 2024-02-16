@@ -238,6 +238,12 @@ const couponSchema = new mongoose.Schema({
   description: { type: String, required: true },
 });
 
+const razorpayOrderIdSchema = new mongoose.Schema({
+  razorPayOrderId: { type: String, required: true },
+  order: { type: mongoose.Types.ObjectId, required: true },
+  user: { type: mongoose.Types.ObjectId, required: true },
+});
+
 const sizeSchema = new mongoose.Schema({
   title: { type: mongoose.Types.ObjectId, required: true },
 });
@@ -294,6 +300,10 @@ const Size =
 const Color =
   mongoose.models.product_colors ||
   mongoose.model("product_colors", colorSchema);
+
+const RazorPayOrder =
+  mongoose.models.razorpay_orderids ||
+  mongoose.model("razorpay_orderids", razorpayOrderIdSchema);
 
 // ----------------------------------------->
 /****************************************** */
@@ -419,4 +429,5 @@ export {
   Coupon,
   Size,
   Color,
+  RazorPayOrder,
 };
