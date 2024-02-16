@@ -67,7 +67,8 @@ export async function GET(req) {
       user: userDetails._id,
     }));
 
-    await Order.insertMany(txnInsertedCartItems);
+    const orders = await Order.insertMany(txnInsertedCartItems);
+    console.log(orders);
 
     const payuObject = cartItemsForUser?.reduce(
       (pay, cartItem) => {
