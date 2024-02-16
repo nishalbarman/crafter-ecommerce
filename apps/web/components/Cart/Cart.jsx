@@ -27,6 +27,8 @@ function Cart() {
     error: "Coupon invalid",
   });
 
+  console.log(couponCode);
+
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const [gatewayOptions, setGatewayOptions] = useState("razorpay");
 
@@ -167,7 +169,7 @@ function Cart() {
     }
   };
 
-  const handlePayUContinue = async () => {
+  const handlePayUContinue = useCallback(async () => {
     const isAddressAvailble = true || localStorage.getItem("isAddressAvailble");
 
     if (isAddressAvailble) {
@@ -215,7 +217,7 @@ function Cart() {
     } else {
       navigation.push("/billing?redirect=payment-cart");
     }
-  };
+  }, [appliedCoupon]);
 
   const handleRazorPayContinue = useCallback(async () => {
     if (true) {
@@ -265,6 +267,20 @@ function Cart() {
           console.log(response.error.metadata.payment_id);
         });
 
+        razorPay.on("payment.dispute.lost", function (response) {
+          setIsPaymentLoading(false);
+          console.log("Disput closed");
+        });
+
+        razorPay.on("payment.dispute.created", function (response) {
+          console.log("payment.dispute.created");
+        });
+
+        razorPay.on("payment.dispute.closed", function (response) {
+          setIsPaymentLoading(false);
+          console.log("payment.dispute.closed");
+        });
+
         razorPay.open();
       } catch (error) {
         console.error(error.message);
@@ -272,7 +288,7 @@ function Cart() {
     } else {
       navigation.push("/billing?redirect=cart&form=submit");
     }
-  }, [Razorpay]);
+  }, [Razorpay, appliedCoupon]);
 
   const handlePayment = (e) => {
     switch (gatewayOptions) {
