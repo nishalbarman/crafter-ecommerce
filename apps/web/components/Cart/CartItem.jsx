@@ -213,14 +213,14 @@ function CartItem({
                 You saved <span>₹{originalPrice - discountedPrice} INR</span>
               </p>
             )}
-
-            <div className="qp flex justify-start mt-[20px] mb-[30px] max-[961px]:flex-col max-[961px]:gap-2">
+            {/* max-[961px]:flex-col max-[961px]:gap-2 */}
+            <div className="qp flex justify-start mt-[20px] mb-[30px]  w-fit">
               {isSizeVaries && item.availableSizes && (
                 <div
                   onClick={handleOnSizeChangeClick}
                   className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
                   id="sizeButton">
-                  <span>Size :</span>{" "}
+                  <span>Size:</span>{" "}
                   <b>
                     {" "}
                     <span id="size">{productSize?.name}</span>{" "}
@@ -232,7 +232,7 @@ function CartItem({
                 onClick={handleOnQuanityChangeClick}
                 className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
                 id="qtyButton">
-                <span>Qty :</span>{" "}
+                <span>Qty:</span>{" "}
                 <b>
                   {" "}
                   <span id="qty">{productQuantity}</span>{" "}
@@ -290,6 +290,7 @@ function CartItem({
           {item?.availableSizes?.map((size) => {
             return (
               <p
+                key={size._id}
                 onClick={() => {
                   setProductSize(size);
                   sizeModalRef.current?.classList.add("hidden");
