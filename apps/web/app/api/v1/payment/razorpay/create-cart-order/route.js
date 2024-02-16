@@ -8,9 +8,12 @@ import {
   RazorPayOrder,
 } from "../../../../../../models/models";
 import getTokenDetails from "../../../../../../helpter/getTokenDetails";
+import { connect } from "../../../../../../dbConfig/dbConfig";
 
 const RAZORPAY_KEY_id = "rzp_test_CxACsvvj34FrIv";
 const RAZORPAY_KEY_SECRET = "NqUuAfFKHlOb7bEk524AFh4c";
+
+connect();
 
 export async function GET(req) {
   try {
