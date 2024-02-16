@@ -24,6 +24,7 @@
     "nodemailer": "^6.9.8",
     "password-validator": "^5.3.0",
     "payu-websdk": "^1.0.0",
+    "razorpay": "^2.9.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
