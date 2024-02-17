@@ -8,11 +8,17 @@ connect();
 export async function GET(req) {
   try {
     const userToken = req.cookies.get("token") || null;
+    const token = useToken?.value;
 
-    // handle invalid token
-    if (!userToken) return NextResponse.json("Invalid token");
+    if (!token) {
+      return NextResponse.redirect("/login?redirect=wishlist");
+    }
 
-    const userDetails = getTokenDetails(userToken.value);
+    const userDetails = getTokenDetails(token);
+
+    if (!userDetails) {
+      return NextResponse.redirect("/login?redirect=wishlist");
+    }
 
     const wishlistDetails = await Wishlist.find({
       user: userDetails._id,
@@ -36,19 +42,37 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const userToken = req.cookies.get("token") || null;
-    // handle invalid token
-    if (!userToken) return NextResponse.json("Invalid token");
+    const token = userToken?.value;
+
+    if (!token) {
+      return NextResponse.redirect("/login?redirect=wishlist");
+    }
+
+    const userDetails = getTokenDetails(userToken.value);
+    if (!userDetails) {
+      return NextResponse.redirect("/login?redirect=wishlist");
+    }
 
     const { productId } = await req.json();
 
-    const userDetails = getTokenDetails(userToken.value);
+    const wishlistItem = await Wishlist.findOne({
+      product: productId,
+      user: userDetails._id,
+    });
 
-    const cart = new Wishlist({
+    if (!wishlistItem) {
+      return NextResponse.json({
+        status: true,
+        message: "Already in wishlist",
+      });
+    }
+
+    const wishlist = new Wishlist({
       user: userDetails._id,
       product: productId,
     });
 
-    await cart.save();
+    await wishlist.save();
 
     return NextResponse.json({
       status: true,

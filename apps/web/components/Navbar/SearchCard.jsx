@@ -38,7 +38,7 @@ function SearchCard() {
         className="h-fit w-fit relative cursor-pointer">
         {wishlistTotal != 0 && (
           <div
-            className={`box-content absolute z-10 flex items-center justify-center aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>
+            className={`box-content absolute z-[1] flex items-center justify-center aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>
             <span className="text-[10px] text-white font-semibold">
               {wishlistTotal}
             </span>
@@ -54,7 +54,7 @@ function SearchCard() {
         className="h-fit w-fit relative cursor-pointer">
         {cartTotal != 0 && (
           <div
-            className={`box-content absolute z-10 flex items-center justify-center  aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>
+            className={`box-content absolute z-[1] flex items-center justify-center  aspect-square right-[-5px] rounded-full p-1 absolute bottom-5 bg-[#DB4444] min-w-4 min-h-4`}>
             <span className="text-[10px] text-white font-semibold">
               {cartTotal}
             </span>
