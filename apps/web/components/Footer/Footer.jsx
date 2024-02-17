@@ -95,6 +95,43 @@ function Footer() {
               title="tick icons">
               Vectors Market - Flaticon
             </a>
+            <p className="font-andika font-andika text-white">
+              <a
+                href="https://iconscout.com/icons/check"
+                className="underline"
+                target="_blank">
+                check
+              </a>{" "}
+              by{" "}
+              <a
+                target="_blank"
+                href="https://iconscout.com/contributors/google-inc"
+                className="underline">
+                Google Inc.
+              </a>{" "}
+              on{" "}
+              <a
+                target="_blank"
+                href="https://iconscout.com"
+                className="underline">
+                IconScout
+              </a>
+            </p>
+            <p className="font-andika font-andika text-white">
+              <a
+                href="https://iconscout.com/icons/cart"
+                className="underline"
+                target="_blank">
+                Cart
+              </a>{" "}
+              by{" "}
+              <a
+                href="https://iconscout.com/contributors/google-inc"
+                className="underline"
+                target="_blank">
+                Google Inc.
+              </a>
+            </p>
           </div>
         </div>
       </div>

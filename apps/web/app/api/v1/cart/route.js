@@ -87,6 +87,27 @@ export async function POST(req) {
 
     const { productId, size, color } = await req.json();
 
+    const cartItem = await Cart.findOneAndUpdate(
+      {
+        product: productId,
+        user: userDetails._id,
+      },
+      {
+        $inc: {
+          quantity: 1,
+        },
+      }
+    );
+
+    console.log(cartItem);
+
+    if (!!cartItem) {
+      return NextResponse.json({
+        status: true,
+        message: "Item added to Cart",
+      });
+    }
+
     const cart = new Cart({
       user: userDetails._id,
       product: productId,
