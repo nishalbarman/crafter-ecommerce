@@ -179,11 +179,26 @@ function ProductItem(item) {
         {!deleteCartIconVisible && (
           <button
             disabled={cartItems?.hasOwnProperty(_id)}
-            className="overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out group-hover/product_item:block group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
+            className="justify-center items-center overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out min-[593px]:group-hover/product_item:flex min-[593px]:group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
             onClick={handleAddToCart}>
-            {cartItems?.hasOwnProperty(_id) ? "In Cart" : addToCartText}
+            {cartItems?.hasOwnProperty(_id) ? (
+              <Image
+                className="invert"
+                src={"/assets/check.svg"}
+                width={20}
+                height={20}
+              />
+            ) : (
+              <Image
+                className="invert"
+                src={"/assets/addcart.svg"}
+                width={25}
+                height={30}
+              />
+            )}
           </button>
         )}
+        {/* addToCartText */}
 
         <div className="cursor-pointer absolute top-3 right-3 z-[999] flex flex-col gap-2 items-center w-fit">
           {/* ADD TO WISHLIST */}
@@ -231,6 +246,7 @@ function ProductItem(item) {
               />
             </div>
           )}
+
           {/* DELETE ICON WISHLIST */}
           {deleteWishlistIconVisible && (
             <div
@@ -242,6 +258,24 @@ function ProductItem(item) {
                 height={17}
                 alt="delete wishlist icon"
               />
+            </div>
+          )}
+
+          {/* ADD TO CART BUTTON */}
+          {!deleteCartIconVisible && (
+            <div
+              className="max-[591px]:flex cursor-pointer hidden items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              onClick={handleAddToCart}>
+              {cartItems?.hasOwnProperty(_id) ? (
+                <Image src={"/assets/addcart.svg"} width={22} height={22} />
+              ) : (
+                <Image
+                  src="/assets/add_to_cart_icon.svg"
+                  width={21}
+                  height={21}
+                  alt="add to cart icon"
+                />
+              )}
             </div>
           )}
         </div>
