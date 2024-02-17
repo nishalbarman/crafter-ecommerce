@@ -27,6 +27,8 @@ function Cart() {
     error: "Coupon invalid",
   });
 
+  const [couponSubmitLoading, setCouponSubmitLoading] = useState(false);
+
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const [gatewayOption, setGatewayOption] = useState(null);
 
@@ -74,6 +76,8 @@ function Cart() {
   const handleCouponFormSubmit = async (e) => {
     try {
       e.preventDefault();
+
+      setCouponSubmitLoading(true);
 
       if (couponCode.value === "") {
         return setCouponCode((prev) => ({ ...prev, isError: true }));
@@ -127,6 +131,8 @@ function Cart() {
       }, 800);
     } catch (error) {
       console.log(error);
+    } finally {
+      setCouponSubmitLoading(false);
     }
   };
 
@@ -480,10 +486,11 @@ function Cart() {
                 )}
               </div>
 
-              <div className="price_details border-[1px] border-[#e0e0e0] mb-[20px] pr-0">
+              <div className=" border-[1px] border-[#e0e0e0] mb-[20px] pr-0">
                 <div className="text-[11px] uppercase bg-[rgb(235,235,235)] p-[13px_20px] font-bold mb-[20px]">
                   <p>PRICE SUMMARY</p>
                 </div>
+
                 <div className="flex p-[0px_20px] pb-[4px]">
                   <p className="text-left w-[100%] text-[14px] ">
                     Total MRP (Incl. of taxes)
@@ -688,7 +695,7 @@ function Cart() {
               disabled={
                 !couponCode || !couponCode.isTouched || couponCode.isError
               }
-              className="bg-[#42a2a2] disabled:cursor-not-allowed disabled:bg-[#42a2a2]-200 border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[20px] cursor-pointer"
+              className={`${couponSubmitLoading ? "animate-pulse" : ""} bg-[#42a2a2] disabled:cursor-not-allowed disabled:bg-[#42a2a2]-200 border-none rounded-[5px] text-[#fff] text-[16px] uppercase p-[16px_0] block w-[100%] mt-[20px] cursor-pointer`}
               type="submit">
               APPLY
             </button>

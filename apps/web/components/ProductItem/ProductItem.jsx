@@ -170,8 +170,10 @@ function ProductItem(item) {
       <div className="relative rounded flex items-center justify-center w-full h-[200px] md:h-[250px] bg-[rgb(244,244,245)]">
         {/* DISCOUNT */}
         {!!originalPrice && (
-          <div className="z-[999] h-8 absolute top-3 left-3 w-[80px] p-3 rounded bg-[#DB4444] flex items-center justify-center">
-            <span className="text-white text-[15px]">{discount}%</span>
+          <div className="z-[999] absolute top-3 left-3 w-[80px] rounded bg-[#DB4444] flex items-center justify-center max-[591px]:w-[60px] p-[3px_5px]">
+            <span className="text-white text-[14px] max-[591px]:text-[12px] ">
+              {discount}%
+            </span>
           </div>
         )}
 
@@ -179,7 +181,7 @@ function ProductItem(item) {
         {!deleteCartIconVisible && (
           <button
             disabled={cartItems?.hasOwnProperty(_id)}
-            className="justify-center items-center overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out min-[593px]:group-hover/product_item:flex min-[593px]:group-hover/product_item:translate-y-0 w-full cursor-pointer absolute z-[999] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white"
+            className="w-[100%] justify-center items-center overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out min-[593px]:group-hover/product_item:flex min-[593px]:group-hover/product_item:translate-y-0 cursor-pointer absolute z-[1] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white "
             onClick={handleAddToCart}>
             {cartItems?.hasOwnProperty(_id) ? (
               <Image
@@ -261,10 +263,10 @@ function ProductItem(item) {
             </div>
           )}
 
-          {/* ADD TO CART BUTTON */}
+          {/* ADD TO CART BUTTON
           {!deleteCartIconVisible && (
             <div
-              className="max-[591px]:flex cursor-pointer hidden items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              className="max-[591px]:flex cursor-pointer hidden items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
               onClick={handleAddToCart}>
               {cartItems?.hasOwnProperty(_id) ? (
                 <Image src={"/assets/addcart.svg"} width={22} height={22} />
@@ -277,7 +279,7 @@ function ProductItem(item) {
                 />
               )}
             </div>
-          )}
+          )} */}
         </div>
         {/* PRODUCT IMAGE */}
         <div className="box-border p-5">
@@ -292,7 +294,7 @@ function ProductItem(item) {
         </div>
       </div>
       {/* body section */}
-      <div className="relative w-[100%] flex flex-col items-left md:items-center gap-1 pt-[16px] pb-[16px] bg-white z-[999]">
+      <div className="relative w-[100%] flex flex-col items-left md:items-center gap-1 pt-[16px] pb-[16px] bg-white z-[999] overflow-hidden">
         <span className="text-lg md:text-[19px] font-semibold">{title}</span>
         <div className="flex gap-[16px] justify-left md:justify-center w-[100%]">
           <span className="text-[#DB4444] text-[16px] md:text-[18px]">
@@ -304,7 +306,7 @@ function ProductItem(item) {
             </span>
           )}
         </div>
-        <div className="flex justify-left md:justify-center gap-4 w-[100%]">
+        <div className="flex justify-left md:justify-center gap-4 w-[100%] overflow-hidden">
           <div className="flex items-center gap-1 mt-[5px] h-full w-fit">
             <Image
               src={"/assets/star-filled.svg"}
