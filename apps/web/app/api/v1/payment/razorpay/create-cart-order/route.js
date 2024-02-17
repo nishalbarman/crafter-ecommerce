@@ -110,20 +110,21 @@ export async function GET(req) {
         customerName: userDetails.name,
         customerEmail: userDetails.email,
         productIDs: cartItemsForUser.map((item) => item._id).join(", "),
-        productinfo: productNames,
+        productNames: productNames,
+        transactionId: txnid,
       },
     });
 
     /***  Formating all the cart items as suitable for order schema and adding txnid and orderId (random id) ***/
     const txnAndOrderIdInsertedCartItems = cartItemsForUser.map((item) => ({
       ...item,
-      txnid: "T-" + txnid,
+      txnid: txnid,
       title: item.product.title,
       previewUrl: item.product.previewUrl,
       discountedPrice: item.product.discountedPrice,
       originalPrice: item.product.originalPrice,
       shippingPrice: item.product.shippingPrice,
-      orderId: "O-" + uuidv4(),
+      orderId: uuidv4(),
       user: userDetails._id,
     }));
 

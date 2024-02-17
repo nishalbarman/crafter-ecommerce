@@ -11,25 +11,13 @@ export async function GET(req) {
     const token = userToken.value || null;
 
     if (!token) {
-      return NextResponse.json(
-        {
-          status: false,
-          message: "Token validation failed",
-        },
-        { status: 400 }
-      );
+      return NextResponse.redirect("/login?redirect=cart");
     }
 
-    const userDetails = getTokenDetails(userToken.value);
+    const userDetails = getTokenDetails(token);
 
     if (!userDetails) {
-      return NextResponse.json(
-        {
-          status: false,
-          message: "Token validation failed",
-        },
-        { status: 400 }
-      );
+      return NextResponse.redirect("/login?redirect=cart");
     }
 
     const cartDetails = await Cart.find({
@@ -61,28 +49,16 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const userToken = req.cookies.get("token") || null;
-    const token = userToken.value || null;
+    const token = userToken?.value;
 
     if (!token) {
-      return NextResponse.json(
-        {
-          status: false,
-          message: "Token validation failed",
-        },
-        { status: 400 }
-      );
+      return NextResponse.redirect("/login?redirect=cart");
     }
 
-    const userDetails = getTokenDetails(userToken.value);
+    const userDetails = getTokenDetails(token);
 
     if (!userDetails) {
-      return NextResponse.json(
-        {
-          status: false,
-          message: "Token validation failed",
-        },
-        { status: 400 }
-      );
+      return NextResponse.redirect("/login?redirect=cart");
     }
 
     const { productId, size, color } = await req.json();
