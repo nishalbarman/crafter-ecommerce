@@ -1,0 +1,18 @@
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Reset from "../pages/Reset";
+import Login from "../pages/Login";
+
+function AllRoutes() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<></>} />
+        <Route path="/auth/login" element={<Login></Login>} />
+        <Route path="/auth/reset" element={<Reset></Reset>} />
+      </Routes>
+    </>
+  );
+}
+
+export default AllRoutes;
