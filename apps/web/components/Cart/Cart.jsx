@@ -217,10 +217,11 @@ function Cart() {
     } else {
       navigation.push("/billing?redirect=payment-cart");
     }
-  }, [appliedCoupon]);
+  }, [appliedCoupon, gatewayOption]);
 
   const handleRazorPayContinue = useCallback(async () => {
     if (!gatewayOption) return;
+
     if (true) {
       try {
         setIsPaymentLoading(true);
@@ -289,7 +290,7 @@ function Cart() {
     } else {
       navigation.push("/billing?redirect=cart&form=submit");
     }
-  }, [Razorpay, appliedCoupon]);
+  }, [Razorpay, appliedCoupon, gatewayOption]);
 
   const handlePayment = (e) => {
     switch (gatewayOption) {
@@ -573,8 +574,8 @@ function Cart() {
 
                   {/* border-[rgb(66,162,162)] bg-[#42a2a2]  */}
                   <button
-                    disabled={isPaymentLoading || !gatewayOption}
                     onClick={handlePayment}
+                    disabled={isPaymentLoading || !gatewayOption}
                     className="text-white p-[15px] bg-[rgb(219,69,69)] rounded-[5px] text-[16px] leading-[18px] uppercase w-[100%] border-none cursor-pointer disabled:bg-[rgba(219,69,69,0.3)] disabled:cursor-not-allowed">
                     Continue{" "}
                     {isPaymentLoading && (
