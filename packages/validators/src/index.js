@@ -4,9 +4,15 @@ export function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
-export function isValidImage(email) {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email);
+export function isValidImage(image) {
+  const { type } = image;
+  return (
+    type.toLowerCase() === "image/png" ||
+    type.toLowerCase() === "image/jpg" ||
+    type.toLowerCase() === "image/jpeg" ||
+    type.toLowerCase() === "image/webp" ||
+    type.toLowerCase() === "image/gif"
+  );
 }
 
 export function isValidPassword(password) {

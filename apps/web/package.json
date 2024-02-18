@@ -39,8 +39,7 @@
     "sharp": "^0.33.2",
     "slick-carousel": "^1.8.1",
     "urllib": "^3.22.2",
-    "utf8": "^3.0.0",
-    "uuid": "^9.0.1"
+    "utf8": "^3.0.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.4",
