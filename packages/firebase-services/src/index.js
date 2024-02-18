@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Storage } from "@google-cloud/storage";
-import serviceAccount from "./serviceAccountKey.json" with { type: "json" };
+import serviceAccount from "../serviceAccountKey.json" with { type: "json" };
 
 const storage = new Storage({
   projectId: "***REMOVED***",
@@ -11,21 +11,25 @@ const bucket = storage.bucket("crafter-ecommerce.appspot.com");
 
 export async function uploadImage(buffer, file) {
   const uniqueFileName = uuidv4();
-  const fileReference = bucket.file("/images/products/" + uniqueFileName);
+  const fileReference = bucket.file(`images/products/${uniqueFileName}`);
 
-  const blobSteam = fileReference.createWriteStream({
-    resumable: false,
-    contentType: file.type,
+  const writeFilePromise = await new Promise((resolve, reject) => {
+    const blobSteam = fileReference.createWriteStream({
+      resumable: false,
+      contentType: file.type,
+    });
+
+    blobSteam.on("error", (error) => {
+      reject(error);
+    });
+
+    blobSteam.on("finish", async () => {
+      await fileReference.makePublic();
+      const publicUrl = `https://storage.googleapis.com/crafter-ecommerce.appspot.com/${fileReference.name}`;
+      resolve(publicUrl);
+    });
+
+    blobSteam.end(buffer);
   });
-
-  blobSteam.on("error", (error) => {
-    throw error;
-  });
-
-  blobSteam.on("finish", async () => {
-    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-    return publicUrl;
-  });
-
-  blobSteam.end(buffer);
+  return writeFilePromise;
 }

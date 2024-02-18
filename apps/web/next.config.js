@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 module.exports = {
   transpilePackages: [
     "@repo/ui",
@@ -7,11 +6,9 @@ module.exports = {
   ],
   images: {
     remotePatterns: [
+      
       {
-        hostname: "s3-alpha-sig.figma.com",
-      },
-      {
-        hostname: "imgs.search.brave.com",
+        hostname: "storage.googleapis.com",
       },
     ],
   },
