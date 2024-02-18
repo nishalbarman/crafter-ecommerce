@@ -4,6 +4,11 @@ export function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
+export function isValidImage(email) {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+}
+
 export function isValidPassword(password) {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   return passwordRegex.test(password);
