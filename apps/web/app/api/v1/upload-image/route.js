@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { uploadImage } from "firebase-services";
+import { isValidImage } from "validators";
 
 export async function POST(req) {
   try {
@@ -13,6 +14,16 @@ export async function POST(req) {
       );
     }
 
+    if (!isValidImage(file)) {
+      return NextResponse.json(
+        {
+          message:
+            "Image is not valid. Acceptable files image/png, image/jpg, image/jpeg, image/webp and image/gif",
+        },
+        { status: 400 }
+      );
+    }
+
     console.log(file.type);
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -21,7 +32,7 @@ export async function POST(req) {
       publicUrl = await uploadImage(buffer, file);
     } catch (err) {
       console.log(err);
-      return NextResponse.json({ message: err.message }, { status: 401 });
+      return NextResponse.json({ message: err.message }, { status: 403 });
     }
 
     return NextResponse.json({
