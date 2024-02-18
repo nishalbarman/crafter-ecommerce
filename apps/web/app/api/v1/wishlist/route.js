@@ -8,7 +8,7 @@ connect();
 export async function GET(req) {
   try {
     const userToken = req.cookies.get("token") || null;
-    const token = useToken?.value;
+    const token = userToken?.value;
 
     if (!token) {
       return NextResponse.redirect("/login?redirect=wishlist");
