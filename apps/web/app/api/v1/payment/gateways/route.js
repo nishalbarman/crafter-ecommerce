@@ -1,3 +1,5 @@
+const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { PaymentGateway } from "../../../../../models/models";
 import { connect } from "../../../../../dbConfig/dbConfig";
