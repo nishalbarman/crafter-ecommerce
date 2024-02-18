@@ -1,3 +1,5 @@
+const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { connect } from "../../../../../dbConfig/dbConfig";
 import { User, Product, Cart, Wishlist } from "../../../../../models/models";
