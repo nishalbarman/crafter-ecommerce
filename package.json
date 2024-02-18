@@ -24,6 +24,7 @@
   "dependencies": {
     "axios": "^1.6.7",
     "react-hot-toast": "^2.4.1",
-    "tsup": "^8.0.2"
+    "tsup": "^8.0.2",
+    "uuid": "^9.0.1"
   }
 }
