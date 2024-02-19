@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 module.exports = function connect() {
-  const connectionString = process.env.MONGO_URI;
+  const connectionString =
+    "***REMOVED***";
   mongoose.connect(connectionString);
 
   const connection = mongoose.connection;
