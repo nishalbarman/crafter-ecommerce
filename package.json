@@ -3,13 +3,12 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "turbo dev --turbo",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "eslint-plugin-next": "^0.0.0",
     "nodemon": "^3.0.3",
-    "pm2": "^5.3.1",
     "prettier": "^3.1.1",
     "turbo": "latest"
   },

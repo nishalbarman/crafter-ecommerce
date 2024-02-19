@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import { Storage } from "@google-cloud/storage";
-import serviceAccount from "../serviceAccountKey.json" with { type: "json" };
+// import { Storage } from "@google-cloud/storage";
+import serviceAccount from "./service-account-key.json" with { type: "json" };
 
-const storage = new Storage({
-  projectId: "***REMOVED***",
-  credentials: serviceAccount,
-});
+// const storage = new Storage({
+//   projectId: "***REMOVED***",
+//   credentials: serviceAccount,
+// });
 
 const bucket = storage.bucket("crafter-ecommerce.appspot.com");
 

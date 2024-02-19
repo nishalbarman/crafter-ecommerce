@@ -1,14 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useCookies } from "next-client-cookies";
+import toast from "react-hot-toast";
+
 import { addCartProduct, removeCartProduct } from "@store/redux/cartLocal";
 import {
   addWishlistProduct,
   removeWishlistProduct,
 } from "@store/redux/wishlistLocal";
-import { useRouter } from "next/navigation";
-import { useCookies } from "next-client-cookies";
-import toast from "react-hot-toast";
 
 function ProductItem(item) {
   const {
@@ -285,10 +286,7 @@ function ProductItem(item) {
         <div className="box-border p-5">
           <img
             className="object-scale-down mix-blend-multiply h-[200px] md:h-fit md:w-fit rounded aspect-sqaure"
-            // src={previewUrl || "https://static-assets-web.flixcart.com/www/linchpin/batman-returns/images/fk-default-image-75ff340b.png?q=90"}
-            src={
-              "https://imgs.search.brave.com/rKZrmkTSLXfWaqAnvfSt_tW5IIPY3CC1G9d_ujAhEPo/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM5/NTE5MTU4NC9waG90/by9ibHVldG9vdGgt/c3BlYWtlci1pc29s/YXRlZC1vbi13aGl0/ZS5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9cFVhVWk1TVNq/SmJpbXdkXzBrQ2Nv/a1BlWHQ0WHlhQ3Qx/UnQ2S2h3ZXJzYz0"
-            }
+            src={previewUrl}
             alt={title}
           />
         </div>
