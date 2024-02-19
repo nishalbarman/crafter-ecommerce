@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import passValidator from "password-validator";
-import base64 from "base-64";
-import utf8 from "utf8";
 import { v4 as uuidv4 } from "uuid";
 
 import { Otp, User } from "../../../../../models/models";
@@ -67,11 +65,8 @@ export async function POST(request) {
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPass = bcrypt.hashSync(password, salt); // generate hashed pass
-    // const mobileNoVerifyToken = bcrypt.hashSync(email, 8);
-
-    // const bytes = utf8.encode(mobileNoVerifyToken);
-    // const encoded = base64.encode(bytes);
-    const encoded = uuidv4();
+    
+    const verifyToken = uuidv4();
 
     // create new user if everything is ok, and then save it on db
     const userObject = new User({
@@ -79,7 +74,7 @@ export async function POST(request) {
       name,
       mobileNo,
       password: hashedPass,
-      mobileNoVerifyToken: encoded,
+      mobileNoVerifyToken: verifyToken,
       role: "65c9b4c9a52cbc05d8c7c543",
     });
 

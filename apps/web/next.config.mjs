@@ -1,10 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  //   transpilePackages: [
-  //     "@repo/ui",
-  //     "@store/redux",
-  //     "@custom-hooks/custom-clicks",
-  //   ],
+    transpilePackages: [
+      "@store/redux",
+      "@custom-hooks/custom-clicks",
+      "validators",
+      "firebase-services"
+    ],
   images: {
     remotePatterns: [
       {
