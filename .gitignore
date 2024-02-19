@@ -42,4 +42,4 @@ yarn-error.log*
 .netlify
 
 #firebase creds
-serviceAccountKey.json
+service-account-key.json

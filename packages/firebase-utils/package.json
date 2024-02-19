@@ -9,6 +9,7 @@
     "test": "node ./src/index.js"
   },
   "dependencies": {
+    "firebase-admin": "^12.0.0",
     "validators": "*"
   }
 }

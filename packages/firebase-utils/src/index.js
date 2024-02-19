@@ -1,11 +1,15 @@
 import { v4 as uuidv4 } from "uuid";
+import { initializeApp, cert } from "firebase-admin/app";
+import { getStorage } from "firebase-admin/storage";
+
 // import { Storage } from "@google-cloud/storage";
 import serviceAccount from "./service-account-key.json" with { type: "json" };
 
-// const storage = new Storage({
-//   projectId: "***REMOVED***",
-//   credentials: serviceAccount,
-// });
+initializeApp({
+  credential: cert(serviceAccount),
+});
+
+const storage = getStorage();
 
 const bucket = storage.bucket("crafter-ecommerce.appspot.com");
 
