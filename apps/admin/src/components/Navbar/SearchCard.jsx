@@ -1,15 +1,9 @@
-import Image from "next/image";
 import React from "react";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-
 import MyAccount from "./MyAccount";
+import { useNavigate } from "react-router-dom";
 
-function SearchCard() {
-  const navigator = useRouter();
-
-  const wishlistTotal = useSelector((state) => state.wishlistLocal.totalItems);
-  const cartTotal = useSelector((state) => state.cartLocal.totalItems);
+function SearchCard({ cartTotal, wishlistTotal }) {
+  const navigator = useNavigate();
 
   return (
     <>
@@ -33,7 +27,7 @@ function SearchCard() {
 
       <div
         onClick={() => {
-          navigator.push("/wishlist");
+          navigator("/wishlist");
         }}
         className="h-fit w-fit relative cursor-pointer">
         {wishlistTotal != 0 && (
@@ -49,7 +43,7 @@ function SearchCard() {
 
       <div
         onClick={() => {
-          navigator.push("/cart");
+          navigator("/cart");
         }}
         className="h-fit w-fit relative cursor-pointer">
         {cartTotal != 0 && (

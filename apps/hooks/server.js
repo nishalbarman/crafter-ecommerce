@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 
-require("./dbConfig/dbConfig.js")(); // connect() function will be called
+require("./db/dbConfig.js")(); // connect() function will be called
 
 const app = express();
 app.use(express.json());
