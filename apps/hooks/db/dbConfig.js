@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 module.exports = function connect() {
-  const connectionString = process.env.MONGO_URI;
+  const connectionString =
+    "mongodb+srv://project-playo:Xi2UCKjIEzd2EChFAjZmupCrOlZt7Vp2@project-playo.z9knmzk.mongodb.net/crafter-ecommerce";
   mongoose.connect(connectionString);
 
   const connection = mongoose.connection;

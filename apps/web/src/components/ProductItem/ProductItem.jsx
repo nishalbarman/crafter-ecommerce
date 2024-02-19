@@ -166,7 +166,6 @@ function ProductItem(item) {
 
   return (
     <div className="w-fill group/product_item">
-      {/* sm:w-[270px] */}
       {/* IMAGE SECTION */}
       <div className="relative rounded flex items-center justify-center w-full h-[200px] md:h-[250px] bg-[rgb(244,244,245)]">
         {/* DISCOUNT */}
@@ -207,9 +206,10 @@ function ProductItem(item) {
           {/* ADD TO WISHLIST */}
           {isWishlistIconVisible && (
             <div
-              className="flex items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              className="flex items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18] max-[597px]:w-[33px] max-[597px]:h-[33px] group-wishlist hover:invert shadow"
               onClick={handleAddToWishlist}>
               <Image
+                className="group-hover/wishlist:invert-1 max-[597px]:w-[29px] max-[597px]:h-[29px]"
                 src={
                   wishlistItems?.hasOwnProperty(_id)
                     ? "/assets/love-filled.svg"
@@ -225,9 +225,10 @@ function ProductItem(item) {
           {/* VIEW PRODUCT INFORMATION */}
           {isEyeVisible && (
             <div
-              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18] max-[597px]:w-8 max-[597px]:h-8 group-viewproduct hover:invert shadow"
               onClick={handleVisitProduct}>
               <Image
+                className="group-hover/viewproduct:invert-1 max-[597px]:w-5 max-[597px]:h-5"
                 src="/assets/eye.svg"
                 width={23}
                 height={23}
@@ -239,9 +240,10 @@ function ProductItem(item) {
           {/* DELETE ICON CART */}
           {deleteCartIconVisible && (
             <div
-              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18] group-deletecart hover:invert shadow"
               onClick={handleCartProductRemove}>
               <Image
+                className="group-hover/deletecart:invert"
                 src="/assets/delete.svg"
                 width={17}
                 height={17}
@@ -253,9 +255,10 @@ function ProductItem(item) {
           {/* DELETE ICON WISHLIST */}
           {deleteWishlistIconVisible && (
             <div
-              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18] group-deletewishlist hover:invert shadow"
               onClick={handleWishlistProductRemove}>
               <Image
+                className="group-hover/deletewishlist:invert-1"
                 src="/assets/delete.svg"
                 width={17}
                 height={17}
@@ -282,10 +285,17 @@ function ProductItem(item) {
             </div>
           )} */}
         </div>
+
         {/* PRODUCT IMAGE */}
-        <div className="box-border p-5">
-          <img
+        {/* <div className="box-border p-5"> */}
+        <div className="box-border p-0 h-[100%] w-[100%]">
+          {/* <img
             className="object-scale-down mix-blend-multiply h-[200px] md:h-fit md:w-fit rounded aspect-sqaure"
+            src={previewUrl}
+            alt={title}
+          /> */}
+          <img
+            className="object-cover mix-blend-multiply h-[100%] w-[100%] rounded aspect-sqaure"
             src={previewUrl}
             alt={title}
           />

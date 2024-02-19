@@ -24,8 +24,9 @@ const CustomPrevArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center left-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10">
+      className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center left-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10 max-[597px]:w-4 max-[597px]:h-4 hover:invert group/rightarrow shadow">
       <Image
+        className="group-hover/rightarrow:invert-1 max-[597px]:w-2 max-[597px]:h-2"
         src={"/assets/leftarrow.svg"}
         width={10}
         height={10}
@@ -39,8 +40,9 @@ const CustomNextArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center right-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10">
+      className="absolute flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center right-0 scale-[2] top-[40%] transform translate-y-[-50%] cursor-pointer z-10 max-[597px]:w-4 max-[597px]:h-4 hover:invert group/rightarrow shadow">
       <Image
+        className="group-hover/rightarrow:invert-1 max-[597px]:w-2 max-[597px]:h-2"
         src={"/assets/rightarrow.svg"}
         width={10}
         height={10}

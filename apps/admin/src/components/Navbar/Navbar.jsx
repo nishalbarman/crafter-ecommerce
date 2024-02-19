@@ -1,30 +1,35 @@
 import React from "react";
-import SearchCartWishlist from "./SearchCartWishlist";
+// import SearchCartWishlist from "./SearchCartWishlist";
 import { Link } from "react-router-dom";
 
-function Navbar({ title = "Crafter Admin" }) {
+function Navbar({ title = "Crafter" }) {
   const links = [
     {
-      title: "Home",
-      description: "Home page that I am currently on!",
+      title: "Dashboard",
+      description: "Dashboard page",
       path: "/",
+      needsAuth: true,
     },
     {
       title: "Contact",
       description: "Contact us page",
-      path: "/",
+      path: "/contact",
+      needsAuth: true,
     },
     {
       title: "About",
       description: "About Us page",
-      path: "/",
+      path: "/about",
+      needsAuth: true,
     },
     {
-      title: "Sign Up",
-      description: "SignUp page",
-      path: "/",
+      title: "LogIn",
+      description: "Login page",
+      path: "/auth/login",
+      needsAuth: false,
     },
   ];
+  const token = localStorage.getItem("token") || null;
 
   return (
     <div className="flex w-full border-[rgb(0,0,0,0.1)] border-b-[1px] justify-between h-[80px] bg-white lg:pl-[10%] lg:pr-[10%] pl-[3%] pr-[3%]">
@@ -32,7 +37,7 @@ function Navbar({ title = "Crafter Admin" }) {
         <span className="max-sm:font-inconsolata font-marker text-2xl uppercase font-bold text-black">
           <Link
             className="max-sm:font-inconsolata font-marker text-2xl uppercase font-bold text-black"
-            href={"/"}>
+            to={"/"}>
             {title}
           </Link>
         </span>
@@ -40,13 +45,19 @@ function Navbar({ title = "Crafter Admin" }) {
       <div className="hidden min-[1168px]:flex flex-center gap-5 items-center">
         {links.map((item, index) => {
           return (
-            <Link key={index} className="text-xl font-marker" href={item.path}>
+            <Link
+              onClick={(e) => {
+                if (item.needsAuth && !!token) e.preventDefault();
+              }}
+              key={index}
+              className="text-xl font-marker"
+              to={item.path}>
               {item.title}
             </Link>
           );
         })}
       </div>
-      <SearchCartWishlist />
+      {/* <SearchCartWishlist /> */}
     </div>
   );
 }

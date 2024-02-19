@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useGetWishlistQuery } from "@store/redux/wishlist";
 import { useGetCartQuery } from "@store/redux/cart";
 
 import SearchCard from "./SearchCard";
-import axios from "axios";
 
 export default function SearchCartWishlist() {
   const navigator = useNavigate();
-
-  const cookieStore = useCookies();
-
-  const token = cookieStore?.get("token") || null;
+  const token = localStorage.getItem("token");
 
   if (!token) {
     return (
@@ -28,7 +23,7 @@ export default function SearchCartWishlist() {
               placeholder="What are you looking for?"
             />
             <div className="h-[25px] w-[25px] mr-3 flex items-center">
-              <Image
+              <img
                 src="/assets/search.svg"
                 alt="search logo"
                 width={27}
@@ -51,81 +46,48 @@ export default function SearchCartWishlist() {
     );
   }
 
-  const getCartData = async () => {
-    try {
-      const response = await axios.get(`/api/v1/cart`);
-      setCartData(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const {
+    data: cartData,
+    isCartLoading,
+    isCartLoadingError,
+  } = useGetCartQuery();
+  const {
+    data: wishlistData,
+    isWishlistLoading,
+    isWishlistLoadingError,
+  } = useGetWishlistQuery();
 
-  const getWishlistData = async () => {
-    try {
-      const response = await axios.get(`/api/v1/wishlist`);
-      setWishlistData(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const [processedCartData, setProccessedCartData] = useState([])
+  // const [processedWishlistData, setProccessedWishlistData] = useState([])
 
-  const [cartData, setCartData] = useState([]);
-  const [data, setWishlistData] = useState([]);
+  // useEffect(() => {
+  //   if (cartData?.length > 0) {
+  //     const cartDataForStore = {};
+  //     cartData?.forEach((item) => {
+  //       cartDataForStore[item.product._id] = {
+  //         ...item.product, // to fix the override _id issue we should place this line in 2nd place
+  //         ...item, //will override the previouse product _id
+  //         _id: item.product._id, // we can also manually add the _id field to fix the issue
+  //         _cartProductId: item._id,
+  //         product: null,
+  //       };
+  //     });
 
-  // const { data, isError, isLoading } = useGetWishlistQuery();
-  // const {
-  //   data: cartData,
-  //   isError: isCartError,
-  //   isLoading: isCartLoading,
-  // } = useGetCartQuery();
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (data?.length > 0) {
-      const wishlistData = {};
-      data?.forEach((item) => {
-        wishlistData[item.product._id] = item.product;
-      });
-      dispatch(
-        updateWishlist({
-          totalCount: data.length || 0,
-          wishlists: wishlistData,
-        })
-      );
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (cartData?.length > 0) {
-      const cartDataForStore = {};
-      cartData?.forEach((item) => {
-        cartDataForStore[item.product._id] = {
-          ...item.product, // to fix the override _id issue we should place this line in 2nd place
-          ...item, //will override the previouse product _id
-          _id: item.product._id, // we can also manually add the _id field to fix the issue
-          _cartProductId: item._id,
-          product: null,
-        };
-      });
-
-      dispatch(
-        updateCart({
-          totalCount: cartData.length || 0,
-          cartItems: cartDataForStore,
-        })
-      );
-    }
-  }, [cartData]);
-
-  useEffect(() => {
-    getCartData();
-    getWishlistData();
-  }, []);
+  //     dispatch(
+  //       updateCart({
+  //         totalCount: cartData.length || 0,
+  //         cartItems: cartDataForStore,
+  //       })
+  //     );
+  //   }
+  // }, [cartData]);
 
   return (
     <div className="flex items-center justify-center gap-5 h-[100%]">
-      <SearchCard />
+      <SearchCard
+        cartTotal={cartData.length}
+        wishlistTotal={wishlistData.length}
+      />
     </div>
   );
 }

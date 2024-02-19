@@ -14,6 +14,7 @@ import { updateCart } from "@store/redux/cartLocal";
 
 import SearchCard from "./SearchCard";
 import axios from "axios";
+import Link from "next/link";
 
 export default function SearchCartWishlist() {
   const navigator = useRouter();
@@ -45,13 +46,14 @@ export default function SearchCartWishlist() {
           </div>
 
           <div className="h-[100%] w-fit relative group flex items-center">
-            <button
+            {/* <button
               onClick={() => {
                 navigator.push("/auth/login");
               }}
               className="focus:bg-[gray] p-[8px_40px] bg-[rgb(219,68,68)] rounded-md text-white font-semibold">
               Login
-            </button>
+            </button> */}
+            <Link href={"/auth/login"}>Login</Link>
           </div>
         </div>
       </>

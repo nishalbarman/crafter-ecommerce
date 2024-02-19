@@ -1,6 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function MyAccount() {
   return (
@@ -10,7 +9,7 @@ function MyAccount() {
           className="hover:bg-[rgb(200,200,200,0.2)] p-[10px_7px] backdrop-blur-0 flex gap-4 items-center text-white w-[100%] rounded-md"
           href={"/myaccount"}>
           <div className="h-fit w-fit">
-            <Image
+            <img
               src="/assets/user2.svg"
               alt="user logo"
               width={30}
@@ -25,12 +24,7 @@ function MyAccount() {
           className="hover:bg-[rgb(200,200,200,0.2)] p-[10px_7px] backdrop-blur-0 flex gap-4 items-center text-white w-[100%] rounded-md"
           href={"/myorders"}>
           <div className="h-fit w-fit">
-            <Image
-              src="/assets/bag.svg"
-              alt="bag logo"
-              width={30}
-              height={30}
-            />
+            <img src="/assets/bag.svg" alt="bag logo" width={30} height={30} />
           </div>
           Manage Orders
         </Link>
@@ -40,7 +34,7 @@ function MyAccount() {
           className="hover:bg-[rgb(200,200,200,0.2)] p-[10px_7px] backdrop-blur-0 flex gap-4 items-center text-white w-[100%] rounded-md"
           href={"/mycancelations"}>
           <div className="h-fit w-fit">
-            <Image
+            <img
               src="/assets/cancel.svg"
               alt="cancel logo"
               width={30}
@@ -55,7 +49,7 @@ function MyAccount() {
           className="hover:bg-[rgb(200,200,200,0.2)] p-[10px_7px] backdrop-blur-0 flex gap-4 items-center text-white w-[100%] rounded-md"
           href={"/myreviews"}>
           <div className="h-fit w-fit">
-            <Image
+            <img
               src="/assets/review.svg"
               alt="review logo"
               width={32}
@@ -70,7 +64,7 @@ function MyAccount() {
           className="hover:bg-[rgb(200,200,200,0.2)] p-[10px_7px] backdrop-blur-0 flex gap-4 items-center text-white w-[100%] rounded-md"
           href={"/logout"}>
           <div className="h-fit w-fit">
-            <Image
+            <img
               src="/assets/logout.svg"
               alt="logout logo"
               width={32}

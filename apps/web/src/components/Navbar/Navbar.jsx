@@ -8,7 +8,7 @@ function Navbar({ title }) {
   const links = [
     {
       title: "Home",
-      description: "Home page that I am currently on!",
+      description: "Home screen, explore products",
       path: "/",
     },
     {
