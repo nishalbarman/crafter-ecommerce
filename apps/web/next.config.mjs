@@ -4,7 +4,7 @@ const nextConfig = {
       "@store/redux",
       "@custom-hooks/custom-clicks",
       "validators",
-      "firebase-services"
+      "firebase-utils"
     ],
   images: {
     remotePatterns: [
