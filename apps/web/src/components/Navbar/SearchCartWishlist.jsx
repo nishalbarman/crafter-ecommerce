@@ -44,7 +44,7 @@ export default function SearchCartWishlist() {
 
           <div className="h-[100%] w-fit relative group flex items-center">
             <Link
-              className="underline align-center text-md md:text-2xl lg:text-3xl font-semibold"
+              className="underline align-center text-md font-semibold"
               href={"/auth/login"}>
               Login / Signup
             </Link>
