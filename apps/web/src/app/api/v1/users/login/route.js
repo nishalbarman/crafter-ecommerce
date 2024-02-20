@@ -44,7 +44,7 @@ export async function POST(request) {
       );
     }
 
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).populate("role");
     if (!user) {
       return NextResponse.json(
         { status: true, message: "The provided credentials are invalid." },
@@ -72,12 +72,12 @@ export async function POST(request) {
       {
         _id: user._id,
         name: user.name,
-        role: user.role,
+        role: user.role.value,
         email: user.email,
         mobileNo: user.mobileNo,
       },
       secret,
-      { expiresIn: 24 * 1 + "h" }
+      { expiresIn: 1 + "h" }
     );
 
     const response = NextResponse.json(
