@@ -142,7 +142,7 @@ const productSchema = new mongoose.Schema(
     description: { type: String, required: true },
     stars: { type: Number, default: 0 },
     totalFeedbacks: { type: Number, default: 0 },
-    shippingPrice: { type: Number, required: true, default: 49 },
+    shippingPrice: { type: Number, required: true, default: 0 },
     availableStocks: { type: Number, required: true, default: 0 },
 
     isSizeVaries: { type: Boolean, default: false },
