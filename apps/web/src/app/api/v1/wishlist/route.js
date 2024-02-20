@@ -62,7 +62,7 @@ export async function POST(req) {
       user: userDetails._id,
     });
 
-    if (!wishlistItem) {
+    if (wishlistItem) {
       return NextResponse.json({
         status: true,
         message: "Already in wishlist",
@@ -82,9 +82,12 @@ export async function POST(req) {
     });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({
-      status: false,
-      message: "Internal server error!",
-    });
+    return NextResponse.json(
+      {
+        status: false,
+        message: "Internal server error!",
+      },
+      { status: 500 }
+    );
   }
 }

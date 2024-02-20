@@ -22,7 +22,7 @@ async function BestSelling() {
       <TitleWithBar title={"This Month"} />
       <div className="relative">
         <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-10 max-sm:mt-[-10px]">
-          <span className="text-2xl md:text-3xl font-andika font-bold">
+          <span className="text-2xl xl:text-3xl font-andika font-bold">
             Best Selling Products
           </span>
           <div className="flex items-center justify-center">
