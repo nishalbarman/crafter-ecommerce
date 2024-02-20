@@ -52,7 +52,7 @@ function NewArrivalSection() {
       <TitleWithBar title={"Featured"} />
       <div className="relative">
         <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-10">
-          <span className="text-2xl md:text-3xl font-andika font-bold">
+          <span className="text-2xl xl:text-3xl font-andika font-bold">
             New Arrival
           </span>
         </div>
