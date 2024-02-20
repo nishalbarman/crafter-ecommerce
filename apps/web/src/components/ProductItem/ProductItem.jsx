@@ -166,9 +166,9 @@ function ProductItem(item) {
 
   return (
     <div className="w-[100%] group/product_item">
-      {/* IMAGE SECTION */}
+      {/* TOP SECTION */}
       <div className="relative rounded flex items-center justify-center w-full h-[200px] md:h-[250px] bg-[rgb(244,244,245)]">
-        {/* DISCOUNT */}
+        {/* discount label */}
         {!!originalPrice && (
           <div className="z-[999] absolute top-0 left-0 w-[80px] rounded bg-[#DB4444] flex items-center justify-center max-[591px]:w-[60px] p-[3px_5px] ">
             <span className="text-white text-[14px] max-[591px]:text-[12px]">
@@ -177,7 +177,7 @@ function ProductItem(item) {
           </div>
         )}
 
-        {/* ADD TO CART BUTTON */}
+        {/* add to cart button */}
         {!deleteCartIconVisible && (
           <button
             disabled={cartItems?.hasOwnProperty(_id)}
@@ -200,8 +200,8 @@ function ProductItem(item) {
             )}
           </button>
         )}
-        {/* addToCartText */}
 
+        {/* all interactive icons */}
         <div className="cursor-pointer absolute top-3 right-3 z-[999] flex flex-col gap-2 items-center w-fit">
           {/* ADD TO WISHLIST */}
           {isWishlistIconVisible && (
@@ -240,7 +240,7 @@ function ProductItem(item) {
           {/* DELETE ICON CART */}
           {deleteCartIconVisible && (
             <div
-              className="cursor-pointer flex items-center justify-center  p-1 bg-white rounded-full w-[40px] h-[40px] group-deletecart hover:invert shadow"
+              className="cursor-pointer flex items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] group-deletecart hover:invert shadow"
               onClick={handleCartProductRemove}>
               <Image
                 className="group-hover/deletecart:invert"
@@ -267,10 +267,10 @@ function ProductItem(item) {
             </div>
           )}
 
-          {/* ADD TO CART BUTTON
+          {/* ADD TO CART BUTTON */}
           {!deleteCartIconVisible && (
             <div
-              className="max-[591px]:flex cursor-pointer hidden items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18]"
+              className="cursor-pointer hidden items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18] max-[597px]:flex max-[597px]:w-[33px] max-[597px]:h-[33px]"
               onClick={handleAddToCart}>
               {cartItems?.hasOwnProperty(_id) ? (
                 <Image src={"/assets/addcart.svg"} width={22} height={22} />
@@ -283,24 +283,19 @@ function ProductItem(item) {
                 />
               )}
             </div>
-          )} */}
+          )}
         </div>
 
-        {/* PRODUCT IMAGE */}
-        {/* <div className="box-border p-5"> */}
-        <div className="box-border p-2 h-[100%] w-[100%]">
-          {/* <img
-            className="object-scale-down mix-blend-multiply h-[200px] md:h-fit md:w-fit rounded aspect-sqaure"
-            src={previewUrl}
-            alt={title}
-          /> */}
+        {/* preview product image */}
+        {/* <div className="box-border p-2 h-[100%] w-[100%]"> */}
           <img
-            className="object-scale-down mix-blend-multiply h-[100%] w-[100%] rounded aspect-sqaure"
+            className="absolute object-scale-down mix-blend-multiply h-[100%] w-[100%] rounded aspect-sqaure"
             src={previewUrl}
             alt={title}
           />
-        </div>
+        {/* </div> */}
       </div>
+
       {/* body section */}
       <div className="relative w-[100%] flex flex-col items-left md:items-center gap-1 pt-[16px] pb-[16px] bg-white z-[999] overflow-hidden">
         <span className="text-lg md:text-[19px] font-semibold">{title}</span>

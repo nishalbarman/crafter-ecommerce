@@ -14,7 +14,7 @@ const CustomPrevArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute top-[-65px] md:top-[-75px] right-[102px] flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center scale-[1.8] md:scale-[2] cursor-pointer z-10">
+      className="flex items-center justify-center rounded-full h-[45px] w-[45px] bg-[#F5F5F5] cursor-pointer z-10 max-[597px]:w-[37px] max-[597px]:h-[37px] shadow absolute top-[50%] translate-y-[-50%] max-[597px]:hidden">
       <Image
         src={"/assets/leftarrow.svg"}
         width={10}
@@ -29,7 +29,7 @@ const CustomNextArrow = ({ onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="absolute top-[-65px] md:top-[-75px] right-10 flex items-center justify-center text-white rounded-full h-[25px] w-[25px] bg-[#F5F5F5] backdrop-blur-[10px] flex items-center justify-center scale-[1.8] md:scale-[2] cursor-pointer z-10">
+      className="flex items-center justify-center rounded-full h-[45px] w-[45px] bg-[#F5F5F5] cursor-pointer z-10 max-[597px]:w-[37px] max-[597px]:h-[37px] shadow absolute top-[50%] translate-y-[-50%] right-0 max-[597px]:hidden">
       <Image
         src={"/assets/rightarrow.svg"}
         width={10}
@@ -44,7 +44,7 @@ export default function CategorySlider({ items }) {
   const settings = {
     dots: false,
     infinite: false,
-    speed: 500,
+    speed: 2000,
     slidesToShow: 1,
     slidesToScroll: 1,
     responsive: [
@@ -88,13 +88,10 @@ export default function CategorySlider({ items }) {
     nextArrow: <CustomNextArrow />,
   };
 
-  const navigator = useRouter();
-  const dispatch = useDispatch();
-
   return (
     <Slider {...settings}>
       {items?.map((item, index) => (
-          <CategoryItem {...item} />
+        <CategoryItem {...item} />
       ))}
     </Slider>
   );
