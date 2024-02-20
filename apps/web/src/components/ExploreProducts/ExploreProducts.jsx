@@ -21,12 +21,12 @@ async function ExploreProducts() {
     <div className="w-full h-fit mt-10 lg:mt-[5rem]">
       <TitleWithBar title={"Our Products"} />
       <div className="relative">
-        <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-10">
-          <span className="text-2xl xl:text-3xl font-andika font-bold">
+        <div className="w-full flex justify-between items-center mb-10 max-[597px]:mb-6">
+          <span className="text-2xl xl:text-3xl font-bold max-[597px]:text-[20px]">
             Explore Our Products
           </span>
         </div>
-        {/* all products */}
+        
         <AllExploreProducts exploreProductData={data} />
         {/* View All Butons */}
         <ViewAllProducts />

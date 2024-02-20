@@ -17,10 +17,7 @@ import axios from "axios";
 import Link from "next/link";
 
 export default function SearchCartWishlist() {
-  const navigator = useRouter();
-
   const cookieStore = useCookies();
-
   const token = cookieStore?.get("token") || null;
 
   if (!token) {
@@ -46,14 +43,11 @@ export default function SearchCartWishlist() {
           </div>
 
           <div className="h-[100%] w-fit relative group flex items-center">
-            {/* <button
-              onClick={() => {
-                navigator.push("/auth/login");
-              }}
-              className="focus:bg-[gray] p-[8px_40px] bg-[rgb(219,68,68)] rounded-md text-white font-semibold">
-              Login
-            </button> */}
-            <Link href={"/auth/login"}>Login</Link>
+            <Link
+              className="underline align-center text-md md:text-2xl lg:text-3xl font-semibold"
+              href={"/auth/login"}>
+              Login / Signup
+            </Link>
           </div>
         </div>
       </>

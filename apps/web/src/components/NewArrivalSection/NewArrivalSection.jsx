@@ -45,19 +45,15 @@ function NewArrivalSection() {
     },
   ];
 
-  const navigator = useRouter();
-
   return (
     <div className="w-full h-fit mt-10 lg:mt-[3rem]">
       <TitleWithBar title={"Featured"} />
-      <div className="relative">
-        <div className="w-full flex justify-between items-center pt-8 pb-8 md:pt-7 md:pb-10">
-          <span className="text-2xl xl:text-3xl font-andika font-bold">
-            New Arrival
-          </span>
-        </div>
-        <NewArrivalProducts />
+      <div className="w-full flex justify-between items-center mb-10 max-[597px]:mb-6">
+        <span className="text-2xl xl:text-3xl font-bold max-[597px]:text-[20px]">
+          New Arrival
+        </span>
       </div>
+      <NewArrivalProducts />
     </div>
   );
 }
