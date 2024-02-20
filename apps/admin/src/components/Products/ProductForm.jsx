@@ -4,7 +4,7 @@ import { isValidEmail, isValidPassword } from "validators";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-function LoginForm() {
+function ProductForm() {
   const navigator = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -146,4 +146,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default ProductForm;

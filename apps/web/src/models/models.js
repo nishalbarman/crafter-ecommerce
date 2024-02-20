@@ -27,10 +27,15 @@ const servicesSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const roleSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  value: { type: Number, required: true },
-});
+const roleSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    role: { type: Number, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const userSchema = new mongoose.Schema(
   {
