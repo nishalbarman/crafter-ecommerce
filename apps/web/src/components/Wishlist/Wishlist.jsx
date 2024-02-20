@@ -58,7 +58,7 @@ function Wishlist() {
       )}
 
       {wishlistCount > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl-grid-cols-6 gap-5 items-center m-[40px_0] w-[100%]">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl-grid-cols-6 gap-5 items-center m-[40px_0] w-[100%] z-1">
           {Object.values(wishlist)?.map((item) => {
             return (
               <div className="min-md:w-[250px]">

@@ -3,7 +3,7 @@ import React from "react";
 
 function NewArrivalProducts() {
   return (
-    <div className="grid text-white font-andika grid-rows-2 grid-col-8 grid-flow-row gap-2 grid-cols-4 h-[600px]">
+    <div className="grid text-white grid-rows-2 grid-col-8 grid-flow-row gap-2 grid-cols-4 h-[600px]">
       <div
         style={{
           background: "url(/assets/playstation.png)",
