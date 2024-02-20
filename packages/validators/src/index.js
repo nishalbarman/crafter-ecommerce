@@ -48,3 +48,8 @@ export function isValidUrl(url) {
 
   return urlRegex.test(url);
 }
+
+export function isValidObjectId(id, ObjectId) {
+  const ObjectId = mongoose.Types.ObjectId;
+  return ObjectId.isValid(id) && String(new ObjectId(id)) === id;
+}
