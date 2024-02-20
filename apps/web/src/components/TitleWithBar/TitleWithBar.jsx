@@ -11,7 +11,7 @@ function TitleWithBar({ title }) {
         width={13}
         alt="red bar"
       />
-      <span className="text-[18px] text-[#DB4444] font-semibold max-[597px]:text-[16px]">
+      <span className="text-[18px] text-[#DB4444] font-semibold max-[597px]:text-[18px]">
         {title}
       </span>
     </div>
