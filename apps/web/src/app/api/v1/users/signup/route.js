@@ -81,7 +81,7 @@ export async function POST(request) {
     sendSMS({
       to: +91 + "" + mobileNo,
       from: 54345,
-      text: `Verify your Crafter Ecommerce account: Verification link: ${backendUrl}auth/verify/${encoded}. Don't share this link with anyone; our employees will never ask for the any kind of credentials.`,
+      text: `Verify your Crafter Ecommerce account: Verification link: ${backendUrl}auth/verify/${verifyToken}. Don't share this link with anyone; our employees will never ask for the any kind of credentials.`,
     });
 
     await userObject.save();

@@ -2,7 +2,7 @@ import React from "react";
 // import SearchCartWishlist from "./SearchCartWishlist";
 import { Link } from "react-router-dom";
 
-function Navbar({ title = "Crafter" }) {
+function Navbar({ title = "Crafter Admin" }) {
   const links = [
     {
       title: "Dashboard",

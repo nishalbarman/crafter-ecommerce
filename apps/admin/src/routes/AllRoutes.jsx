@@ -7,7 +7,7 @@ function AllRoutes() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<></>} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/reset" element={<Reset />} />
       </Routes>

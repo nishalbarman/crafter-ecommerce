@@ -72,7 +72,7 @@ export async function POST(request) {
       {
         _id: user._id,
         name: user.name,
-        role: user.role.value,
+        role: user.role.role,
         email: user.email,
         mobileNo: user.mobileNo,
       },
@@ -86,7 +86,6 @@ export async function POST(request) {
     );
 
     const oneDay = 24 * 60 * 60 * 1000;
-
     response.cookies.set("token", jwtToken, { expires: Date.now() + oneDay });
     response.cookies.set("name", user.name, { expires: Date.now() + oneDay });
     response.cookies.set("email", user.email, { expires: Date.now() + oneDay });
