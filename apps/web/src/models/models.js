@@ -329,6 +329,10 @@ const Color =
   mongoose.models.product_colors ||
   mongoose.model("product_colors", colorSchema);
 
+const ProductVarient =
+  mongoose.models.product_varients ||
+  mongoose.model("product_varients", productVarientSchema);
+
 const RazorPayOrder =
   mongoose.models.razorpay_orderids ||
   mongoose.model("razorpay_orderids", razorpayOrderIdSchema);
@@ -434,13 +438,23 @@ Product.schema.path("previewUrl").validate({
 });
 
 Product.schema.path("discountedPrice").validate({
-  validator: (value) => value && !isNaN(parseFloat(value)),
-  message: "Discounted Price must be number",
+  validator: (value) => value && !isNaN(parseFloat(value)) && value > 0,
+  message: "Discounted Price must be non zero number",
 });
 
 Product.schema.path("showPictures").validate({
   validator: (value) => value && value.length == 4,
   message: "Show pictures must contain atleast 4 images",
+});
+
+// ProductVarient.schema.path("product").validate({
+//   validator: (value) => value && value.length >= 4,
+//   message: "varient should have proper product id",
+// });
+
+ProductVarient.schema.path("discountedPrice").validate({
+  validator: (value) => value && !isNaN(parseFloat(value)) && value > 0,
+  message: "Discounted Price must be non zero number,",
 });
 
 /***************************************** */
@@ -463,4 +477,5 @@ export {
   Color,
   RazorPayOrder,
   PaymentGateway,
+  ProductVarient,
 };
