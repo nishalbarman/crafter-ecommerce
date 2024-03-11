@@ -141,8 +141,7 @@ const productSchema = new mongoose.Schema(
     previewUrl: { type: String, required: true },
     title: { type: String, required: true },
     category: { type: mongoose.Types.ObjectId, ref: "categories" },
-    discountedPrice: { type: Number, required: true },
-    originalPrice: { type: Number },
+
     showPictures: { type: Array, required: true },
     description: { type: String, required: true },
     stars: { type: Number, default: 0 },
@@ -150,10 +149,19 @@ const productSchema = new mongoose.Schema(
     shippingPrice: { type: Number, required: true, default: 0 },
     availableStocks: { type: Number, required: true, default: 0 },
 
-    isSizeVaries: { type: Boolean, default: false },
-    isColorVaries: { type: Boolean, default: false },
-    availableSizes: [{ type: mongoose.Types.ObjectId, ref: "product_sizes" }],
-    availableColors: [{ type: mongoose.Types.ObjectId, ref: "product_colors" }],
+    discountedPrice: { type: Number, required: true }, // if no varient is available then default price would be this
+    originalPrice: { type: Number }, // if no varient is available then default price would be this
+
+    isVarientAvailable: { type: Boolean, default: false },
+    productVarient: [
+      // if there is a varient for this product then the price will be taken from varient object
+      { type: mongoose.Types.ObjectId, ref: "product_verients" },
+    ],
+
+    // isSizeVaries: { type: Boolean, default: false },
+    // isColorVaries: { type: Boolean, default: false },
+    // availableSizes: [{ type: mongoose.Types.ObjectId, ref: "product_sizes" }],
+    // availableColors: [{ type: mongoose.Types.ObjectId, ref: "product_colors" }],
   },
   {
     timestamps: true,
@@ -170,6 +178,14 @@ const productSchema = new mongoose.Schema(
     },
   }
 );
+
+const productVarientSchema = new mongoose.Schema({
+  product: { type: mongoose.Types.ObjectId, ref: "products" },
+  size: { type: mongoose.Types.ObjectId, ref: "product_sizes" },
+  color: { type: mongoose.Types.ObjectId, ref: "product_colors" },
+  discountedPrice: { type: Number, required: true },
+  originalPrice: { type: Number },
+});
 
 const cartSchema = new mongoose.Schema(
   {

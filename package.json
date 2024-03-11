@@ -8,6 +8,8 @@
   },
   "devDependencies": {
     "eslint-plugin-next": "^0.0.0",
+    "javascript-obfuscator": "^4.1.0",
+    "nextjs-obfuscator": "^3.0.0",
     "nodemon": "^3.0.3",
     "prettier": "^3.1.1",
     "turbo": "latest"
