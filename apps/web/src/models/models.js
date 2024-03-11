@@ -140,9 +140,10 @@ const productSchema = new mongoose.Schema(
   {
     previewUrl: { type: String, required: true },
     title: { type: String, required: true },
+
     category: { type: mongoose.Types.ObjectId, ref: "categories" },
 
-    showPictures: { type: Array, required: true },
+    showPictures: { type: Array, required: true }, // images array
     description: { type: String, required: true },
     stars: { type: Number, default: 0 },
     totalFeedbacks: { type: Number, default: 0 },
