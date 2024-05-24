@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"; // defaults to auto
+// export const dynamic = "force-dynamic"; // defaults to auto
 
 // pages/api/getImageColors.js
 import getImageColors from "get-image-colors";

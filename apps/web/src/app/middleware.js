@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function middleware(request) {
-
   const nextCookies = cookies();
   const reqUrl = new URL(request.url);
 
@@ -21,7 +20,9 @@ export async function middleware(request) {
   }
 
   if (!token && isPrivatePath) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+    const url = new URL("/auth/login", request.url);
+    url.searchParams.append("redirect", reqUrl.pathname);
+    return NextResponse.redirect(url);
   }
 }
 

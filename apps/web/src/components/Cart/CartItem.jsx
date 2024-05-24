@@ -1,169 +1,70 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  removeCartProduct,
-  updateSingleCartItem,
-} from "@store/redux/cartLocal";
-import { useUpdateCartMutation } from "@store/redux/cart";
-import { addWishlistProduct } from "@store/redux/wishlistLocal";
-import { useCookies } from "next-client-cookies";
+
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { useCookies } from "next-client-cookies";
+import { deleteCartItem, updateCartItem } from "@/lib/cart";
+import { addProductToWishlist, deleteWishlistItem } from "@/lib/wishlist";
 
-function CartItem({
-  item,
-  cartItems,
-  wishlistItems,
-  addNewWishlist,
-  removeOneFromCart,
-}) {
-  const {
-    _id,
-    _cartProductId,
-    previewUrl,
-    title,
-    category,
-    discountedPrice,
-    originalPrice,
-    showPictures,
-    description,
-    stars,
-    totalFeedbacks,
-    shippingPrice,
-    availableStocks,
-    isSizeVaries,
-    isColorVaries,
-    availableSizes,
-    availableColors,
-    quantity = 1,
-    size,
-    color,
-  } = item;
+function CartItem({ item, cartItems, wishlistItems }) {
+  const { _id, user, product, variant, quantity, productType } = item;
 
   const dispatch = useDispatch();
   const cookiesStore = useCookies();
 
-  const token = cookiesStore?.get("token") || null;
-
-  const [updateCart] = useUpdateCartMutation();
+  const token = cookiesStore.get("token");
 
   const [productSize, setProductSize] = useState(item.size);
   const [productQuantity, setProductQuantity] = useState(quantity);
 
   useEffect(() => {
     if (productQuantity > 0) {
-      updateCart({
+      updateCartItem({
         id: _id,
         updatedItem: { quantity: productQuantity },
       });
-
-      dispatch(
-        updateSingleCartItem({
-          id: _id,
-          updatedCartItem: {
-            _id,
-            _cartProductId,
-            previewUrl,
-            title,
-            category,
-            discountedPrice,
-            originalPrice,
-            showPictures,
-            description,
-            stars,
-            totalFeedbacks,
-            shippingPrice,
-            availableStocks,
-            isSizeVaries,
-            isColorVaries,
-            availableSizes,
-            availableColors,
-            size,
-            color,
-            quantity: productQuantity,
-          },
-        })
-      );
     }
   }, [productQuantity]);
 
   useEffect(() => {
     if (productSize?._id) {
-      updateCart({
+      updateCartItem({
         id: _id,
-        updatedItem: { size: productSize._id },
+        updatedItem: { quantity: productQuantity },
       });
-
-      dispatch(
-        updateSingleCartItem({
-          id: _id,
-          updatedCartItem: {
-            _id,
-            _cartProductId,
-            previewUrl,
-            title,
-            category,
-            discountedPrice,
-            originalPrice,
-            showPictures,
-            description,
-            stars,
-            totalFeedbacks,
-            shippingPrice,
-            availableStocks,
-            isSizeVaries,
-            isColorVaries,
-            availableSizes,
-            availableColors,
-            color,
-            size: productSize,
-          },
-        })
-      );
     }
   }, [productSize]);
 
   const quantityModalRef = useRef();
   const sizeModalRef = useRef();
-  const colourModalRef = useRef();
 
   const handleAddToWishlist = (e) => {
     e.stopPropagation();
+
     if (!token) {
       return toast.success("You need to be logged in first.");
     }
+
     if (wishlistItems?.hasOwnProperty(_id)) {
       // removeOneWishlist(_id);
       // dispatch(removeWishlistProduct(_id));
+      deleteWishlistItem({ id: _id });
     } else {
       addNewWishlist(_id);
-      dispatch(
-        addWishlistProduct({
-          _id,
-          _cartProductId,
-          previewUrl,
-          title,
-          category,
-          discountedPrice,
-          originalPrice,
-          showPictures,
-          description,
-          stars,
-          totalFeedbacks,
-          shippingPrice,
-          availableStocks,
-          isSizeVaries,
-          isColorVaries,
-          availableSizes,
-          availableColors,
-          quantity,
-          size,
-          color,
-        })
-      );
+
+      addProductToWishlist({
+        user,
+        product,
+        variant,
+        quantity,
+        productType,
+      });
+
       if (cartItems?.hasOwnProperty(_id)) {
-        removeOneFromCart(_id);
-        dispatch(removeCartProduct(_id));
+        deleteCartItem({ id: _id });
       }
     }
   };
@@ -215,7 +116,7 @@ function CartItem({
             )}
             {/* max-[961px]:flex-col max-[961px]:gap-2 */}
             <div className="qp flex justify-start mt-[20px] mb-[30px]  w-fit">
-              {isSizeVaries && item.availableSizes && (
+              {/* {isSizeVaries && item.availableSizes && (
                 <div
                   onClick={handleOnSizeChangeClick}
                   className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
@@ -227,7 +128,7 @@ function CartItem({
                   </b>{" "}
                   <i className="fa-solid fa-angle-down mr-[3px]" />
                 </div>
-              )}
+              )} */}
               <div
                 onClick={handleOnQuanityChangeClick}
                 className="mr-[16px] cursor-pointer p-[8px_12px] border-[1px] border-[rgba(0,0,0,0.12)] rounded-[5px]"
@@ -271,7 +172,7 @@ function CartItem({
       </div>
 
       {/* size modal */}
-      <div
+      {/* <div
         ref={sizeModalRef}
         onClick={() => {
           sizeModalRef.current?.classList.add("hidden");
@@ -300,65 +201,11 @@ function CartItem({
               </p>
             );
           })}
-          {/* <p
-            onClick={() => {
-              setProductSize("S");
-              sizeModalRef.current?.classList.add("hidden");
-            }}
-            className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
-            id="S">
-            S
-          </p>
-          <p
-            onClick={() => {
-              setProductSize("M");
-              sizeModalRef.current?.classList.add("hidden");
-            }}
-            className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
-            id="M">
-            M
-          </p>
-          <p
-            onClick={() => {
-              setProductSize("L");
-              sizeModalRef.current?.classList.add("hidden");
-            }}
-            className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
-            id="L">
-            L
-          </p>
-          <p
-            onClick={() => {
-              setProductSize("XL");
-              sizeModalRef.current?.classList.add("hidden");
-            }}
-            className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
-            id="XL">
-            XL
-          </p>
-          <p
-            onClick={() => {
-              setProductSize("2XL");
-              sizeModalRef.current?.classList.add("hidden");
-            }}
-            className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
-            id="2XL">
-            2XL
-          </p>
-          <p
-            onClick={() => {
-              setProductSize("3XL");
-              sizeModalRef.current?.classList.add("hidden");
-            }}
-            className="text-center hover:bg-[rgb(230,230,230)] text-[18px] p-[19px_40px] border-none tracking-[2px] leading-[1.428571429px] bg-[#fff] cursor-pointer rounded font-andika"
-            id="3XL">
-            3XL
-          </p> */}
         </div>
-      </div>
+      </div> */}
 
       {/* quantity modal  */}
-      <div
+      {/* <div
         ref={quantityModalRef}
         onClick={() => {
           quantityModalRef.current?.classList.add("hidden");
@@ -464,7 +311,7 @@ function CartItem({
             10
           </p>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -65,6 +65,7 @@ const nextConfig = obfuscator({
     remotePatterns: [
       {
         hostname: "storage.googleapis.com",
+        hostname: "n3.sdlcdn.com",
       },
     ],
   },

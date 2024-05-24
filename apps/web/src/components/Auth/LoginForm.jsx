@@ -2,16 +2,24 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { isValidEmail, isValidPassword } from "../../helpter/utils";
+
+import {
+  isValidIndianMobileNumber,
+  isValidPassword,
+  getBackendUrl,
+} from "@/helpter/utils";
+
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { setUserAuthData } from "@store/redux";
+import { useDispatch } from "react-redux";
 
 const validateInputs = (name, value) => {
   switch (name) {
-    case "email":
-      return isValidEmail(value);
+    case "mobileNo":
+      return isValidIndianMobileNumber(value);
     case "password":
       return isValidPassword(value);
   }
@@ -21,7 +29,7 @@ function LoginForm() {
   const searchParams = useSearchParams();
 
   const [formData, setFormData] = useState({
-    email: { value: "", isTouched: false, isError: null },
+    mobileNo: { value: "", isTouched: false, isError: null },
     password: { value: "", isTouched: false, isError: null },
   });
 
@@ -50,14 +58,18 @@ function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
     const loadingToast = toast.loading("Logging in...");
+
     try {
-      const response = await axios.post(`/api/v1/users/login`, {
-        email: formData.email.value,
+      const response = await axios.post(`/api/v1/user/login`, {
+        mobileNo: formData.mobileNo.value,
         password: formData.password.value,
       });
+
       toast.dismiss(loadingToast);
-      toast.success(response?.data?.message || "Unknown error occured");
-      if (response?.data?.status) {
+      toast.success(response?.data?.message);
+
+      if (response?.data?.user) {
+        // dispatch(setUserAuthData({ ...response.data.user }));
         const redirectPath = searchParams?.get("redirect") || null;
         navigator.push(`/${redirectPath || ""}`);
       }
@@ -65,12 +77,12 @@ function LoginForm() {
       console.log(error);
       setIsLoading(false);
       toast.dismiss(loadingToast);
-      if (error?.response?.status === 403) {
+      if (error?.response?.data?.message) {
         toast(error?.response?.data?.message, {
           icon: "😒",
         });
       } else {
-        toast.error(error?.response?.data?.message);
+        toast.error(error?.message);
       }
     }
   };
@@ -79,15 +91,15 @@ function LoginForm() {
     <form onSubmit={handleLogin} className="flex flex-col gap-[40px] mt-[20px]">
       <input
         onKeyUp={handleOnChange}
-        id="email"
+        id="mobileNo"
         className="h-[32px] text-black text-lg font-andika placeholder:text-[#989998] outline-none border-[#818081] border-b-[1px] rounded-none focus:border-b-[black] transition duration-150 p-[0px_5px] pl-0"
-        type="email"
-        placeholder="Email"
-        name="email"
+        type="number"
+        placeholder="Mobile No"
+        name="mobileNo"
       />
-      {formData.email.isError && (
+      {formData.mobileNo.isError && (
         <span className="mt-[-25px] text-[red] text-sm">
-          Enter a valid email
+          Enter a valid mobile no
         </span>
       )}
 
@@ -122,18 +134,14 @@ function LoginForm() {
         type="submit"
         disabled={
           isLoading ||
-          !formData.email.isTouched ||
-          formData.email.isError ||
+          !formData.mobileNo.isTouched ||
+          formData.mobileNo.isError ||
           formData.password.isError ||
           !formData.password.isTouched
         }
-        className={`cursor-${isLoading || !formData.email.isTouched || formData.email.isError || formData.password.isError || !formData.password.isTouched ? "not-allowed" : "pointer"} h-[56px] font-andika bg-[#DA4544] disabled:bg-[gray] text-white text-lg p-[0px_15px] rounded-[5px]`}>
+        className={`cursor-${isLoading || !formData.mobileNo.isTouched || formData.mobileNo.isError || formData.password.isError || !formData.password.isTouched ? "not-allowed" : "pointer"} h-[56px] font-andika bg-[#DA4544] disabled:bg-[gray] text-white text-lg p-[0px_15px] rounded-[5px]`}>
         Log In
       </button>
-      {/* <button className="flex items-center gap-2 justify-center h-[56px] font-andika text-black text-lg p-[0px_15px] rounded-[5px] bg-white border-[2px] border-[#98998] mt-[-15px]">
-                <Image src="/assets/google.svg" width={20} height={20} />
-                Sign in with Google
-              </button> */}
 
       <div className="mt-[8px] flex justify-center gap-3">
         <span className="text-lg text-center">

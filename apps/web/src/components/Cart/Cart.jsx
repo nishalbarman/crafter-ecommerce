@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
@@ -11,13 +11,9 @@ import useRazorpay from "react-razorpay";
 import "../../app/scrollbar.css";
 import "./spinner.css";
 
-import { useDeleteCartMutation } from "@store/redux/cart";
-import { updateCart } from "@store/redux/cartLocal";
-import { useAddWishlistMutation } from "@store/redux/wishlist";
-
 import CartItem from "./CartItem";
 
-function Cart() {
+function Cart({ userCartItems, userWishlistItems }) {
   const [Razorpay] = useRazorpay();
 
   const [couponCode, setCouponCode] = useState({
@@ -44,12 +40,6 @@ function Cart() {
   const [orderStatus, setOrderStatus] = useState(true);
   const [orderStatusText, setOrderStatusText] = useState("");
 
-  const cartData = useSelector((state) => state.cartLocal.cartItems);
-  const cartCount = useSelector((state) => state.cartLocal.totalItems);
-  const wishlistItems = useSelector(
-    (state) => state.wishlistLocal.wishlistItems
-  );
-
   const dispatch = useDispatch();
   const navigation = useRouter();
 
@@ -57,12 +47,6 @@ function Cart() {
   const couponThankYouRef = useRef();
   const transactionLoadingRef = useRef();
   const transactionStatusRef = useRef();
-
-  const [
-    removeOneFromCart,
-    { isLoading: isLoadingRmCart, isError: isErrorRmCart },
-  ] = useDeleteCartMutation();
-  const [addNewWishlist, { isLoading, isError }] = useAddWishlistMutation();
 
   const handleCouponCodeKeyUp = (e) => {
     setCouponCode((prev) => ({
@@ -314,7 +298,7 @@ function Cart() {
     let subtotalPrice = 0;
     let totalDiscountPrice = 0;
 
-    Object.values(cartData).forEach((item) => {
+    userCartItems?.forEach((item) => {
       totalPrice +=
         (item.originalPrice || item.discountedPrice) * (item.quantity || 1);
       subtotalPrice += item.discountedPrice * (item.quantity || 1);
@@ -339,7 +323,7 @@ function Cart() {
     } else {
       setSubtotalPrice(subtotalPrice);
     }
-  }, [cartData, appliedCoupon]);
+  }, [userCartItems, appliedCoupon]);
 
   const getPaymentGateways = async () => {
     try {
@@ -364,19 +348,21 @@ function Cart() {
 
   return (
     <>
-      {/* <div className="flex justify-between items-center mb-10">
-        <p className="text-xl font-andika">Cart ({cartCount})</p>
-        <button className="rounded-[4px] border-[1px] border-[black] h-[45px] w-[150px] p-[0px_20px]">
-          Remove All
-        </button>
-      </div> */}
-
-      {cartCount !== 0 && (
+      {userCartItems?.length && (
+        <div className="flex justify-between items-center mb-10">
+          <p className="text-xl font-andika">Cart ({userCartItems?.length})</p>
+          <button className="rounded-[4px] border-[1px] border-[black] h-[45px] w-[150px] p-[0px_20px]">
+            Remove All
+          </button>
+        </div>
+      )}
+      {userCartItems?.length && (
         <div className="main-div">
           <p className="mb-2 pl-[5px] text-[17px] text-[#181818]">
             <b>My Bag </b>
             <span id="total-items">
-              {cartCount} {cartCount > 1 ? "items" : "item"}
+              {userCartItems?.length}{" "}
+              {userCartItems.length > 1 ? "items" : "item"}
             </span>
           </p>
 
@@ -403,10 +389,8 @@ function Cart() {
                     <CartItem
                       key={item._id}
                       item={item}
-                      removeOneFromCart={removeOneFromCart}
-                      addNewWishlist={addNewWishlist}
-                      wishlistItems={wishlistItems}
-                      cartItems={cartData}
+                      userWishlistItems={userWishlistItems}
+                      userCartItems={userCartItems}
                     />
                   );
                 })}
@@ -629,7 +613,7 @@ function Cart() {
       )}
 
       {/* empty cart display */}
-      {cartCount <= 0 && (
+      {!userCartItems?.length && (
         <div
           id="emptydisplay"
           className="flex flex-col justify-center items-center gap-[10px] mt-[40px]">

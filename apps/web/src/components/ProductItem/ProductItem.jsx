@@ -1,61 +1,75 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useCookies } from "next-client-cookies";
 import toast from "react-hot-toast";
 
-import { addCartProduct, removeCartProduct } from "@store/redux/cartLocal";
-import {
-  addWishlistProduct,
-  removeWishlistProduct,
-} from "@store/redux/wishlistLocal";
+import RateStar from "../RatingStart";
 
-function ProductItem(item) {
-  const {
-    _id,
-    _cartProductId,
-    previewUrl,
-    title,
-    category,
-    discountedPrice,
-    originalPrice,
-    showPictures,
-    description,
-    stars,
-    totalFeedbacks,
-    shippingPrice,
-    availableStocks,
-    isSizeVaries,
-    isColorVaries,
-    availableSizes,
-    availableColors,
-    quantity,
-    size,
-    color,
+import { deleteWishlistItem } from "@/lib/wishlist";
+import { deleteCartItem } from "@/lib/cart";
+import { useGetCartQuery, useGetWishlistQuery } from "@store/redux";
+import { useSelector } from "react-redux";
 
-    wishlistItems,
-    cartItems,
-    addNewWishlist,
-    removeOneWishlist,
-    addOneToCart,
-    removeOneFromCart,
-
+function ProductItem({
+  productDetails = {},
+  addToCartText = "Add To Cart",
+  options: {
+    isRatingVisible = true,
     isEyeVisible = true,
     isWishlistIconVisible = true,
     deleteCartIconVisible = false,
     deleteWishlistIconVisible = false,
+  } = {},
+}) {
+  const {
+    _id,
+    previewImage,
+    title,
+    category: { categoryName, categoryKey } = {},
+    slideImages, // images array
+    description,
 
-    addToCartText = "Add To Cart",
-  } = item;
+    stars,
+    totalFeedbacks,
+
+    buyTotalOrders,
+
+    productType,
+
+    shippingPrice,
+    availableStocks,
+
+    discountedPrice, // if no varient is available then default price would be this
+    originalPrice, // if no varient is available then default price would be this
+
+    isVariantAvailable,
+    productVariant,
+  } = productDetails;
+
+  const cookiesStore = useCookies();
 
   const dispatch = useDispatch();
   const navigator = useRouter();
-  const cookiesStore = useCookies();
+
   const token = cookiesStore?.get("token") || null;
 
-  const discount = Math.floor(
-    ((originalPrice - discountedPrice) / originalPrice) * 100
+  const { data: userWishlistItems } = useGetWishlistQuery();
+  const { data: userCartItems } = useGetCartQuery();
+
+  const wishlistWithProductId = useSelector(
+    (state) => state.wishlistSlice.wishlistWithProductId
+  );
+
+  const cartWithProductId = useSelector(
+    (state) => state.cartSlice.cartWithProductId
+  );
+
+  const discount = useRef(
+    Math.floor(((originalPrice - discountedPrice) / originalPrice) * 100)
   );
 
   const handleVisitProduct = (e) => {
@@ -69,37 +83,13 @@ function ProductItem(item) {
       return toast.success("You need to be logged in first.");
     }
     if (wishlistItems?.hasOwnProperty(_id)) {
-      removeOneWishlist(_id);
+      removeWishlistProduct(_id);
       dispatch(removeWishlistProduct(_id));
     } else {
       addNewWishlist(_id);
-      dispatch(
-        addWishlistProduct({
-          _id,
-          _cartProductId,
-          previewUrl,
-          title,
-          category,
-          discountedPrice,
-          originalPrice,
-          showPictures,
-          description,
-          stars,
-          totalFeedbacks,
-          shippingPrice,
-          availableStocks,
-          isSizeVaries,
-          isColorVaries,
-          availableSizes,
-          availableColors,
-          quantity,
-          size,
-          color,
-        })
-      );
       if (cartItems?.hasOwnProperty(_id)) {
         removeOneFromCart(_id);
-        dispatch(removeCartProduct(_id));
+        // dispatch(removeCartProduct(_id));
       }
     }
   };
@@ -111,37 +101,14 @@ function ProductItem(item) {
     }
     if (cartItems?.hasOwnProperty(_id)) {
       removeOneFromCart(_id);
-      dispatch(removeCartProduct(_id));
+      // dispatch(removeCartProduct(_id));
     } else {
       addOneToCart(_id);
-      dispatch(
-        addCartProduct({
-          _id,
-          _cartProductId,
-          previewUrl,
-          title,
-          category,
-          discountedPrice,
-          originalPrice,
-          showPictures,
-          description,
-          stars,
-          totalFeedbacks,
-          shippingPrice,
-          availableStocks,
-          isSizeVaries,
-          isColorVaries,
-          availableSizes,
-          availableColors,
-          quantity,
-          size,
-          color,
-        })
-      );
+      dispatch();
 
       if (wishlistItems?.hasOwnProperty(_id)) {
-        removeOneWishlist(_id);
-        dispatch(removeWishlistProduct(_id));
+        deleteWishlistItem(_id);
+        // dispatch(removeWishlistProduct(_id));
       }
     }
   };
@@ -151,8 +118,8 @@ function ProductItem(item) {
     if (!token) {
       return toast.success("You need to be logged in first.");
     }
-    removeOneFromCart(_id);
-    dispatch(removeCartProduct(_id));
+    deleteCartItem(_id);
+    // dispatch(removeCartProduct(_id));
   };
 
   const handleWishlistProductRemove = (e) => {
@@ -160,8 +127,8 @@ function ProductItem(item) {
     if (!token) {
       return toast.success("You need to be logged in first.");
     }
-    removeOneWishlist(_id);
-    dispatch(removeWishlistProduct(_id));
+    removeWishlistProduct(_id);
+    // dispatch(removeWishlistProduct(_id));
   };
 
   return (
@@ -172,7 +139,7 @@ function ProductItem(item) {
         {!!originalPrice && (
           <div className="z-[999] absolute top-0 left-0 w-[80px] rounded bg-[#DB4444] flex items-center justify-center max-[591px]:w-[60px] p-[3px_5px] ">
             <span className="text-white text-[14px] max-[591px]:text-[12px]">
-              {discount}%
+              {discount?.current || 0}%
             </span>
           </div>
         )}
@@ -180,10 +147,10 @@ function ProductItem(item) {
         {/* add to cart button */}
         {!deleteCartIconVisible && (
           <button
-            disabled={cartItems?.hasOwnProperty(_id)}
+            disabled={userCartItems?.hasOwnProperty(_id)}
             className="w-[100%] justify-center items-center overflow-hidden bottom-0 translate-y-[55px] transition duration-300 ease-in-out min-[593px]:group-hover/product_item:flex min-[593px]:group-hover/product_item:translate-y-0 cursor-pointer absolute z-[1] max-sm:h-[40px] max-sm:text-[15px] flex items-center justify-center h-[48px] rounded-b bg-[rgba(0,0,0,0.7)] text-white "
             onClick={handleAddToCart}>
-            {cartItems?.hasOwnProperty(_id) ? (
+            {userCartItems?.hasOwnProperty(_id) ? (
               <Image
                 className="invert"
                 src={"/assets/check.svg"}
@@ -209,9 +176,9 @@ function ProductItem(item) {
               className="flex items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] max-[597px]:w-[33px] max-[597px]:h-[33px] group-wishlist hover:invert shadow"
               onClick={handleAddToWishlist}>
               <Image
-                className={`${wishlistItems?.hasOwnProperty(_id) ? "" : "group-hover/wishlist:invert-1"} max-[597px]:w-[29px] max-[597px]:h-[29px]`}
+                className={`${userWishlistItems?.hasOwnProperty(_id) ? "" : "group-hover/wishlist:invert-1"} max-[597px]:w-[29px] max-[597px]:h-[29px]`}
                 src={
-                  wishlistItems?.hasOwnProperty(_id)
+                  userWishlistItems?.hasOwnProperty(_id)
                     ? "/assets/love-filled.svg"
                     : "/assets/love.svg"
                 }
@@ -272,7 +239,7 @@ function ProductItem(item) {
             <div
               className="cursor-pointer hidden items-center justify-center p-1 bg-white rounded-full w-[40px] h-[40px] hover:scale-[1.18] max-[597px]:flex max-[597px]:w-[33px] max-[597px]:h-[33px]"
               onClick={handleAddToCart}>
-              {cartItems?.hasOwnProperty(_id) ? (
+              {userCartItems?.hasOwnProperty(_id) ? (
                 <Image src={"/assets/addcart.svg"} width={22} height={22} />
               ) : (
                 <Image
@@ -288,17 +255,19 @@ function ProductItem(item) {
 
         {/* preview product image */}
         {/* <div className="box-border p-2 h-[100%] w-[100%]"> */}
-          <img
-            className="absolute object-scale-down mix-blend-multiply h-[100%] w-[100%] rounded aspect-sqaure"
-            src={previewUrl}
-            alt={title}
-          />
+        <img
+          className="absolute object-scale-down mix-blend-multiply h-[100%] w-[100%] rounded aspect-sqaure"
+          src={previewImage}
+          alt={title}
+        />
         {/* </div> */}
       </div>
 
       {/* body section */}
       <div className="relative w-[100%] flex flex-col items-left md:items-center gap-1 pt-[16px] pb-[16px] bg-white z-[999] overflow-hidden">
-        <span className="text-lg md:text-[19px] font-semibold">{title}</span>
+        <span className="text-lg md:text-[19px] font-semibold line-clamp-1">
+          {title}
+        </span>
         <div className="flex gap-[16px] justify-left md:justify-center w-[100%]">
           <span className="text-[#DB4444] text-[16px] md:text-[18px]">
             &#8377;{discountedPrice} INR
@@ -309,58 +278,18 @@ function ProductItem(item) {
             </span>
           )}
         </div>
-
-        <div className="flex justify-left md:justify-center gap-4 w-[100%] overflow-hidden">
-          <div className="flex items-center gap-[2px] mt-[5px] h-full w-fit">
-            <Image
-              src={"/assets/star-filled.svg"}
-              width={20}
-              height={20}
-              alt="star icon"
-            />
-            <Image
-              src={"/assets/star-filled.svg"}
-              width={20}
-              height={20}
-              alt="star icon"
-            />
-            <Image
-              src={"/assets/star-filled.svg"}
-              width={20}
-              height={20}
-              alt="star icon"
-            />
-            <Image
-              src={"/assets/star-filled.svg"}
-              width={20}
-              height={20}
-              alt="star icon"
-            />
-            <Image
-              src={"/assets/star.svg"}
-              width={20}
-              height={20}
-              alt="star icon"
-            />
-            <Image
-              src={"/assets/star.svg"}
-              width={20}
-              height={20}
-              alt="star icon"
-            />
-            <Image
-              src={"/assets/star.svg"}
-              width={20}
-              height={20}
-              alt="star icon"
-            />
+        {isRatingVisible && (
+          <div className="flex justify-left md:justify-center gap-4 w-[100%] overflow-hidden">
+            <div className="flex items-center gap-[2px] mt-[5px] h-full w-fit">
+              <RateStar stars={stars} />
+            </div>
+            <div className="flex items-center h-full max-sm:hidden">
+              <span className="text-[#000] text-[18px] font-semibold opacity-[0.5]">
+                ({totalFeedbacks})
+              </span>
+            </div>
           </div>
-          <div className="flex items-center h-full max-sm:hidden">
-            <span className="text-[#000] text-[18px] font-semibold opacity-[0.5]">
-              ({totalFeedbacks})
-            </span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

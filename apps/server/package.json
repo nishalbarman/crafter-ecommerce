@@ -1,0 +1,50 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file=.env ./dist/index.js",
+    "dev": "concurrently \"yarn dev:validator\" \"yarn dev:firebase-utils\" \"yarn server_dev_start\"",
+    "server_dev_start": "nodemon --env-file=.env index.js",
+    "dev:validator": "yarn workspace custom-validator-renting dev",
+    "dev:firebase-utils": "yarn workspace firebase-utils dev",
+    "build": "concurrently \"yarn build:firebase-utils\" \"yarn build:validator\" \"yarn build:tsup-build\"",
+    "build:tsup-build": "tsup ./index.js",
+    "build:firebase-utils": "yarn workspace firebase-utils build",
+    "build:validator": "yarn workspace custom-validator-renting build"
+  },
+  "author": "Nishal Barman",
+  "license": "ISC",
+  "dependencies": {
+    "@vonage/server-sdk": "^3.13.1",
+    "axios": "^1.7.2",
+    "base64-stream": "^1.0.0",
+    "bcryptjs": "^2.4.3",
+    "cheerio": "^1.0.0-rc.12",
+    "concurrently": "^8.2.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "custom-validator-renting": "*",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-rate-limit": "^7.2.0",
+    "firebase-admin": "^12.0.0",
+    "firebase-utils": "*",
+    "get-image-colors": "^4.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "memory-cache": "^0.2.0",
+    "mongoose": "^8.2.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.13",
+    "password-validator": "^5.3.0",
+    "paytmchecksum": "^1.5.1",
+    "razorpay": "^2.9.2",
+    "stripe": "^15.3.0",
+    "twilio": "^5.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

@@ -1,41 +1,29 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { PaymentGateway } from "../../../../../models/models";
-import { connect } from "../../../../../dbConfig/dbConfig";
-import getTokenDetails from "../../../../../helpter/getTokenDetails";
+import checkRole from "@/helpter/checkRole";
+import { connect } from "@/dbConfig/dbConfig";
 
 connect();
 
+const checkUserRole = checkRole(0);
+
 export async function GET(req) {
   try {
-    const userCookies = req.cookies.get("token") || null;
-    const token = userCookies?.value || null;
-
-    if (!token) {
-      return NextResponse.redirect(
-        new URL("/auth/login?redirect=cart", req.url)
-      );
+    const roleCheckResult = checkUserRole(req);
+    if (roleCheckResult) {
+      return roleCheckResult;
     }
 
-    const userDetails = getTokenDetails(token) || null;
+    // const gateways = await PaymentGateway.find({ isActive: true }).select(
+    //   "-isActive -_id"
+    // );
 
-    if (!userDetails) {
-      return NextResponse.redirect(
-        new URL("/auth/login?redirect=cart", req.url)
-      );
-    }
+    const gateways = ["razorpay"];
 
-    const gateways = await PaymentGateway.find({ isActive: true }).select(
-      "-isActive -_id"
-    );
-
-    return NextResponse.json({ status: true, data: gateways }, { status: 200 });
+    return NextResponse.json({ data: gateways }, { status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json(
-      { status: false, message: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

@@ -1,15 +1,16 @@
 {
   "name": "firebase-utils",
+  "private": true,
   "version": "1.0.0",
-  "main": "dist/index.mjs",
-  "module": "dist/index.mjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "scripts": {
     "build": "tsup ./src/index.js",
-    "dev": "npm run build -- --watch",
-    "test": "node ./src/index.js"
+    "dev": "yarn workspace firebase-utils run build --watch"
   },
   "dependencies": {
-    "firebase-admin": "^12.0.0",
-    "validators": "*"
+    "custom-validator-renting": "*",
+    "firebase-admin": "^12.1.0",
+    "typescript": "^5.5.3"
   }
 }

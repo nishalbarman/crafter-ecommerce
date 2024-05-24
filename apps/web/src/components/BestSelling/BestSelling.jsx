@@ -1,21 +1,14 @@
 import React from "react";
-import axios from "axios";
-
 import TitleWithBar from "../TitleWithBar/TitleWithBar";
 import ProductSlider from "../ProductSlider/ProductSlider";
-import { getBackendUrl } from "../../helpter/utils";
-
-const getProducts = async () => {
-  const backendUrl = getBackendUrl();
-  const response = await axios.get(
-    `${backendUrl}api/v1/products?&page=1&limit=25`
-  );
-  const data = response.data;
-  return data.data;
-};
+import { cookies } from "next/headers";
+import { fetchProducts } from "@/lib/product";
 
 async function BestSelling() {
-  const data = await getProducts();
+  const productData = await fetchProducts({
+    page: 0,
+    limit: 10,
+  });
 
   return (
     <div className="w-full h-fit mt-10 lg:mt-[3rem]">
@@ -28,7 +21,7 @@ async function BestSelling() {
           View All
         </button>
       </div>
-      <ProductSlider items={data} />
+      <ProductSlider items={productData?.products} />
     </div>
   );
 }

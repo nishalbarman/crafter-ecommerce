@@ -1,17 +1,19 @@
 {
   "name": "@store/redux",
-  "exports": {
-    ".": "./store.js",
-    "./wishlistLocal": "./slices/wishlistSlice.js",
-    "./cartLocal": "./slices/cartSlice.js",
-    "./wishlist": "./RTK_Query/wishlistRTK.js",
-    "./cart": "./RTK_Query/cartRTK.js",
-    "./banner": "./RTK_Query/bannerRTK.js",
-    "./category": "./RTK_Query/categoryRTK.js",
-    "./keywords": "./slices/keywordsSlice.js"
+  "private": true,
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "scripts": {
+    "build": "tsup ./src/index.ts",
+    "dev": "yarn workspace @store/redux run build --watch"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.0.1",
-    "tsup": "^8.0.1"
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@reduxjs/toolkit": "^2.2.5",
+    "react-redux": "^9.1.2",
+    "redux-persist": "^6.0.0",
+    "typescript": "latest"
   }
 }

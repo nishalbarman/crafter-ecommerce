@@ -3,21 +3,19 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { useDeleteWishlistMutation } from "@store/redux/wishlist";
-import {
-  useAddOneToCartMutation,
-  useDeleteCartMutation,
-} from "@store/redux/cart";
+import { useDeleteWishlistMutation } from "@store/redux";
+import { useAddOneToCartMutation, useDeleteCartMutation } from "@store/redux";
 
 import ProductItem from "../../components/ProductItem/ProductItem";
 import Link from "next/link";
 import Image from "next/image";
 
 function Wishlist() {
-  const wishlist = useSelector((state) => state.wishlistLocal.wishlistItems);
-  const wishlistCount = useSelector((state) => state.wishlistLocal.totalItems);
+  const wishlist = useSelector((state) => state.wishlistSlice.wishlistItems);
+  const wishlistCount = useSelector((state) => state.wishlistSlice.totalItems);
 
-  const [removeOneWishlist, { isLoading: isLoadingRmWishlist, isError: isErrorRmWishlist },
+  const [
+    removeOneWishlist, { isLoading: isLoadingRmWishlist, isError: isErrorRmWishlist },
   ] = useDeleteWishlistMutation();
 
   const [addOneToCart, { isLoading: isCartLoading, isError: isCartError }] =

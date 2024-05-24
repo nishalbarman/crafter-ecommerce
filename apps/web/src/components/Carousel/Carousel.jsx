@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./Carousel.module.css";
-// import { updateBanner } from "@store/redux/banner";
+// import { updateBanner } from "@store/redux"
 import axios from "axios";
 
 const CustomPrevArrow = ({ onClick }) => {
@@ -71,6 +71,7 @@ const Carousel = ({ items = [] }) => {
           const response = await axios.post(`/api/v1/get-image-color`, {
             imageUrl: `${item.imageUrl}`,
           });
+
           const { averageColor } = await response.data;
 
           return { ...item, bgColor: `rgba(${averageColor}, 0.8)` };

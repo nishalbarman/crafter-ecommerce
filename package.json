@@ -1,6 +1,8 @@
 {
   "name": "ecommerce-site",
   "private": true,
+  "license": "MIT",
+  "author": "Nishal Barman",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -17,7 +19,6 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@10.2.4",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -27,5 +28,16 @@
     "react-hot-toast": "^2.4.1",
     "tsup": "^8.0.2",
     "uuid": "^9.0.1"
+  },
+  "resolutions": {
+    "wrap-ansi": "7.0.0",
+    "string-width": "4.1.0",
+    "@babel/core": "^7.24.5",
+    "react": "18.2.0",
+    "redux": "latest",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.2",
+    "react-native-maps": "1.14.0",
+    "react-native-reanimated": "3.10.1"
   }
 }
