@@ -14,19 +14,3 @@ export default function generateHash(pay) {
   const hash = sha.getHash("HEX");
   return hash;
 }
-
-// const hashString =
-//   PAYU_MERCHANT_KEY +
-//   "|" +
-//   pay.txnid +
-//   "|" +
-//   pay.amount +
-//   "|" +
-//   pay.productinfo +
-//   "|" +
-//   pay.firstname +
-//   "|" +
-//   pay.email +
-//   "|" +
-//   "||||||||||" +
-//   PAYU_MERCHANT_SALT;

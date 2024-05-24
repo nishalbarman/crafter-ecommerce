@@ -2,15 +2,9 @@ const axios = require("axios");
 
 module.exports = async ({ numbers, message }) => {
   try {
-    const sender = "RENT-TXTLCL";
-    const apiKey = "***REMOVED***";
-
-    // const postData = JSON.stringify();
-
     const response = await axios.post(`https://dkrner.api.infobip.com`, {
       headers: {
-        Authorization:
-          "App ***REMOVED***",
+        Authorization: `App ${process.env.INFOBIP_AUTH_KEY}`,
         "Content-Type": "application/json",
         Accept: "application/json",
       },
