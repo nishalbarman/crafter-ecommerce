@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { uploadImage } from "firebase-utils";
-import { isValidImage } from "validators";
+import { isValidImage } from "validator";
 
 export async function POST(req) {
   try {

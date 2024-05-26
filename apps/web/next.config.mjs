@@ -58,16 +58,11 @@ const nextConfig = obfuscator({
   transpilePackages: [
     "@store/redux",
     "@custom-hooks/custom-clicks",
-    "validators",
+    "validator",
     "firebase-utils",
   ],
   images: {
-    remotePatterns: [
-      {
-        hostname: "storage.googleapis.com",
-        hostname: "n3.sdlcdn.com",
-      },
-    ],
+    domains: ["n3.sdlcdn.com", "storage.googleapis.com"],
   },
   async headers() {
     return [
